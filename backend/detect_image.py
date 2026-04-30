@@ -58,9 +58,15 @@ def build_report(image_path: str) -> dict[str, Any]:
         fusion_result = fuse_scores(metadata_result, c2pa_result, forensic_result)
     except Exception as exc:
         fusion_result = {
-            "risk_score": 100,
-            "risk_level": "very_high",
-            "conclusion": "Very high AI-generation risk. Strong AI-related evidence detected.",
+            "risk": {
+                "ai_generation_risk": 0,
+                "provenance_risk": 0,
+                "editing_risk": 0,
+                "technical_quality_risk": 100,
+                "overall_risk": 100,
+                "risk_level": "very_high",
+            },
+            "conclusion": "Technical inspection failed; result is unreliable.",
             "evidence_summary": ["Score fusion failed; report should be reviewed manually."],
             "error": str(exc),
         }

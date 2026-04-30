@@ -12,7 +12,7 @@ Out of scope for Day 1: frontend, database, model training, deep learning model 
 - `backend/detectors/metadata_detector.py`: ExifTool-based metadata extraction, camera EXIF detection, AI tool keyword detection, editing software keyword detection, and metadata risk scoring.
 - `backend/detectors/c2pa_detector.py`: C2PA / Content Credentials command integration through `c2patool` or `c2pa`, including explicit handling for `No claim found`.
 - `backend/detectors/forensic_detector.py`: Pillow-based image open, format, dimensions, color mode, file size, JPEG detection, and basic file-size-to-resolution heuristic.
-- `backend/detectors/score_fusion.py`: Weighted risk fusion and evidence summary output.
+- `backend/detectors/score_fusion.py`: Multi-dimensional risk fusion and evidence summary output.
 
 ## 3. Acceptance Commands
 
@@ -42,6 +42,7 @@ backend/outputs/not_exist_report.json
 - Pillow should inspect it as a valid JPEG image.
 - If ExifTool does not find camera EXIF, `metadata.has_exif=false` is acceptable.
 - If C2PA reports `No claim found`, `c2pa.checked=true`, `c2pa.has_manifest=false`, and `c2pa.error=null`.
+- The final `fusion.risk.ai_generation_risk` should remain low to moderate unless strong AI metadata is present; missing EXIF and missing C2PA should mainly affect `provenance_risk`.
 
 `ai_image2.png`:
 
@@ -50,12 +51,14 @@ backend/outputs/not_exist_report.json
 - Metadata should be checked through ExifTool.
 - If metadata contains AI-related tool strings such as `OpenAI`, the metadata detector should report an AI keyword signal.
 - If C2PA returns manifest-like data with no validation failure, the C2PA detector should report a valid manifest signal.
+- The final `fusion.risk.ai_generation_risk` should be high when strong AI metadata is present.
 
 `web_real.jpg`:
 
 - The CLI should complete without crashing and write `web_real_report.json`.
 - Pillow should inspect it as a valid JPEG image.
 - Missing camera EXIF or missing C2PA claims should be treated as limited provenance, not proof of AI generation.
+- The final `fusion.risk.provenance_risk` may be elevated while `fusion.risk.ai_generation_risk` remains low to moderate.
 
 ## 5. Meaning of `has_exif=false`
 
@@ -85,11 +88,13 @@ No C2PA claim does not mean the image is fake. It only means the image lacks ver
 ## 7. Current Limitations
 
 - Risk scoring is rule-based and intended for engineering integration only.
+- Day 1 scores are not AI-generation probabilities.
+- `ai_generation_risk`, `provenance_risk`, `editing_risk`, and `technical_quality_risk` measure different concerns and should not be collapsed into a claim that an image is fake.
 - The CLI does not perform deep image forensics such as Error Level Analysis, compression grid analysis, or sensor noise modeling.
 - The CLI does not train or run an AI detection model.
 - C2PA parsing currently relies on command output keywords rather than a full structured manifest parser.
 - Metadata keyword matching is useful for obvious provenance signals but can miss renamed, stripped, or manipulated metadata.
-- The current score should not be presented as a detection accuracy percentage.
+- `overall_risk` is a weighted engineering summary. It should not be presented as a detection accuracy percentage.
 
 ## 8. Day 2 Next Steps
 

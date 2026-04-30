@@ -2,9 +2,9 @@
 
 ## Overview
 
-AI Image Trust Scanner is a local CLI prototype for analyzing image provenance and AI-generation risk signals. It inspects image files, metadata, C2PA / Content Credentials claims, and basic forensic properties, then writes a JSON report.
+AI Image Trust Scanner is a local CLI prototype for analyzing image provenance and AI-generation risk signals. It inspects image files, metadata, C2PA / Content Credentials claims, and basic forensic properties, then writes a JSON report with multi-dimensional risk scores.
 
-This project does not claim to determine with 100% certainty whether an image is real or AI-generated. The current output is a risk-oriented signal summary, not a final authenticity verdict.
+This project does not claim to determine with 100% certainty whether an image is real or AI-generated. The current output is a risk-oriented signal summary, not a final authenticity verdict or an AI-generation probability.
 
 ## Current Status
 
@@ -18,7 +18,7 @@ The current version is focused on local command-line inspection only. It does no
 - EXIF / XMP metadata analysis through ExifTool
 - C2PA / Content Credentials claim check
 - Basic forensic image inspection
-- Rule-based risk fusion
+- Rule-based multi-dimensional risk fusion
 - JSON report output
 
 ## Architecture
@@ -83,9 +83,15 @@ backend/outputs/example_report.json
     "risk_score": 30
   },
   "fusion": {
-    "risk_score": 39,
-    "risk_level": "medium",
-    "conclusion": "Limited provenance or mixed signals. AI generation cannot be confirmed."
+    "risk": {
+      "ai_generation_risk": 30,
+      "provenance_risk": 75,
+      "editing_risk": 15,
+      "technical_quality_risk": 20,
+      "overall_risk": 38,
+      "risk_level": "medium"
+    },
+    "conclusion": "No strong AI-generation evidence detected, but provenance is limited."
   }
 }
 ```
@@ -95,6 +101,8 @@ backend/outputs/example_report.json
 - No EXIF does not mean AI-generated.
 - No C2PA claim does not mean fake.
 - The current version is not a final AI detector.
+- The Day 1 scores are multi-dimensional risk indicators, not AI-generation probabilities.
+- Provenance risk means the source is hard to verify; it does not prove AI generation.
 - The result is a risk-oriented analysis, not legal or forensic proof.
 
 ## Project Roadmap
