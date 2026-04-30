@@ -1,0 +1,33 @@
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment variables and secrets
+.env
+.env.*
+*.key
+*.pem
+
+# Local outputs
+backend/outputs/*
+!backend/outputs/.gitkeep
+
+# Local sample images
+backend/samples/*
+!backend/samples/.gitkeep
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE settings
+.vscode/
+
+# Logs
+*.log
