@@ -1,0 +1,490 @@
+{
+  "generated_at": "2026-05-01T21:20:49+08:00",
+  "real_dir": "D:\\ai image\\ai-image-trust-scanner\\data\\test_images\\real",
+  "ai_dir": "D:\\ai image\\ai-image-trust-scanner\\data\\test_images\\ai",
+  "output_dir": "D:\\ai image\\ai-image-trust-scanner\\reports",
+  "thresholds": [
+    0.1,
+    0.15,
+    0.2,
+    0.25,
+    0.3,
+    0.35,
+    0.4,
+    0.45,
+    0.5,
+    0.55,
+    0.6,
+    0.65,
+    0.7,
+    0.75,
+    0.8,
+    0.85,
+    0.9
+  ],
+  "dataset": {
+    "real_count": 10,
+    "ai_count": 10,
+    "total": 20,
+    "success_count": 20,
+    "error_count": 0
+  },
+  "image_scores": [
+    {
+      "file_path": "data\\test_images\\real\\phone_photo_001.jpg",
+      "ground_truth": "real",
+      "score": 0.208724,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 471.0
+    },
+    {
+      "file_path": "data\\test_images\\real\\phone_photo_002.jpg",
+      "ground_truth": "real",
+      "score": 0.196063,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 323.25
+    },
+    {
+      "file_path": "data\\test_images\\real\\phone_photo_003.jpg",
+      "ground_truth": "real",
+      "score": 0.13663,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 146.43
+    },
+    {
+      "file_path": "data\\test_images\\real\\phone_photo_004.jpg",
+      "ground_truth": "real",
+      "score": 0.219579,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 143.0
+    },
+    {
+      "file_path": "data\\test_images\\real\\phone_photo_005.jpg",
+      "ground_truth": "real",
+      "score": 0.220945,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 1491.86
+    },
+    {
+      "file_path": "data\\test_images\\real\\phone_photo_006.jpg",
+      "ground_truth": "real",
+      "score": 0.167131,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 146.71
+    },
+    {
+      "file_path": "data\\test_images\\real\\phone_photo_007.jpg",
+      "ground_truth": "real",
+      "score": 0.149587,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 142.07
+    },
+    {
+      "file_path": "data\\test_images\\real\\phone_photo_008.jpg",
+      "ground_truth": "real",
+      "score": 0.138499,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 138.42
+    },
+    {
+      "file_path": "data\\test_images\\real\\screenshot_real_001.jpg",
+      "ground_truth": "real",
+      "score": 0.141515,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 243.33
+    },
+    {
+      "file_path": "data\\test_images\\real\\web_real_001.jpg",
+      "ground_truth": "real",
+      "score": 0.20245,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 5435.34
+    },
+    {
+      "file_path": "data\\test_images\\ai\\ai_001.png",
+      "ground_truth": "ai",
+      "score": 0.154768,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 403.51
+    },
+    {
+      "file_path": "data\\test_images\\ai\\ai_002.png",
+      "ground_truth": "ai",
+      "score": 0.208551,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 395.0
+    },
+    {
+      "file_path": "data\\test_images\\ai\\ai_003.png",
+      "ground_truth": "ai",
+      "score": 0.175881,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 400.25
+    },
+    {
+      "file_path": "data\\test_images\\ai\\ai_004.png",
+      "ground_truth": "ai",
+      "score": 0.164681,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 372.55
+    },
+    {
+      "file_path": "data\\test_images\\ai\\ai_005.png",
+      "ground_truth": "ai",
+      "score": 0.144311,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 360.6
+    },
+    {
+      "file_path": "data\\test_images\\ai\\ai_006.png",
+      "ground_truth": "ai",
+      "score": 0.178609,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 408.06
+    },
+    {
+      "file_path": "data\\test_images\\ai\\ai_007.png",
+      "ground_truth": "ai",
+      "score": 0.187089,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 391.93
+    },
+    {
+      "file_path": "data\\test_images\\ai\\ai_008.png",
+      "ground_truth": "ai",
+      "score": 0.180457,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 374.18
+    },
+    {
+      "file_path": "data\\test_images\\ai\\ai_009.png",
+      "ground_truth": "ai",
+      "score": 0.194494,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 405.94
+    },
+    {
+      "file_path": "data\\test_images\\ai\\ai_010.png",
+      "ground_truth": "ai",
+      "score": 0.147024,
+      "status": "success",
+      "error_message": "",
+      "inference_time_ms": 364.89
+    }
+  ],
+  "threshold_metrics": [
+    {
+      "threshold": 0.1,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6667,
+      "true_positive": 10,
+      "true_negative": 0,
+      "false_positive": 10,
+      "false_negative": 0,
+      "false_positive_rate": 1.0,
+      "false_negative_rate": 0.0
+    },
+    {
+      "threshold": 0.15,
+      "total": 20,
+      "accuracy": 0.6,
+      "precision": 0.5714,
+      "recall": 0.8,
+      "f1": 0.6667,
+      "true_positive": 8,
+      "true_negative": 4,
+      "false_positive": 6,
+      "false_negative": 2,
+      "false_positive_rate": 0.6,
+      "false_negative_rate": 0.2
+    },
+    {
+      "threshold": 0.2,
+      "total": 20,
+      "accuracy": 0.35,
+      "precision": 0.2,
+      "recall": 0.1,
+      "f1": 0.1333,
+      "true_positive": 1,
+      "true_negative": 6,
+      "false_positive": 4,
+      "false_negative": 9,
+      "false_positive_rate": 0.4,
+      "false_negative_rate": 0.9
+    },
+    {
+      "threshold": 0.25,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    },
+    {
+      "threshold": 0.3,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    },
+    {
+      "threshold": 0.35,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    },
+    {
+      "threshold": 0.4,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    },
+    {
+      "threshold": 0.45,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    },
+    {
+      "threshold": 0.5,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    },
+    {
+      "threshold": 0.55,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    },
+    {
+      "threshold": 0.6,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    },
+    {
+      "threshold": 0.65,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    },
+    {
+      "threshold": 0.7,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    },
+    {
+      "threshold": 0.75,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    },
+    {
+      "threshold": 0.8,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    },
+    {
+      "threshold": 0.85,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    },
+    {
+      "threshold": 0.9,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "true_positive": 0,
+      "true_negative": 10,
+      "false_positive": 0,
+      "false_negative": 10,
+      "false_positive_rate": 0.0,
+      "false_negative_rate": 1.0
+    }
+  ],
+  "recommendations": {
+    "best_f1_threshold": {
+      "threshold": 0.15,
+      "total": 20,
+      "accuracy": 0.6,
+      "precision": 0.5714,
+      "recall": 0.8,
+      "f1": 0.6667,
+      "true_positive": 8,
+      "true_negative": 4,
+      "false_positive": 6,
+      "false_negative": 2,
+      "false_positive_rate": 0.6,
+      "false_negative_rate": 0.2
+    },
+    "high_recall_threshold": {
+      "threshold": 0.1,
+      "total": 20,
+      "accuracy": 0.5,
+      "precision": 0.5,
+      "recall": 1.0,
+      "f1": 0.6667,
+      "true_positive": 10,
+      "true_negative": 0,
+      "false_positive": 10,
+      "false_negative": 0,
+      "false_positive_rate": 1.0,
+      "false_negative_rate": 0.0
+    },
+    "no_reliable_high_precision_threshold_found": {
+      "minimum_precision": 0.8,
+      "best_available_candidate": {
+        "threshold": 0.15,
+        "total": 20,
+        "accuracy": 0.6,
+        "precision": 0.5714,
+        "recall": 0.8,
+        "f1": 0.6667,
+        "true_positive": 8,
+        "true_negative": 4,
+        "false_positive": 6,
+        "false_negative": 2,
+        "false_positive_rate": 0.6,
+        "false_negative_rate": 0.2
+      },
+      "message": "Current sweep did not find a threshold with precision >= 0.80."
+    },
+    "recommended_default_threshold": 0.15
+  },
+  "warnings": [],
+  "outputs": {
+    "csv": "D:\\ai image\\ai-image-trust-scanner\\reports\\day7_threshold_sweep.csv",
+    "json": "D:\\ai image\\ai-image-trust-scanner\\reports\\day7_threshold_sweep.json",
+    "markdown_report": "D:\\ai image\\ai-image-trust-scanner\\reports\\day7_threshold_report.md",
+    "image_reports": "D:\\ai image\\ai-image-trust-scanner\\reports\\day7_image_reports"
+  }
+}
