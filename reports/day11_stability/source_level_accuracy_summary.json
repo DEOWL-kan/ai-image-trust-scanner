@@ -1,0 +1,88 @@
+{
+  "generated_at": "2026-05-02T02:27:12+08:00",
+  "threshold": 0.15,
+  "total_images": 60,
+  "success_count": 60,
+  "error_count": 0,
+  "overall_accuracy": 0.55,
+  "false_positive_count": 18,
+  "false_negative_count": 9,
+  "mean_score": 0.171719,
+  "median_score": 0.172059,
+  "low_accuracy_format_groups": [
+    {
+      "group_dimension": "ground_truth+file_extension",
+      "ground_truth": "real",
+      "file_extension": "jpg",
+      "resolution_bucket": "all",
+      "source_guess": "all",
+      "sample_count": 30,
+      "accuracy": 0.4,
+      "false_positive_count": 18,
+      "false_negative_count": 0,
+      "mean_score": 0.175866,
+      "median_score": 0.172545,
+      "min_score": 0.096813,
+      "max_score": 0.262213,
+      "score_range": 0.1654,
+      "std_score": 0.045115
+    }
+  ],
+  "high_resolution_volatility_groups": [
+    {
+      "group_dimension": "ground_truth+resolution_bucket",
+      "ground_truth": "real",
+      "file_extension": "all",
+      "resolution_bucket": "large",
+      "source_guess": "all",
+      "sample_count": 20,
+      "accuracy": 0.4,
+      "false_positive_count": 12,
+      "false_negative_count": 0,
+      "mean_score": 0.177159,
+      "median_score": 0.183203,
+      "min_score": 0.096813,
+      "max_score": 0.262213,
+      "score_range": 0.1654,
+      "std_score": 0.050482
+    },
+    {
+      "group_dimension": "ground_truth+resolution_bucket",
+      "ground_truth": "ai",
+      "file_extension": "all",
+      "resolution_bucket": "medium",
+      "source_guess": "all",
+      "sample_count": 30,
+      "accuracy": 0.7,
+      "false_positive_count": 0,
+      "false_negative_count": 9,
+      "mean_score": 0.167572,
+      "median_score": 0.16977,
+      "min_score": 0.1146,
+      "max_score": 0.208551,
+      "score_range": 0.093951,
+      "std_score": 0.024482
+    }
+  ],
+  "ai_format_tendency": [
+    {
+      "file_extension": "png",
+      "sample_count": 30,
+      "ai_prediction_rate": 0.7,
+      "mean_score": 0.167572
+    }
+  ],
+  "real_format_tendency": [
+    {
+      "file_extension": "jpg",
+      "sample_count": 30,
+      "ai_prediction_rate": 0.6,
+      "mean_score": 0.175866
+    }
+  ],
+  "source_guess_counts": {
+    "jpeg_no_exif_export": 18,
+    "png_no_exif_export": 30,
+    "unknown": 12
+  }
+}

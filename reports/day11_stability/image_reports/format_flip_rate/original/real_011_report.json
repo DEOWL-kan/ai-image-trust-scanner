@@ -1,0 +1,116 @@
+{
+  "version": "V0.1 baseline",
+  "generated_at": "2026-05-01T18:22:16.959523+00:00",
+  "ok": true,
+  "image_info": {
+    "ok": true,
+    "image_path": "D:\\ai image\\ai-image-trust-scanner\\data\\test_images\\real\\real_011.jpg",
+    "filename": "real_011.jpg",
+    "format": "JPEG",
+    "width": 4032,
+    "height": 3024,
+    "color_mode": "RGB",
+    "file_size_bytes": 3547789,
+    "file_size_kb": 3464.64,
+    "error": null
+  },
+  "metadata_result": {
+    "checked": true,
+    "has_exif": true,
+    "camera_make": null,
+    "camera_model": null,
+    "software": null,
+    "datetime_original": null,
+    "exif_field_count": 1,
+    "missing_exif_note": null,
+    "optional_interfaces": {
+      "exiftool": {
+        "status": "optional_placeholder",
+        "note": "Reserved for deeper EXIF/XMP/IPTC parsing in a later version."
+      },
+      "c2pa": {
+        "status": "optional_placeholder",
+        "note": "Reserved for Content Credentials / C2PA manifest parsing."
+      }
+    },
+    "error": null
+  },
+  "forensic_result": {
+    "checked": true,
+    "brightness_mean": 139.827493,
+    "brightness_std": 62.964082,
+    "color_channel_mean": {
+      "red": 139.579644,
+      "green": 140.823017,
+      "blue": 135.406246
+    },
+    "color_channel_std": {
+      "red": 63.762004,
+      "green": 63.505279,
+      "blue": 59.783675
+    },
+    "edge_density": 0.033573,
+    "laplacian_variance": 284.930157,
+    "noise_estimate": 4.080397,
+    "error": null
+  },
+  "frequency_result": {
+    "checked": true,
+    "high_frequency_energy_ratio": 0.389368,
+    "frequency_score": 0.389368,
+    "note": "Frequency analysis is a heuristic signal only, not an authenticity verdict.",
+    "error": null
+  },
+  "model_result": {
+    "checked": true,
+    "image_path": "D:\\ai image\\ai-image-trust-scanner\\data\\test_images\\real\\real_011.jpg",
+    "ai_probability": 0.5,
+    "model_name": "v0.1-baseline-placeholder",
+    "model_status": "placeholder",
+    "note": "No deep model is trained or loaded in V0.1. This neutral value is placeholder metadata and is not used as trained evidence.",
+    "error": null
+  },
+  "final_result": {
+    "final_score": 0.146013,
+    "raw_score": 0.146013,
+    "threshold": 0.15,
+    "uncertainty_margin": 0.03,
+    "binary_label_at_threshold": "real",
+    "final_label": "uncertain",
+    "decision_status": "uncertain",
+    "confidence_distance": 0.003987,
+    "decision_reason": "score_inside_uncertain_band",
+    "risk_level": "low",
+    "component_scores": {
+      "metadata_score": 0.0,
+      "forensic_score": 0.0,
+      "frequency_score": 0.389368,
+      "model_score": 0.0
+    },
+    "component_weights": {
+      "metadata": 0.15,
+      "forensic": 0.35,
+      "frequency": 0.3,
+      "model": 0.0
+    },
+    "result_type": "baseline risk level",
+    "evidence_summary": [
+      "EXIF metadata exists.",
+      "Basic forensic features did not trigger strong baseline warnings.",
+      "Frequency score is a weak heuristic based on high-frequency energy, not a final judgment.",
+      "Deep model detector is placeholder and is not used as trained evidence."
+    ],
+    "limitation_note": "AI Image Trust Scanner V0.1 is a baseline multi-evidence heuristic. It provides a heuristic evidence summary and is not a final authenticity judgment, not a legal forensic conclusion, and not a trained AI-generation detector."
+  },
+  "evidence_summary": [
+    "EXIF metadata exists.",
+    "Basic forensic features did not trigger strong baseline warnings.",
+    "Frequency score is a weak heuristic based on high-frequency energy, not a final judgment.",
+    "Deep model detector is placeholder and is not used as trained evidence."
+  ],
+  "limitation_note": "This is AI Image Trust Scanner V0.1 baseline output. It combines simple metadata, forensic, frequency, and placeholder model signals. It is not a final detection conclusion and should not be treated as proof that an image is real or AI-generated.",
+  "report_paths": {
+    "json_report": "D:\\ai image\\ai-image-trust-scanner\\reports\\day11_stability\\image_reports\\format_flip_rate\\original\\real_011_report.json",
+    "markdown_report": "D:\\ai image\\ai-image-trust-scanner\\reports\\day11_stability\\image_reports\\format_flip_rate\\original\\real_011_report.md"
+  }
+}

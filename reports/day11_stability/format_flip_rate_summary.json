@@ -1,0 +1,36 @@
+{
+  "generated_at": "2026-05-02T02:23:08+08:00",
+  "threshold": 0.15,
+  "total_pairs": 60,
+  "attempted_pairs": 60,
+  "error_pairs": 0,
+  "flip_count": 3,
+  "format_flip_rate": 0.05,
+  "avg_score_delta": 0.002997,
+  "max_score_delta": 0.010701,
+  "threshold_cross_count": 2,
+  "threshold_cross_rate": 0.033333,
+  "control_source_counts": {
+    "day10_existing": 60
+  },
+  "by_direction": {
+    "JPG -> PNG": {
+      "total_pairs": 30,
+      "flip_count": 2,
+      "format_flip_rate": 0.066667,
+      "avg_score_delta": 0.004128,
+      "max_score_delta": 0.010701,
+      "threshold_cross_count": 2,
+      "threshold_cross_rate": 0.066667
+    },
+    "PNG -> JPG": {
+      "total_pairs": 30,
+      "flip_count": 1,
+      "format_flip_rate": 0.033333,
+      "avg_score_delta": 0.001866,
+      "max_score_delta": 0.002898,
+      "threshold_cross_count": 0,
+      "threshold_cross_rate": 0.0
+    }
+  }
+}

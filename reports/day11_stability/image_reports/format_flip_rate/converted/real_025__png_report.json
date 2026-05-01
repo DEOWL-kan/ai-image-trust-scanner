@@ -1,0 +1,116 @@
+{
+  "version": "V0.1 baseline",
+  "generated_at": "2026-05-01T18:23:04.835563+00:00",
+  "ok": true,
+  "image_info": {
+    "ok": true,
+    "image_path": "D:\\ai image\\ai-image-trust-scanner\\data\\day10_format_control\\real\\png\\real_025__png.png",
+    "filename": "real_025__png.png",
+    "format": "PNG",
+    "width": 1279,
+    "height": 1706,
+    "color_mode": "RGB",
+    "file_size_bytes": 2633388,
+    "file_size_kb": 2571.67,
+    "error": null
+  },
+  "metadata_result": {
+    "checked": true,
+    "has_exif": false,
+    "camera_make": null,
+    "camera_model": null,
+    "software": null,
+    "datetime_original": null,
+    "exif_field_count": 0,
+    "missing_exif_note": "No EXIF found. This limits provenance, but does not mean the image is AI-generated.",
+    "optional_interfaces": {
+      "exiftool": {
+        "status": "optional_placeholder",
+        "note": "Reserved for deeper EXIF/XMP/IPTC parsing in a later version."
+      },
+      "c2pa": {
+        "status": "optional_placeholder",
+        "note": "Reserved for Content Credentials / C2PA manifest parsing."
+      }
+    },
+    "error": null
+  },
+  "forensic_result": {
+    "checked": true,
+    "brightness_mean": 97.198672,
+    "brightness_std": 63.102763,
+    "color_channel_mean": {
+      "red": 101.140541,
+      "green": 96.846401,
+      "blue": 88.792167
+    },
+    "color_channel_std": {
+      "red": 65.293398,
+      "green": 63.534109,
+      "blue": 55.972937
+    },
+    "edge_density": 0.185535,
+    "laplacian_variance": 2536.132372,
+    "noise_estimate": 12.743927,
+    "error": null
+  },
+  "frequency_result": {
+    "checked": true,
+    "high_frequency_energy_ratio": 0.555591,
+    "frequency_score": 0.555591,
+    "note": "Frequency analysis is a heuristic signal only, not an authenticity verdict.",
+    "error": null
+  },
+  "model_result": {
+    "checked": true,
+    "image_path": "D:\\ai image\\ai-image-trust-scanner\\data\\day10_format_control\\real\\png\\real_025__png.png",
+    "ai_probability": 0.5,
+    "model_name": "v0.1-baseline-placeholder",
+    "model_status": "placeholder",
+    "note": "No deep model is trained or loaded in V0.1. This neutral value is placeholder metadata and is not used as trained evidence.",
+    "error": null
+  },
+  "final_result": {
+    "final_score": 0.217722,
+    "raw_score": 0.217722,
+    "threshold": 0.15,
+    "uncertainty_margin": 0.03,
+    "binary_label_at_threshold": "ai",
+    "final_label": "ai",
+    "decision_status": "decided",
+    "confidence_distance": 0.067722,
+    "decision_reason": "score_above_threshold_margin",
+    "risk_level": "low",
+    "component_scores": {
+      "metadata_score": 0.05,
+      "forensic_score": 0.0,
+      "frequency_score": 0.555591,
+      "model_score": 0.0
+    },
+    "component_weights": {
+      "metadata": 0.15,
+      "forensic": 0.35,
+      "frequency": 0.3,
+      "model": 0.0
+    },
+    "result_type": "baseline risk level",
+    "evidence_summary": [
+      "No EXIF found; this is only a weak provenance signal.",
+      "Basic forensic features did not trigger strong baseline warnings.",
+      "Frequency score is a weak heuristic based on high-frequency energy, not a final judgment.",
+      "Deep model detector is placeholder and is not used as trained evidence."
+    ],
+    "limitation_note": "AI Image Trust Scanner V0.1 is a baseline multi-evidence heuristic. It provides a heuristic evidence summary and is not a final authenticity judgment, not a legal forensic conclusion, and not a trained AI-generation detector."
+  },
+  "evidence_summary": [
+    "No EXIF found; this is only a weak provenance signal.",
+    "Basic forensic features did not trigger strong baseline warnings.",
+    "Frequency score is a weak heuristic based on high-frequency energy, not a final judgment.",
+    "Deep model detector is placeholder and is not used as trained evidence."
+  ],
+  "limitation_note": "This is AI Image Trust Scanner V0.1 baseline output. It combines simple metadata, forensic, frequency, and placeholder model signals. It is not a final detection conclusion and should not be treated as proof that an image is real or AI-generated.",
+  "report_paths": {
+    "json_report": "D:\\ai image\\ai-image-trust-scanner\\reports\\day11_stability\\image_reports\\format_flip_rate\\converted\\real_025__png_report.json",
+    "markdown_report": "D:\\ai image\\ai-image-trust-scanner\\reports\\day11_stability\\image_reports\\format_flip_rate\\converted\\real_025__png_report.md"
+  }
+}
