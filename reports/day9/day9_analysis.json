@@ -1,0 +1,262 @@
+{
+  "generated_at": "2026-05-02T00:16:38+08:00",
+  "inputs": {
+    "predictions_csv": "D:\\ai image\\ai-image-trust-scanner\\reports\\day8\\day8_predictions.csv",
+    "image_report_dir": "D:\\ai image\\ai-image-trust-scanner\\reports\\day8\\image_reports"
+  },
+  "thresholds": {
+    "balanced": 0.15,
+    "conservative": 0.18
+  },
+  "metrics": {
+    "balanced": {
+      "threshold": 0.15,
+      "total": 60,
+      "true_positive": 21,
+      "true_negative": 12,
+      "false_positive": 18,
+      "false_negative": 9,
+      "accuracy": 0.55
+    },
+    "conservative": {
+      "threshold": 0.18,
+      "total": 60,
+      "true_positive": 12,
+      "true_negative": 17,
+      "false_positive": 13,
+      "false_negative": 18,
+      "accuracy": 0.4833
+    }
+  },
+  "balanced_error_buckets": {
+    "frequency_dominated_real_image": 11,
+    "borderline_false_negative": 8,
+    "forensic_triggered_real_image": 5,
+    "borderline_false_positive": 2,
+    "low_forensic_low_frequency_ai_image": 1
+  },
+  "balanced_scenarios": {
+    "png_export_no_exif": {
+      "total": 30,
+      "false_positive": 0,
+      "false_negative": 9,
+      "correct": 21
+    },
+    "web_or_social_jpeg_no_exif": {
+      "total": 18,
+      "false_positive": 13,
+      "false_negative": 0,
+      "correct": 5
+    },
+    "camera_photo_with_exif": {
+      "total": 12,
+      "false_positive": 5,
+      "false_negative": 0,
+      "correct": 7
+    }
+  },
+  "scene_statistics": [
+    {
+      "scene_tag": "closeup_object",
+      "sample_count": 20,
+      "false_positive": 7,
+      "false_negative": 5,
+      "accuracy": "0.4000",
+      "avg_ai_score": "0.152425",
+      "recommended_threshold_mode": "uncertain_protection",
+      "recommended_action": "Use uncertain output because both false positives and false negatives appear in this scene."
+    },
+    {
+      "scene_tag": "unknown",
+      "sample_count": 16,
+      "false_positive": 0,
+      "false_negative": 3,
+      "accuracy": "0.8125",
+      "avg_ai_score": "0.171358",
+      "recommended_threshold_mode": "uncertain_protection",
+      "recommended_action": "Use uncertain output because many samples are low-confidence or protected by scene rules."
+    },
+    {
+      "scene_tag": "shelf",
+      "sample_count": 8,
+      "false_positive": 5,
+      "false_negative": 0,
+      "accuracy": "0.3750",
+      "avg_ai_score": "0.216497",
+      "recommended_threshold_mode": "conservative",
+      "recommended_action": "Use a more conservative threshold because false positives are high for this scene."
+    },
+    {
+      "scene_tag": "low_light",
+      "sample_count": 7,
+      "false_positive": 1,
+      "false_negative": 1,
+      "accuracy": "0.7143",
+      "avg_ai_score": "0.163664",
+      "recommended_threshold_mode": "uncertain_protection",
+      "recommended_action": "Use uncertain output because both false positives and false negatives appear in this scene."
+    },
+    {
+      "scene_tag": "road",
+      "sample_count": 6,
+      "false_positive": 3,
+      "false_negative": 0,
+      "accuracy": "0.5000",
+      "avg_ai_score": "0.178119",
+      "recommended_threshold_mode": "conservative",
+      "recommended_action": "Use a more conservative threshold because false positives are high for this scene."
+    },
+    {
+      "scene_tag": "indoor",
+      "sample_count": 3,
+      "false_positive": 2,
+      "false_negative": 0,
+      "accuracy": "0.3333",
+      "avg_ai_score": "0.188856",
+      "recommended_threshold_mode": "conservative",
+      "recommended_action": "Use a more conservative threshold because false positives are high for this scene."
+    }
+  ],
+  "low_confidence_margin": 0.03,
+  "weight_suggestions": [
+    "frequency is supporting signal only; it separates AI from real only weakly and must be validated per source scenario before increasing its weight.",
+    "forensic/compression signals need independent corroboration before increasing AI suspicion. The current forensic rules are too sparse for AI recall.",
+    "missing EXIF is weak provenance evidence only. It does not separate the current AI and real sets enough to justify a larger metadata weight.",
+    "model_weight must stay 0 until real detector is active; the placeholder probability must not affect calibration."
+  ],
+  "summary_rows": [
+    {
+      "group": "all",
+      "count": 60,
+      "avg_ai_score": "0.171719",
+      "avg_margin_abs": "0.033766",
+      "avg_metadata_score": "0.040000",
+      "avg_forensic_score": "0.027000",
+      "avg_frequency_score": "0.406417",
+      "avg_metadata_contribution": "0.007500",
+      "avg_forensic_contribution": "0.011813",
+      "avg_frequency_contribution": "0.152406",
+      "avg_high_frequency_energy_ratio": "0.406417",
+      "avg_edge_density": "0.080221",
+      "avg_laplacian_variance": "922.799299",
+      "avg_noise_estimate": "5.695689",
+      "avg_brightness_std": "58.304826",
+      "exif_ratio": "0.200000",
+      "jpeg_count": 30,
+      "png_count": 30,
+      "webp_count": 0
+    },
+    {
+      "group": "ground_truth_ai",
+      "count": 30,
+      "avg_ai_score": "0.167572",
+      "avg_margin_abs": "0.025511",
+      "avg_metadata_score": "0.050000",
+      "avg_forensic_score": "0.000000",
+      "avg_frequency_score": "0.421858",
+      "avg_metadata_contribution": "0.009375",
+      "avg_forensic_contribution": "0.000000",
+      "avg_frequency_contribution": "0.158197",
+      "avg_high_frequency_energy_ratio": "0.421858",
+      "avg_edge_density": "0.078057",
+      "avg_laplacian_variance": "683.905740",
+      "avg_noise_estimate": "5.800667",
+      "avg_brightness_std": "58.671839",
+      "exif_ratio": "0.000000",
+      "jpeg_count": 0,
+      "png_count": 30,
+      "webp_count": 0
+    },
+    {
+      "group": "ground_truth_real",
+      "count": 30,
+      "avg_ai_score": "0.175866",
+      "avg_margin_abs": "0.042021",
+      "avg_metadata_score": "0.030000",
+      "avg_forensic_score": "0.054000",
+      "avg_frequency_score": "0.390975",
+      "avg_metadata_contribution": "0.005625",
+      "avg_forensic_contribution": "0.023625",
+      "avg_frequency_contribution": "0.146616",
+      "avg_high_frequency_energy_ratio": "0.390975",
+      "avg_edge_density": "0.082385",
+      "avg_laplacian_variance": "1161.692857",
+      "avg_noise_estimate": "5.590711",
+      "avg_brightness_std": "57.937813",
+      "exif_ratio": "0.400000",
+      "jpeg_count": 30,
+      "png_count": 0,
+      "webp_count": 0
+    },
+    {
+      "group": "balanced_correct",
+      "count": 33,
+      "avg_ai_score": "0.162240",
+      "avg_margin_abs": "0.026926",
+      "avg_metadata_score": "0.039394",
+      "avg_forensic_score": "0.004848",
+      "avg_frequency_score": "0.407285",
+      "avg_metadata_contribution": "0.007386",
+      "avg_forensic_contribution": "0.002121",
+      "avg_frequency_contribution": "0.152732",
+      "avg_high_frequency_energy_ratio": "0.407285",
+      "avg_edge_density": "0.083078",
+      "avg_laplacian_variance": "655.869571",
+      "avg_noise_estimate": "5.589567",
+      "avg_brightness_std": "57.602999",
+      "exif_ratio": "0.212121",
+      "jpeg_count": 12,
+      "png_count": 21,
+      "webp_count": 0
+    },
+    {
+      "group": "balanced_false_positive",
+      "count": 18,
+      "avg_ai_score": "0.206572",
+      "avg_margin_abs": "0.056572",
+      "avg_metadata_score": "0.036111",
+      "avg_forensic_score": "0.081111",
+      "avg_frequency_score": "0.438174",
+      "avg_metadata_contribution": "0.006771",
+      "avg_forensic_contribution": "0.035486",
+      "avg_frequency_contribution": "0.164315",
+      "avg_high_frequency_energy_ratio": "0.438174",
+      "avg_edge_density": "0.099980",
+      "avg_laplacian_variance": "1781.395673",
+      "avg_noise_estimate": "7.281727",
+      "avg_brightness_std": "58.503624",
+      "exif_ratio": "0.277778",
+      "jpeg_count": 18,
+      "png_count": 0,
+      "webp_count": 0
+    },
+    {
+      "group": "balanced_false_negative",
+      "count": 9,
+      "avg_ai_score": "0.136769",
+      "avg_margin_abs": "0.013231",
+      "avg_metadata_score": "0.050000",
+      "avg_forensic_score": "0.000000",
+      "avg_frequency_score": "0.339717",
+      "avg_metadata_contribution": "0.009375",
+      "avg_forensic_contribution": "0.000000",
+      "avg_frequency_contribution": "0.127394",
+      "avg_high_frequency_energy_ratio": "0.339717",
+      "avg_edge_density": "0.030229",
+      "avg_laplacian_variance": "184.348887",
+      "avg_noise_estimate": "2.912728",
+      "avg_brightness_std": "60.480596",
+      "exif_ratio": "0.000000",
+      "jpeg_count": 0,
+      "png_count": 9,
+      "webp_count": 0
+    }
+  ],
+  "outputs": {
+    "misclassification_attribution_csv": "D:\\ai image\\ai-image-trust-scanner\\reports\\day9\\day9_misclassification_attribution.csv",
+    "feature_summary_csv": "D:\\ai image\\ai-image-trust-scanner\\reports\\day9\\day9_feature_summary_by_group.csv",
+    "analysis_json": "D:\\ai image\\ai-image-trust-scanner\\reports\\day9\\day9_analysis.json",
+    "markdown_report": "D:\\ai image\\ai-image-trust-scanner\\reports\\day9\\day9_report.md",
+    "scene_strategy_summary": "D:\\ai image\\ai-image-trust-scanner\\reports\\day9\\day9_scene_strategy_summary.md"
+  }
+}

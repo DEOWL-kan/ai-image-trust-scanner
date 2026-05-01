@@ -8,7 +8,7 @@ from core.image_loader import load_image
 from core.metadata_analyzer import analyze_metadata
 from core.model_detector import detect_with_model
 from core.report_generator import build_report
-from core.score_fusion import fuse_scores
+from core.score_fusion import fuse_scores, get_fusion_weights, load_detector_weight_config
 from main import run_pipeline
 
 
@@ -58,3 +58,24 @@ def test_placeholder_model_is_not_weighted_as_trained_evidence() -> None:
         "Deep model detector is placeholder and is not used as trained evidence."
         in result["evidence_summary"]
     )
+
+
+def test_detector_weights_config_exposes_day9_concepts() -> None:
+    config = load_detector_weight_config()
+    baseline = config["profiles"]["baseline"]
+    experiment_weights = baseline["experiment_weights"]
+
+    for key in (
+        "texture_weight",
+        "edge_weight",
+        "noise_weight",
+        "compression_weight",
+        "metadata_weight",
+        "color_weight",
+        "blur_penalty_weight",
+        "low_confidence_margin",
+    ):
+        assert key in experiment_weights
+
+    assert get_fusion_weights()["metadata"] == 0.15
+    assert get_fusion_weights()["frequency"] == 0.30

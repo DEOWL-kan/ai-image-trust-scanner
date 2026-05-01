@@ -1,0 +1,105 @@
+{
+  "default_profile": "baseline",
+  "profiles": {
+    "baseline": {
+      "notes": "Day8-compatible baseline. Runtime fusion weights preserve the current V0.1 score behavior.",
+      "fusion_weights": {
+        "metadata": 0.15,
+        "forensic": 0.35,
+        "frequency": 0.30,
+        "model": 0.0
+      },
+      "experiment_weights": {
+        "texture_weight": 0.30,
+        "edge_weight": 0.35,
+        "noise_weight": 0.35,
+        "compression_weight": 0.10,
+        "metadata_weight": 0.15,
+        "color_weight": 0.10,
+        "blur_penalty_weight": 0.35,
+        "frequency_weight": 0.30,
+        "low_confidence_margin": 0.03
+      }
+    },
+    "balanced_v2_candidate": {
+      "notes": "Day9.1 candidate: lightly reduces frequency/forensic/compression influence, keeps missing EXIF weak, and avoids treating file format alone as strong AI evidence.",
+      "fusion_weights": {
+        "metadata": 0.12,
+        "forensic": 0.30,
+        "frequency": 0.26,
+        "model": 0.0
+      },
+      "experiment_weights": {
+        "texture_weight": 0.26,
+        "edge_weight": 0.30,
+        "noise_weight": 0.30,
+        "compression_weight": 0.05,
+        "metadata_weight": 0.10,
+        "color_weight": 0.10,
+        "blur_penalty_weight": 0.28,
+        "frequency_weight": 0.24,
+        "low_confidence_margin": 0.04
+      }
+    },
+    "review_safe_candidate": {
+      "notes": "Day9.1 candidate: preserves baseline score behavior but expands the low-confidence margin so more near-threshold samples become uncertain instead of forced binary calls.",
+      "fusion_weights": {
+        "metadata": 0.15,
+        "forensic": 0.35,
+        "frequency": 0.30,
+        "model": 0.0
+      },
+      "experiment_weights": {
+        "texture_weight": 0.30,
+        "edge_weight": 0.35,
+        "noise_weight": 0.35,
+        "compression_weight": 0.10,
+        "metadata_weight": 0.15,
+        "color_weight": 0.10,
+        "blur_penalty_weight": 0.35,
+        "frequency_weight": 0.30,
+        "low_confidence_margin": 0.05
+      }
+    },
+    "reduce_false_positive": {
+      "notes": "Lower direct AI-score impact from missing metadata, compression/context artifacts, and blur-like weak signals to reduce real-image false positives.",
+      "fusion_weights": {
+        "metadata": 0.08,
+        "forensic": 0.25,
+        "frequency": 0.22,
+        "model": 0.0
+      },
+      "experiment_weights": {
+        "texture_weight": 0.20,
+        "edge_weight": 0.22,
+        "noise_weight": 0.18,
+        "compression_weight": 0.03,
+        "metadata_weight": 0.06,
+        "color_weight": 0.08,
+        "blur_penalty_weight": 0.12,
+        "frequency_weight": 0.18,
+        "low_confidence_margin": 0.05
+      }
+    },
+    "improve_ai_recall": {
+      "notes": "Increase smooth-texture, local-consistency, frequency, and edge-anomaly signals to surface AI samples that the baseline misses.",
+      "fusion_weights": {
+        "metadata": 0.12,
+        "forensic": 0.45,
+        "frequency": 0.38,
+        "model": 0.0
+      },
+      "experiment_weights": {
+        "texture_weight": 0.45,
+        "edge_weight": 0.45,
+        "noise_weight": 0.42,
+        "compression_weight": 0.08,
+        "metadata_weight": 0.12,
+        "color_weight": 0.16,
+        "blur_penalty_weight": 0.40,
+        "frequency_weight": 0.38,
+        "low_confidence_margin": 0.04
+      }
+    }
+  }
+}

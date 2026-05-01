@@ -361,6 +361,59 @@ recommended threshold. All Day8 outputs are written to:
 reports/day8/
 ```
 
+## Day 9 Error Attribution and Scenario Strategy
+
+Day 9 stops blind global-threshold tuning and analyzes why Day8 mistakes happen.
+It reads the existing Day8 prediction CSV plus per-image JSON reports, then
+exports attribution tables, feature summaries, and a readable strategy report.
+It does not modify `main.py`, `core/score_fusion.py`, feature extraction, or
+the Day1-Day8 command behavior.
+
+Run from the project root:
+
+```bash
+python scripts/day9_error_analysis.py
+```
+
+Day9 outputs:
+
+```text
+reports/day9/day9_misclassification_attribution.csv
+reports/day9/day9_feature_summary_by_group.csv
+reports/day9/day9_analysis.json
+reports/day9/day9_report.md
+reports/day9/day9_scene_strategy_summary.md
+```
+
+Day9 also includes a configurable weight-ablation experiment. The default
+runtime fusion weights and experimental feature-weight profiles live in:
+
+```text
+configs/detector_weights.json
+```
+
+Run the ablation from the project root:
+
+```bash
+python scripts/day9_weight_ablation.py
+```
+
+Weight-ablation outputs:
+
+```text
+reports/day9/day9_weight_ablation.csv
+reports/day9/day9_weight_ablation_summary.md
+```
+
+Current Day9 focus:
+
+- Attribute false positives and false negatives to dominant feature groups.
+- Add weak `scene_tag` labels and scene-level FP/FN/accuracy summaries.
+- Compare balanced threshold `0.15` and conservative threshold `0.18`.
+- Preserve binary `predicted_label` while adding optional `final_label`, `confidence_level`, and `strategy_reason`.
+- Suggest weight optimization directions without changing current weights.
+- Propose scenario-specific handling for camera photos, web/social JPEGs, PNG exports, and metadata-stripped images.
+
 ## Test
 
 ```bash
@@ -409,6 +462,7 @@ The V0.1 deep model detector is a placeholder. It returns a neutral placeholder 
 - Day 6: Add threshold calibration, error-case analysis, borderline review, and threshold curve output
 - Day 7: Add threshold sweep, regression evaluation, and stable calibration reports
 - Day 8: Normalize test-set filenames, inventory 30 AI / 30 real images, and evaluate with the Day7 threshold
+- Day 9: Add misclassification attribution, feature-weight suggestions, and scenario-specific strategy reporting
 - Later: Add optional ExifTool and C2PA structured parsing
 - Later: Add benchmark datasets and evaluation scripts
 - Later: Integrate real model detectors only after the baseline is stable

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import json
+from pathlib import Path
 from typing import Any
 
 
@@ -16,6 +18,15 @@ AI_TOOL_KEYWORDS = [
     "novelai",
 ]
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_WEIGHTS_CONFIG = PROJECT_ROOT / "configs" / "detector_weights.json"
+DEFAULT_FUSION_WEIGHTS = {
+    "metadata": 0.15,
+    "forensic": 0.35,
+    "frequency": 0.30,
+    "model": 0.0,
+}
+
 
 def _clamp(value: float, low: float = 0.0, high: float = 1.0) -> float:
     return max(low, min(high, value))
@@ -29,6 +40,36 @@ def risk_level(score: float) -> str:
     if score < 0.85:
         return "high"
     return "very_high"
+
+
+def load_detector_weight_config(config_path: str | Path | None = None) -> dict[str, Any]:
+    path = Path(config_path) if config_path is not None else DEFAULT_WEIGHTS_CONFIG
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, json.JSONDecodeError, TypeError):
+        return {
+            "default_profile": "baseline",
+            "profiles": {
+                "baseline": {
+                    "fusion_weights": DEFAULT_FUSION_WEIGHTS,
+                    "notes": "Built-in fallback weights used because detector weight config could not be read.",
+                }
+            },
+        }
+
+
+def get_fusion_weights(profile_name: str | None = None, model_weight: float = 0.0) -> dict[str, float]:
+    config = load_detector_weight_config()
+    profiles = config.get("profiles", {})
+    selected_name = profile_name or str(config.get("default_profile") or "baseline")
+    profile = profiles.get(selected_name) or profiles.get("baseline") or {}
+    configured = profile.get("fusion_weights", {})
+    weights = {
+        key: float(configured.get(key, DEFAULT_FUSION_WEIGHTS[key]))
+        for key in ("metadata", "forensic", "frequency", "model")
+    }
+    weights["model"] = float(model_weight) if model_weight > 0 else 0.0
+    return weights
 
 
 def _metadata_score(metadata_result: dict[str, Any]) -> tuple[float, list[str]]:
@@ -128,12 +169,7 @@ def fuse_scores(
     frequency_score, frequency_evidence = _frequency_score(frequency_result)
     model_score, model_weight, model_evidence = _model_score(model_result)
 
-    weights = {
-        "metadata": 0.15,
-        "forensic": 0.35,
-        "frequency": 0.30,
-        "model": model_weight,
-    }
+    weights = get_fusion_weights(model_weight=model_weight)
     active_weight = sum(weights.values()) or 1.0
 
     final_score = (
