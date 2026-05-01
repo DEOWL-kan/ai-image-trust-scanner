@@ -1,0 +1,23 @@
+{
+  "evaluation_time": "2026-05-01T16:48:09+08:00",
+  "dataset_path": "D:\\ai image\\ai-image-trust-scanner\\data\\test_images",
+  "real_count": 10,
+  "ai_count": 10,
+  "success_count": 20,
+  "error_count": 0,
+  "total": 20,
+  "correct": 10,
+  "accuracy": 0.5,
+  "predicted_ai_count": 0,
+  "predicted_real_count": 20,
+  "precision_ai": 0.0,
+  "recall_ai": 0.0,
+  "f1_ai": 0.0,
+  "ai_precision": 0.0,
+  "ai_recall": 0.0,
+  "ai_f1": 0.0,
+  "true_positive": 0,
+  "true_negative": 10,
+  "false_positive": 0,
+  "false_negative": 10
+}
