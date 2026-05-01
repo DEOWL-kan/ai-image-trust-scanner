@@ -187,6 +187,8 @@ def fuse_scores(
         final_score,
         threshold=decision_policy["threshold"],
         uncertainty_margin=decision_policy["uncertainty_margin"],
+        final_real_threshold=decision_policy["final_real_threshold"],
+        final_ai_threshold=decision_policy["final_ai_threshold"],
     )
 
     return {

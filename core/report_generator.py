@@ -80,6 +80,8 @@ Generated at: {report.get("generated_at")}
 - Final score: {final_result.get("final_score")}
 - Risk level: {final_result.get("risk_level")}
 - Threshold: {final_result.get("threshold")}
+- Final real threshold: {final_result.get("final_real_threshold")}
+- Final AI threshold: {final_result.get("final_ai_threshold")}
 - Uncertainty margin: {final_result.get("uncertainty_margin")}
 - Binary label at threshold: {final_result.get("binary_label_at_threshold")}
 - Final label: {final_result.get("final_label")}

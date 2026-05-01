@@ -20,14 +20,22 @@ OUTPUT_CSV = PROJECT_ROOT / "data" / "outputs" / "results.csv"
 REPORT_OUTPUT_DIR = PROJECT_ROOT / "outputs" / "reports"
 CSV_FIELDS = [
     "image_path",
+    "file_name",
     "true_label",
     "pred_label",
     "confidence",
+    "score",
     "raw_score",
     "threshold",
+    "baseline_threshold",
+    "final_real_threshold",
+    "final_ai_threshold",
     "uncertainty_margin",
     "binary_label_at_threshold",
     "final_label",
+    "is_binary_correct",
+    "is_final_decided",
+    "is_final_correct_when_decided",
     "decision_status",
     "confidence_distance",
     "decision_reason",
@@ -69,9 +77,14 @@ def _prediction_from_report(report: dict[str, Any]) -> tuple[str, float]:
 
 def _decision_fields(report: dict[str, Any]) -> dict[str, object]:
     final_result = report.get("final_result", {})
+    score = final_result.get("raw_score", final_result.get("final_score", ""))
     return {
-        "raw_score": final_result.get("raw_score", final_result.get("final_score", "")),
+        "score": score,
+        "raw_score": score,
         "threshold": final_result.get("threshold", ""),
+        "baseline_threshold": final_result.get("baseline_threshold", final_result.get("threshold", "")),
+        "final_real_threshold": final_result.get("final_real_threshold", ""),
+        "final_ai_threshold": final_result.get("final_ai_threshold", ""),
         "uncertainty_margin": final_result.get("uncertainty_margin", ""),
         "binary_label_at_threshold": final_result.get("binary_label_at_threshold", ""),
         "final_label": final_result.get("final_label", ""),
@@ -91,14 +104,22 @@ def detect_image_for_batch(image_path: Path, true_label: str) -> dict[str, objec
         if not report.get("ok"):
             return {
                 "image_path": _display_path(image_path),
+                "file_name": image_path.name,
                 "true_label": true_label,
                 "pred_label": "",
                 "confidence": "",
+                "score": "",
                 "raw_score": "",
                 "threshold": "",
+                "baseline_threshold": "",
+                "final_real_threshold": "",
+                "final_ai_threshold": "",
                 "uncertainty_margin": "",
                 "binary_label_at_threshold": "",
                 "final_label": "",
+                "is_binary_correct": "",
+                "is_final_decided": "",
+                "is_final_correct_when_decided": "",
                 "decision_status": "",
                 "confidence_distance": "",
                 "decision_reason": "",
@@ -110,12 +131,19 @@ def detect_image_for_batch(image_path: Path, true_label: str) -> dict[str, objec
             }
 
         pred_label, confidence = _prediction_from_report(report)
+        decision_fields = _decision_fields(report)
+        final_label = str(decision_fields.get("final_label") or "")
+        is_final_decided = final_label != "uncertain"
         return {
             "image_path": _display_path(image_path),
+            "file_name": image_path.name,
             "true_label": true_label,
             "pred_label": pred_label,
             "confidence": confidence,
-            **_decision_fields(report),
+            **decision_fields,
+            "is_binary_correct": pred_label == true_label,
+            "is_final_decided": is_final_decided,
+            "is_final_correct_when_decided": "" if not is_final_decided else final_label == true_label,
             "width": image_info.get("width") or "",
             "height": image_info.get("height") or "",
             "inference_time_ms": elapsed_ms,
@@ -126,14 +154,22 @@ def detect_image_for_batch(image_path: Path, true_label: str) -> dict[str, objec
         elapsed_ms = round((time.perf_counter() - started) * 1000, 2)
         return {
             "image_path": _display_path(image_path),
+            "file_name": image_path.name,
             "true_label": true_label,
             "pred_label": "",
             "confidence": "",
+            "score": "",
             "raw_score": "",
             "threshold": "",
+            "baseline_threshold": "",
+            "final_real_threshold": "",
+            "final_ai_threshold": "",
             "uncertainty_margin": "",
             "binary_label_at_threshold": "",
             "final_label": "",
+            "is_binary_correct": "",
+            "is_final_decided": "",
+            "is_final_correct_when_decided": "",
             "decision_status": "",
             "confidence_distance": "",
             "decision_reason": "",

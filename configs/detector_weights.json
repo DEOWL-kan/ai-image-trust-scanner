@@ -2,8 +2,10 @@
   "default_profile": "baseline",
   "decision_policy": {
     "baseline_threshold": 0.15,
+    "final_real_threshold": 0.12,
+    "final_ai_threshold": 0.18,
     "uncertainty_margin": 0.03,
-    "notes": "Day10 default product-facing decision layer. The baseline threshold remains the regression reference; scores inside threshold +/- margin return final_label=uncertain."
+    "notes": "Day12 product-facing decision layer. Baseline threshold remains the binary regression reference; final_label uses real <= 0.12, ai >= 0.18, and uncertain between them."
   },
   "profiles": {
     "baseline": {
