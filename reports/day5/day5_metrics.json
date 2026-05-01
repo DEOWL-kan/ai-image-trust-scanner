@@ -1,0 +1,31 @@
+{
+  "generated_at": "2026-05-01T19:10:29+08:00",
+  "input_path": "D:\\ai image\\ai-image-trust-scanner\\data\\test_images",
+  "input_directory_scanned": "D:\\ai image\\ai-image-trust-scanner\\data\\test_images",
+  "supported_extensions": [
+    ".bmp",
+    ".jpeg",
+    ".jpg",
+    ".png",
+    ".tif",
+    ".tiff",
+    ".webp"
+  ],
+  "found_image_count": 20,
+  "skipped_file_count": 2,
+  "output_path": "D:\\ai image\\ai-image-trust-scanner\\reports\\day5",
+  "total_images": 20,
+  "processed_count": 20,
+  "error_count": 0,
+  "likely_real_count": 0,
+  "uncertain_count": 19,
+  "likely_ai_count": 1,
+  "average_risk_score": 45.95,
+  "outputs": {
+    "feature_report_jsonl": "D:\\ai image\\ai-image-trust-scanner\\reports\\day5\\feature_report.jsonl",
+    "feature_summary_csv": "D:\\ai image\\ai-image-trust-scanner\\reports\\day5\\feature_summary.csv",
+    "explainable_report_md": "D:\\ai image\\ai-image-trust-scanner\\reports\\day5\\explainable_report.md",
+    "day5_metrics_json": "D:\\ai image\\ai-image-trust-scanner\\reports\\day5\\day5_metrics.json",
+    "calibration_analysis_md": "D:\\ai image\\ai-image-trust-scanner\\reports\\day5\\calibration_analysis.md"
+  }
+}

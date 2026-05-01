@@ -145,6 +145,60 @@ Current baseline behavior:
 
 Day 4 should focus on improving the detector or introducing a stronger baseline.
 
+## Day 5 Explainable Feature Extraction
+
+Day 5 adds a separate explainable feature extraction and rule-scoring system.
+It is not the final detector and it is not an absolute real-vs-AI judgment.
+It is intended to help inspect image-level signals, compare samples, and
+understand why a rule-based risk score moved up or down.
+
+Run from the project root:
+
+```bash
+python -m src.day5 --input data/test_images --output reports/day5
+```
+
+Day 5 scans recursively and supports `.jpg`, `.jpeg`, `.png`, `.webp`, `.bmp`,
+`.tif`, and `.tiff` files with case-insensitive suffix matching. Unsupported
+files are skipped. Corrupted supported images are recorded as errors in the
+reports instead of stopping the run.
+
+Day 5 outputs:
+
+```text
+reports/day5/feature_report.jsonl
+reports/day5/feature_summary.csv
+reports/day5/explainable_report.md
+reports/day5/day5_metrics.json
+reports/day5/calibration_analysis.md
+```
+
+Output file meanings:
+
+- `feature_report.jsonl`: detailed per-image features, risk score, prediction, confidence, and reasons.
+- `feature_summary.csv`: flat table for spreadsheet review and calibration work.
+- `explainable_report.md`: human-readable run summary, scan details, image results, and feature guide.
+- `day5_metrics.json`: aggregate counts, average risk score, output paths, and scan metadata.
+- `calibration_analysis.md`: label-group calibration notes derived from `feature_summary.csv`, including AI/Real averages, weak signals, false positives, and next-step tuning suggestions.
+
+Day 5 feature groups:
+
+- Basic info: file name, format, width, height, aspect ratio, and file size.
+- Metadata: EXIF presence, camera model, software field, and timestamp fields.
+- Sharpness: Laplacian-style variance for local detail and clarity.
+- Edges: edge density from neighboring pixel transitions.
+- Color: RGB means, RGB standard deviations, and color entropy.
+- Noise/texture: local variance after light smoothing.
+- Compression: JPEG quantization estimate when available, otherwise an 8x8 blockiness fallback.
+
+Current Day 5 calibration notes:
+
+- `risk_score` ranges from `0` to `100`, but the current test set is small.
+- `likely_real`, `uncertain`, and `likely_ai` are rule-based review labels, not truth labels.
+- A high or low `risk_score` should be read as supporting analysis only.
+- Current results are useful for debugging and calibration, but cannot be used as absolute proof that an image is real or AI-generated.
+- Do not force fewer `uncertain` results without more calibration data; uncertainty is expected while this remains a small heuristic baseline.
+
 ## Test
 
 ```bash
