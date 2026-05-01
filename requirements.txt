@@ -1,1 +1,4 @@
 Pillow
+numpy
+opencv-python
+pytest

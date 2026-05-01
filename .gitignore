@@ -5,7 +5,10 @@ env/
 
 # Python cache
 __pycache__/
+**/__pycache__/
+.pytest_cache/
 *.py[cod]
+*.pyc
 *$py.class
 
 # Environment variables and secrets
@@ -17,10 +20,24 @@ __pycache__/
 # Local outputs
 backend/outputs/*
 !backend/outputs/.gitkeep
+outputs/reports/*
+outputs/reports/*.json
+outputs/reports/*.md
+!outputs/reports/.gitkeep
 
 # Local sample images
 backend/samples/*
 !backend/samples/.gitkeep
+data/**/*.jpg
+data/**/*.jpeg
+data/**/*.png
+data/**/*.webp
+data/samples_real/*
+!data/samples_real/.gitkeep
+data/samples_ai/*
+!data/samples_ai/.gitkeep
+data/test_images/*
+!data/test_images/.gitkeep
 
 # OS files
 .DS_Store

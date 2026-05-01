@@ -1,125 +1,132 @@
 # AI Image Trust Scanner
 
-## Overview
+AI Image Trust Scanner is a local Python command-line project for baseline AI image risk analysis.
 
-AI Image Trust Scanner is a local CLI prototype for analyzing image provenance and AI-generation risk signals. It inspects image files, metadata, C2PA / Content Credentials claims, and basic forensic properties, then writes a JSON report with multi-dimensional risk scores.
+The project combines multiple weak signals instead of making a single absolute claim. V0.1 inspects image properties, basic EXIF metadata, simple forensic features, simple frequency-domain features, and a placeholder model interface, then writes JSON and Markdown reports.
 
-This project does not claim to determine with 100% certainty whether an image is real or AI-generated. The current output is a risk-oriented signal summary, not a final authenticity verdict or an AI-generation probability.
+V0.1 does not prove whether an image is real or AI-generated. It is a baseline engineering prototype, not a final detector, not a trained model, and not a legal forensic conclusion.
 
-## Current Status
+## Current Version
 
-Day 1 Beta CLI prototype.
+V0.1 baseline CLI.
 
-The current version is focused on local command-line inspection only. It does not include a web frontend, database, model training, or deep learning model integration.
+The project remains a Python command-line tool. It does not include Flask, FastAPI, a web frontend, GUI, database, model training, or downloaded model weights.
 
 ## Features
 
-- Image file inspection
-- EXIF / XMP metadata analysis through ExifTool
-- C2PA / Content Credentials claim check
-- Basic forensic image inspection
-- Rule-based multi-dimensional risk fusion
-- JSON report output
+- Read local JPG, JPEG, PNG, and WEBP files
+- Report file name, format, resolution, color mode, and file size
+- Read basic EXIF fields with Pillow
+- Preserve the distinction between missing EXIF and AI evidence
+- Compute baseline forensic features with OpenCV and numpy
+- Compute a basic FFT high-frequency energy ratio
+- Provide a placeholder deep model detector interface
+- Fuse metadata, forensic, and frequency heuristics into a baseline risk level
+- Exclude placeholder model probability from score fusion until a future model reports `model_status: active`
+- Generate JSON and Markdown reports in `outputs/reports/`
 
-## Architecture
+## Project Structure
 
 ```text
-Image input
--> Metadata detector
--> C2PA detector
--> Forensic detector
--> Score fusion
--> JSON report
+ai-image-trust-scanner/
+|-- main.py
+|-- requirements.txt
+|-- README.md
+|-- core/
+|   |-- image_loader.py
+|   |-- metadata_analyzer.py
+|   |-- forensic_analyzer.py
+|   |-- frequency_analyzer.py
+|   |-- model_detector.py
+|   |-- score_fusion.py
+|   `-- report_generator.py
+|-- data/
+|   |-- samples_real/
+|   |-- samples_ai/
+|   `-- test_images/
+|-- outputs/
+|   `-- reports/
+|-- tests/
+|   `-- test_pipeline.py
+|-- docs/
+|   |-- day1_acceptance.md
+|   `-- day2_plan.md
+`-- backend/
+    `-- Day 1 historical CLI implementation
 ```
 
 ## Installation
 
-Requirements:
-
-- Python 3.10+
-- ExifTool installed and available in PATH
-- `c2pa` or `c2patool` installed and available in PATH, optional but recommended
-
-Install Python dependencies:
+Use Python 3.10+.
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Usage
+## Run
+
+Place an image under `data/test_images/`, then run:
 
 ```bash
-python backend/detect_image.py backend/samples/example.jpg
+python main.py --image data/test_images/example.jpg
 ```
 
-The report is written to:
+Reports are written to:
 
 ```text
-backend/outputs/example_report.json
+outputs/reports/
 ```
 
-## Output Example
+You can also choose another output directory:
 
-```json
-{
-  "ok": true,
-  "image_path": "backend/samples/example.jpg",
-  "metadata": {
-    "checked": true,
-    "has_exif": false,
-    "risk_score": 45
-  },
-  "c2pa": {
-    "checked": true,
-    "has_manifest": false,
-    "valid_signature": null,
-    "risk_score": 40
-  },
-  "forensic": {
-    "checked": true,
-    "format": "JPEG",
-    "width": 1279,
-    "height": 1706,
-    "risk_score": 30
-  },
-  "fusion": {
-    "risk": {
-      "ai_generation_risk": 30,
-      "provenance_risk": 75,
-      "editing_risk": 15,
-      "technical_quality_risk": 20,
-      "overall_risk": 38,
-      "risk_level": "medium"
-    },
-    "conclusion": "No strong AI-generation evidence detected, but provenance is limited."
-  }
-}
+```bash
+python main.py --image data/test_images/example.jpg --output-dir outputs/reports
 ```
 
-## Important Notes
+## Test
 
-- No EXIF does not mean AI-generated.
-- No C2PA claim does not mean fake.
-- The current version is not a final AI detector.
-- The Day 1 scores are multi-dimensional risk indicators, not AI-generation probabilities.
-- Provenance risk means the source is hard to verify; it does not prove AI generation.
-- The result is a risk-oriented analysis, not legal or forensic proof.
+```bash
+pytest
+```
 
-## Project Roadmap
+or:
 
-- Day 1: CLI pipeline
-- Day 2-3: Improve metadata and C2PA parsing
-- Day 4-7: FastAPI backend
-- Week 2: Web interface
-- Week 3: AI model integration
-- Week 4: Benchmark and public beta
+```bash
+python -m pytest
+```
 
-## Privacy
+## Output Meaning
 
-- Sample images are ignored by git by default.
-- Output reports are ignored by git by default.
-- The tool is designed to support local-first analysis.
+The final score is a V0.1 baseline heuristic score from `0.0` to `1.0`:
 
-## License
+- `0.00-0.35`: low
+- `0.35-0.65`: medium
+- `0.65-0.85`: high
+- `0.85-1.00`: very_high
 
-MIT License, if LICENSE file is added.
+The risk level is a baseline risk level, not a final authenticity judgment.
+
+The evidence summary is a heuristic evidence summary. It should be read as engineering context, not as proof.
+
+Missing EXIF is treated only as weak provenance evidence. It does not mean the image is AI-generated.
+
+The V0.1 deep model detector is a placeholder. It returns a neutral placeholder value and is not used as trained evidence in score fusion. A model result may participate in fusion only in a future version where `model_status` is `active`.
+
+## Current Limitations
+
+- No model is trained or loaded.
+- No CNN, ViT, DIRE, CLIP, or deep detector is integrated yet.
+- Frequency analysis is heuristic and should not be interpreted as proof.
+- Basic forensic features can be affected by compression, resizing, screenshots, editing, and platform processing.
+- Pillow EXIF reading is limited compared with ExifTool.
+- C2PA / Content Credentials parsing is reserved as an optional future interface.
+- V0.1 output is a baseline risk report, not a final authenticity verdict.
+
+## Roadmap
+
+- Day 2: Build V0.1 local CLI baseline with multi-evidence fusion
+- Day 3: Add stronger fixtures, improve report quality, and refine scoring calibration
+- Later: Add optional ExifTool and C2PA structured parsing
+- Later: Add benchmark datasets and evaluation scripts
+- Later: Integrate real model detectors only after the baseline is stable
+
