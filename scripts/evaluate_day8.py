@@ -18,6 +18,7 @@ PROJECT_ROOT = Path(__file__).resolve().parents[1]
 if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
+from core.decision_policy import DEFAULT_UNCERTAINTY_MARGIN, decide_final_label  # noqa: E402
 from main import run_pipeline  # noqa: E402
 
 
@@ -37,6 +38,11 @@ CSV_FIELDS = [
     "threshold",
     "is_correct",
     "error_type",
+    "final_label",
+    "decision_status",
+    "uncertainty_margin",
+    "confidence_distance",
+    "decision_reason",
 ]
 
 
@@ -50,6 +56,11 @@ class Prediction:
     threshold: float
     is_correct: bool
     error_type: str
+    final_label: str
+    decision_status: str
+    uncertainty_margin: float | None
+    confidence_distance: float | None
+    decision_reason: str
     path: Path
     status: str
     error_message: str
@@ -163,6 +174,7 @@ def detect_one(path: Path, class_label: str, threshold: float, image_report_dir:
         report = run_pipeline(path, output_dir=image_report_dir)
         elapsed_ms = round((time.perf_counter() - started) * 1000, 2)
         score = safe_float(report.get("final_result", {}).get("final_score"))
+        final_result = report.get("final_result", {})
         if not report.get("ok") or score is None:
             error_message = report.get("image_info", {}).get("error") or "No final_score returned."
             is_correct, error_type = classify_error(ground_truth, "", "error")
@@ -175,6 +187,11 @@ def detect_one(path: Path, class_label: str, threshold: float, image_report_dir:
                 threshold=threshold,
                 is_correct=is_correct,
                 error_type=error_type,
+                final_label="",
+                decision_status="",
+                uncertainty_margin=None,
+                confidence_distance=None,
+                decision_reason="",
                 path=path,
                 status="error",
                 error_message=error_message,
@@ -182,6 +199,14 @@ def detect_one(path: Path, class_label: str, threshold: float, image_report_dir:
             )
 
         predicted_label = label_for_score(score, threshold)
+        decision = decide_final_label(
+            score,
+            threshold=threshold,
+            uncertainty_margin=safe_float(
+                final_result.get("uncertainty_margin"),
+                DEFAULT_UNCERTAINTY_MARGIN,
+            ) or DEFAULT_UNCERTAINTY_MARGIN,
+        )
         is_correct, error_type = classify_error(ground_truth, predicted_label, "success")
         return Prediction(
             filename=path.name,
@@ -192,6 +217,11 @@ def detect_one(path: Path, class_label: str, threshold: float, image_report_dir:
             threshold=threshold,
             is_correct=is_correct,
             error_type=error_type,
+            final_label=str(decision["final_label"]),
+            decision_status=str(decision["decision_status"]),
+            uncertainty_margin=safe_float(decision.get("uncertainty_margin")),
+            confidence_distance=safe_float(decision.get("confidence_distance")),
+            decision_reason=str(decision["decision_reason"]),
             path=path,
             status="success",
             error_message="",
@@ -209,6 +239,11 @@ def detect_one(path: Path, class_label: str, threshold: float, image_report_dir:
             threshold=threshold,
             is_correct=is_correct,
             error_type=error_type,
+            final_label="",
+            decision_status="",
+            uncertainty_margin=None,
+            confidence_distance=None,
+            decision_reason="",
             path=path,
             status="error",
             error_message=str(exc),
@@ -239,6 +274,11 @@ def write_predictions(predictions: list[Prediction], output_csv: Path) -> None:
                     "threshold": f"{item.threshold:.4f}",
                     "is_correct": "yes" if item.is_correct else "no",
                     "error_type": item.error_type,
+                    "final_label": item.final_label,
+                    "decision_status": item.decision_status,
+                    "uncertainty_margin": "" if item.uncertainty_margin is None else f"{item.uncertainty_margin:.6f}",
+                    "confidence_distance": "" if item.confidence_distance is None else f"{item.confidence_distance:.6f}",
+                    "decision_reason": item.decision_reason,
                 }
             )
 

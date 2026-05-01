@@ -79,6 +79,13 @@ Generated at: {report.get("generated_at")}
 
 - Final score: {final_result.get("final_score")}
 - Risk level: {final_result.get("risk_level")}
+- Threshold: {final_result.get("threshold")}
+- Uncertainty margin: {final_result.get("uncertainty_margin")}
+- Binary label at threshold: {final_result.get("binary_label_at_threshold")}
+- Final label: {final_result.get("final_label")}
+- Decision status: {final_result.get("decision_status")}
+- Confidence distance: {final_result.get("confidence_distance")}
+- Decision reason: {final_result.get("decision_reason")}
 
 ## Image Info
 

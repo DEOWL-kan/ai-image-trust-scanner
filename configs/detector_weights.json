@@ -1,5 +1,10 @@
 {
   "default_profile": "baseline",
+  "decision_policy": {
+    "baseline_threshold": 0.15,
+    "uncertainty_margin": 0.03,
+    "notes": "Day10 default product-facing decision layer. The baseline threshold remains the regression reference; scores inside threshold +/- margin return final_label=uncertain."
+  },
   "profiles": {
     "baseline": {
       "notes": "Day8-compatible baseline. Runtime fusion weights preserve the current V0.1 score behavior.",

@@ -23,6 +23,14 @@ CSV_FIELDS = [
     "true_label",
     "pred_label",
     "confidence",
+    "raw_score",
+    "threshold",
+    "uncertainty_margin",
+    "binary_label_at_threshold",
+    "final_label",
+    "decision_status",
+    "confidence_distance",
+    "decision_reason",
     "width",
     "height",
     "inference_time_ms",
@@ -51,10 +59,26 @@ def _display_path(path: Path) -> str:
 
 
 def _prediction_from_report(report: dict[str, Any]) -> tuple[str, float]:
-    final_score = float(report.get("final_result", {}).get("final_score", 0.5))
-    pred_label = "ai" if final_score >= 0.5 else "real"
+    final_result = report.get("final_result", {})
+    final_score = float(final_result.get("raw_score", final_result.get("final_score", 0.5)))
+    threshold = float(final_result.get("threshold", 0.15))
+    pred_label = str(final_result.get("binary_label_at_threshold") or ("ai" if final_score >= threshold else "real"))
     confidence = final_score if pred_label == "ai" else 1.0 - final_score
     return pred_label, round(confidence, 4)
+
+
+def _decision_fields(report: dict[str, Any]) -> dict[str, object]:
+    final_result = report.get("final_result", {})
+    return {
+        "raw_score": final_result.get("raw_score", final_result.get("final_score", "")),
+        "threshold": final_result.get("threshold", ""),
+        "uncertainty_margin": final_result.get("uncertainty_margin", ""),
+        "binary_label_at_threshold": final_result.get("binary_label_at_threshold", ""),
+        "final_label": final_result.get("final_label", ""),
+        "decision_status": final_result.get("decision_status", ""),
+        "confidence_distance": final_result.get("confidence_distance", ""),
+        "decision_reason": final_result.get("decision_reason", ""),
+    }
 
 
 def detect_image_for_batch(image_path: Path, true_label: str) -> dict[str, object]:
@@ -70,6 +94,14 @@ def detect_image_for_batch(image_path: Path, true_label: str) -> dict[str, objec
                 "true_label": true_label,
                 "pred_label": "",
                 "confidence": "",
+                "raw_score": "",
+                "threshold": "",
+                "uncertainty_margin": "",
+                "binary_label_at_threshold": "",
+                "final_label": "",
+                "decision_status": "",
+                "confidence_distance": "",
+                "decision_reason": "",
                 "width": image_info.get("width") or "",
                 "height": image_info.get("height") or "",
                 "inference_time_ms": elapsed_ms,
@@ -83,6 +115,7 @@ def detect_image_for_batch(image_path: Path, true_label: str) -> dict[str, objec
             "true_label": true_label,
             "pred_label": pred_label,
             "confidence": confidence,
+            **_decision_fields(report),
             "width": image_info.get("width") or "",
             "height": image_info.get("height") or "",
             "inference_time_ms": elapsed_ms,
@@ -96,6 +129,14 @@ def detect_image_for_batch(image_path: Path, true_label: str) -> dict[str, objec
             "true_label": true_label,
             "pred_label": "",
             "confidence": "",
+            "raw_score": "",
+            "threshold": "",
+            "uncertainty_margin": "",
+            "binary_label_at_threshold": "",
+            "final_label": "",
+            "decision_status": "",
+            "confidence_distance": "",
+            "decision_reason": "",
             "width": "",
             "height": "",
             "inference_time_ms": elapsed_ms,

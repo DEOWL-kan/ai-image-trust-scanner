@@ -28,6 +28,7 @@ The project remains a Python command-line tool. It does not include Flask, FastA
 - Generate explainable feature reports for image-level review
 - Analyze threshold calibration, error cases, and borderline samples in Day6 reports
 - Run Day7 threshold sweep, regression evaluation, and stable baseline reporting
+- Output `final_label` as `ai`, `real`, or `uncertain` with a configurable uncertainty margin
 
 ## Project Structure
 
@@ -414,6 +415,45 @@ Current Day9 focus:
 - Suggest weight optimization directions without changing current weights.
 - Propose scenario-specific handling for camera photos, web/social JPEGs, PNG exports, and metadata-stripped images.
 
+## Day 10 Format Bias Audit and Final Labels
+
+Day10 keeps `baseline @ 0.15` as the default regression reference and adds a
+format-bias audit, PNG/JPEG controlled test set, format-control evaluation, and
+product-facing uncertain decision layer. `balanced_v2_candidate` remains a
+diagnostic profile only and is not enabled by default.
+
+Run from the project root:
+
+```bash
+python scripts/day10_dataset_format_audit.py
+python scripts/day10_create_format_controls.py
+python scripts/day10_run_format_eval.py
+```
+
+Day10 outputs:
+
+```text
+reports/day10_dataset_format_audit.csv
+reports/day10_dataset_format_audit.md
+reports/day10_format_control_mapping.csv
+reports/day10_format_eval_results.csv
+reports/day10_format_eval_report.md
+reports/day10_summary.md
+data/day10_format_control/
+```
+
+Current Day10 default output policy:
+
+- `threshold = 0.15`
+- `uncertainty_margin = 0.03`
+- `score >= 0.18`: `final_label=ai`
+- `score <= 0.12`: `final_label=real`
+- `0.12 < score < 0.18`: `final_label=uncertain`
+
+The Day10 audit found the current original test set is format-confounded: AI
+samples are PNG and Real samples are JPEG. Because of that, original-set
+accuracy must not be used alone as a final detector-performance claim.
+
 ## Test
 
 ```bash
@@ -436,6 +476,20 @@ The final score is a V0.1 baseline heuristic score from `0.0` to `1.0`:
 - `0.85-1.00`: very_high
 
 The risk level is a baseline risk level, not a final authenticity judgment.
+
+The product-facing decision fields are:
+
+- `raw_score`: the baseline AI-risk score used by the decision layer.
+- `threshold`: default `0.15`, kept as the baseline regression reference.
+- `uncertainty_margin`: default `0.03`.
+- `binary_label_at_threshold`: hard threshold label, `ai` or `real`.
+- `final_label`: `ai`, `real`, or `uncertain`.
+- `decision_status`: `decided` or `uncertain`.
+- `confidence_distance`: absolute distance from the threshold.
+- `decision_reason`: one of `score_above_threshold_margin`, `score_below_threshold_margin`, or `score_inside_uncertain_band`.
+
+`uncertain` is not an error. It means the score is close enough to the
+threshold that the system refuses to force a hard product-facing judgment.
 
 The evidence summary is a heuristic evidence summary. It should be read as engineering context, not as proof.
 
@@ -463,6 +517,7 @@ The V0.1 deep model detector is a placeholder. It returns a neutral placeholder 
 - Day 7: Add threshold sweep, regression evaluation, and stable calibration reports
 - Day 8: Normalize test-set filenames, inventory 30 AI / 30 real images, and evaluate with the Day7 threshold
 - Day 9: Add misclassification attribution, feature-weight suggestions, and scenario-specific strategy reporting
+- Day 10: Audit dataset format bias, create PNG/JPEG controls, add final_label and uncertain output
 - Later: Add optional ExifTool and C2PA structured parsing
 - Later: Add benchmark datasets and evaluation scripts
 - Later: Integrate real model detectors only after the baseline is stable

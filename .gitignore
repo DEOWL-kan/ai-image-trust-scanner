@@ -25,6 +25,8 @@ outputs/reports/*.json
 outputs/reports/*.md
 !outputs/reports/.gitkeep
 data/outputs/
+data/day10_format_control/
+reports/day10_format_eval_image_reports/
 
 # Local sample images
 backend/samples/*

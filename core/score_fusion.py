@@ -4,6 +4,8 @@ import json
 from pathlib import Path
 from typing import Any
 
+from core.decision_policy import decide_final_label, load_decision_policy
+
 
 AI_TOOL_KEYWORDS = [
     "openai",
@@ -169,6 +171,7 @@ def fuse_scores(
     frequency_score, frequency_evidence = _frequency_score(frequency_result)
     model_score, model_weight, model_evidence = _model_score(model_result)
 
+    config = load_detector_weight_config()
     weights = get_fusion_weights(model_weight=model_weight)
     active_weight = sum(weights.values()) or 1.0
 
@@ -179,9 +182,16 @@ def fuse_scores(
         + model_score * weights["model"]
     ) / active_weight
     final_score = round(_clamp(final_score), 6)
+    decision_policy = load_decision_policy(config)
+    decision = decide_final_label(
+        final_score,
+        threshold=decision_policy["threshold"],
+        uncertainty_margin=decision_policy["uncertainty_margin"],
+    )
 
     return {
         "final_score": final_score,
+        **decision,
         "risk_level": risk_level(final_score),
         "component_scores": {
             "metadata_score": round(metadata_score, 6),
