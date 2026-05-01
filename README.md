@@ -24,6 +24,9 @@ The project remains a Python command-line tool. It does not include Flask, FastA
 - Fuse metadata, forensic, and frequency heuristics into a baseline risk level
 - Exclude placeholder model probability from score fusion until a future model reports `model_status: active`
 - Generate JSON and Markdown reports in `outputs/reports/`
+- Run labeled test-set evaluation with threshold scanning
+- Generate explainable feature reports for image-level review
+- Analyze threshold calibration, error cases, and borderline samples in Day6 reports
 
 ## Project Structure
 
@@ -45,7 +48,22 @@ ai-image-trust-scanner/
 |   |-- samples_ai/
 |   `-- test_images/
 |-- outputs/
-|   `-- reports/
+|   |-- reports/
+|   `-- day6/
+|-- reports/
+|   |-- day4_eval/
+|   `-- day5/
+|-- scripts/
+|   |-- run_batch_test.py
+|   |-- evaluate_results.py
+|   `-- day6_threshold_analysis.py
+|-- tools/
+|   `-- evaluate_testset.py
+|-- src/
+|   |-- day5.py
+|   |-- day5_reports.py
+|   |-- explainable.py
+|   `-- features.py
 |-- tests/
 |   `-- test_pipeline.py
 |-- docs/
@@ -145,6 +163,33 @@ Current baseline behavior:
 
 Day 4 should focus on improving the detector or introducing a stronger baseline.
 
+## Day 4 Standard Evaluation
+
+Day 4 adds a fixed evaluation pipeline for the labeled test set under
+`data/test_images/real` and `data/test_images/ai`. It records each image score,
+predicted label, confidence, and a compact raw detector summary for later
+analysis.
+
+Run from the project root:
+
+```bash
+python tools/evaluate_testset.py --dataset data/test_images --output reports/day4_eval
+```
+
+Day 4 outputs:
+
+```text
+reports/day4_eval/predictions.csv
+reports/day4_eval/summary.json
+reports/day4_eval/threshold_scan.csv
+reports/day4_eval/report.md
+reports/day4_eval/image_reports/
+```
+
+`predictions.csv` is the main calibration input for later days because it
+contains a continuous `score` field as well as `true_label` and
+`predicted_label`.
+
 ## Day 5 Explainable Feature Extraction
 
 Day 5 adds a separate explainable feature extraction and rule-scoring system.
@@ -199,6 +244,58 @@ Current Day 5 calibration notes:
 - Current results are useful for debugging and calibration, but cannot be used as absolute proof that an image is real or AI-generated.
 - Do not force fewer `uncertain` results without more calibration data; uncertainty is expected while this remains a small heuristic baseline.
 
+## Day 6 Threshold Calibration and Error Analysis
+
+Day 6 keeps the detector unchanged and analyzes existing Day4 and Day5 outputs.
+It scans thresholds from `0.10` to `0.90` in `0.05` steps, computes standard
+classification metrics, selects a recommended threshold by F1-score with a
+balanced FP/FN tie-break, and exports misclassified and borderline samples for
+manual review.
+
+Run from the project root:
+
+```bash
+python scripts/day6_threshold_analysis.py
+```
+
+Optional explicit paths:
+
+```bash
+python scripts/day6_threshold_analysis.py --input reports/day4_eval/predictions.csv --explanations reports/day5/feature_report.jsonl --out outputs/day6
+```
+
+Day 6 outputs:
+
+```text
+outputs/day6/threshold_calibration.csv
+outputs/day6/error_cases.csv
+outputs/day6/borderline_cases.csv
+outputs/day6/day6_summary.md
+outputs/day6/threshold_curve.png
+```
+
+Output file meanings:
+
+- `threshold_calibration.csv`: threshold, accuracy, precision, recall, F1, TP, TN, FP, FN, false positive rate, and false negative rate.
+- `error_cases.csv`: false positives and false negatives at the recommended threshold, with Day5 explanations when available.
+- `borderline_cases.csv`: samples within `0.10` of the recommended threshold.
+- `day6_summary.md`: human-readable calibration summary, confusion matrix, system interpretation, and Day7 suggestions.
+- `threshold_curve.png`: visual curve for threshold vs accuracy, precision, recall, and F1. The script uses `matplotlib` when available and falls back gracefully if plotting support is missing.
+
+Current Day 6 calibration result:
+
+- Recommended threshold: `0.15`
+- Accuracy: `0.6000`
+- Precision: `0.5714`
+- Recall: `0.8000`
+- F1: `0.6667`
+- Confusion matrix at threshold `0.15`: TP `8`, TN `4`, FP `6`, FN `2`
+
+This threshold is a calibration result for the current small test set, not a
+claim that the detector is production-ready. The score distribution remains low,
+so the default `0.50` threshold is too strict for detecting the current AI
+samples.
+
 ## Test
 
 ```bash
@@ -242,6 +339,9 @@ The V0.1 deep model detector is a placeholder. It returns a neutral placeholder 
 
 - Day 2: Build V0.1 local CLI baseline with multi-evidence fusion
 - Day 3: Add stronger fixtures, improve report quality, and refine scoring calibration
+- Day 4: Add standard labeled test-set evaluation
+- Day 5: Add explainable feature extraction and calibration notes
+- Day 6: Add threshold calibration, error-case analysis, borderline review, and threshold curve output
 - Later: Add optional ExifTool and C2PA structured parsing
 - Later: Add benchmark datasets and evaluation scripts
 - Later: Integrate real model detectors only after the baseline is stable
