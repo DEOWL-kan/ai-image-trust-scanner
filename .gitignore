@@ -24,6 +24,7 @@ outputs/reports/*
 outputs/reports/*.json
 outputs/reports/*.md
 !outputs/reports/.gitkeep
+data/outputs/
 
 # Local sample images
 backend/samples/*

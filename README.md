@@ -83,6 +83,68 @@ You can also choose another output directory:
 python main.py --image data/test_images/example.jpg --output-dir outputs/reports
 ```
 
+## Day 3 Batch Detection
+
+Place real images under:
+
+```text
+data/test_images/real
+```
+
+Place AI-generated images under:
+
+```text
+data/test_images/ai
+```
+
+Run batch detection:
+
+```bash
+python scripts/run_batch_test.py
+```
+
+Batch results are written to:
+
+```text
+data/outputs/results.csv
+```
+
+Run evaluation:
+
+```bash
+python scripts/evaluate_results.py
+```
+
+Evaluation summary is written to:
+
+```text
+data/outputs/summary.json
+```
+
+### Day 3 Smoke Test Result
+
+Day 3 batch detection and evaluation have run successfully. The pipeline now generates:
+
+- `data/outputs/results.csv`
+- `data/outputs/summary.json`
+
+Current 8-image smoke test result:
+
+- Total images: 8
+- Successful detections: 8
+- Errors: 0
+- Accuracy: 0.5
+- AI recall: 0.0
+- Balanced accuracy: 0.5
+
+Current baseline behavior:
+
+- The baseline predicted all 8 smoke test images as `real`.
+- This means the engineering loop is working, but the detector is heavily biased toward `real`.
+- The current result should not be treated as a reliable AI-image detection result.
+
+Day 4 should focus on improving the detector or introducing a stronger baseline.
+
 ## Test
 
 ```bash
@@ -129,4 +191,3 @@ The V0.1 deep model detector is a placeholder. It returns a neutral placeholder 
 - Later: Add optional ExifTool and C2PA structured parsing
 - Later: Add benchmark datasets and evaluation scripts
 - Later: Integrate real model detectors only after the baseline is stable
-
