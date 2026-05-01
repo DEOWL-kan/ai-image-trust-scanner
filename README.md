@@ -350,6 +350,17 @@ Current project capability boundary:
 - It still needs larger datasets, harder real-world samples, and scenario-specific validation before any production or high-stakes use.
 - Day7 thresholds are calibration aids for the current small test set, not universal authenticity rules.
 
+## Day 8 Test Set Normalization and Evaluation
+
+Day 8 normalizes the test-set filenames under `data/test_images/ai` and
+`data/test_images/real`, with a target of 30 AI images and 30 real images. It
+adds a rename map, a test-set inventory, and a Day8 evaluation using the Day7
+recommended threshold. All Day8 outputs are written to:
+
+```text
+reports/day8/
+```
+
 ## Test
 
 ```bash
@@ -397,6 +408,7 @@ The V0.1 deep model detector is a placeholder. It returns a neutral placeholder 
 - Day 5: Add explainable feature extraction and calibration notes
 - Day 6: Add threshold calibration, error-case analysis, borderline review, and threshold curve output
 - Day 7: Add threshold sweep, regression evaluation, and stable calibration reports
+- Day 8: Normalize test-set filenames, inventory 30 AI / 30 real images, and evaluate with the Day7 threshold
 - Later: Add optional ExifTool and C2PA structured parsing
 - Later: Add benchmark datasets and evaluation scripts
 - Later: Integrate real model detectors only after the baseline is stable
