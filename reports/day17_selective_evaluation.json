@@ -1,0 +1,923 @@
+{
+  "day17_goal": "Selective Evaluation + Product-level Output Schema",
+  "core_detection_changes": "none",
+  "pretrained_model_dependency_changes": "none",
+  "product_outputs_source": "D:\\ai image\\ai-image-trust-scanner\\reports\\day17_product_outputs.json",
+  "subsets": {
+    "all_samples": {
+      "total": 660,
+      "label_distribution": {
+        "likely_ai": 221,
+        "uncertain": 344,
+        "likely_real": 95
+      },
+      "risk_level_distribution": {
+        "high": 221,
+        "medium": 439
+      },
+      "average_confidence": 0.6331,
+      "uncertain_ratio": 0.521212,
+      "sample_examples": [
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_001_food_retail_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.86,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_002_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_003_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.49,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_004_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.49,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_005_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.52,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_006_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.46,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_007_food_retail_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.85,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_008_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_009_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_010_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.48,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        }
+      ]
+    },
+    "uncertain_samples": {
+      "total": 344,
+      "label_distribution": {
+        "uncertain": 344
+      },
+      "risk_level_distribution": {
+        "medium": 344
+      },
+      "average_confidence": 0.4818,
+      "uncertain_ratio": 1.0,
+      "sample_examples": [
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_002_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_003_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.49,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_004_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.49,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_005_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.52,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_006_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.46,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_008_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_009_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_010_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.48,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_011_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_013_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.49,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        }
+      ]
+    },
+    "likely_ai_samples": {
+      "total": 221,
+      "label_distribution": {
+        "likely_ai": 221
+      },
+      "risk_level_distribution": {
+        "high": 221
+      },
+      "average_confidence": 0.8753,
+      "uncertain_ratio": 0.0,
+      "sample_examples": [
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_001_food_retail_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.86,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_007_food_retail_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.85,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_012_food_retail_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.87,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_031_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.88,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_032_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.85,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_034_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.88,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_035_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.88,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_036_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.86,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_039_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.86,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_040_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.88,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        }
+      ]
+    },
+    "likely_real_samples": {
+      "total": 95,
+      "label_distribution": {
+        "likely_real": 95
+      },
+      "risk_level_distribution": {
+        "medium": 95
+      },
+      "average_confidence": 0.6172,
+      "uncertain_ratio": 0.0,
+      "sample_examples": [
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\real_jpg\\real_001_food_retail_jpg_q95.jpg",
+          "final_label": "likely_real",
+          "risk_level": "medium",
+          "confidence": 0.6,
+          "reason": [
+            "图像检测结果更接近真实图片的规则基线表现。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\real_jpg\\real_007_food_retail_jpg_q95.jpg",
+          "final_label": "likely_real",
+          "risk_level": "medium",
+          "confidence": 0.6,
+          "reason": [
+            "图像检测结果更接近真实图片的规则基线表现。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\real_jpg\\real_009_food_retail_jpg_q95.jpg",
+          "final_label": "likely_real",
+          "risk_level": "medium",
+          "confidence": 0.6,
+          "reason": [
+            "图像检测结果更接近真实图片的规则基线表现。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\real_jpg\\real_011_food_retail_jpg_q95.jpg",
+          "final_label": "likely_real",
+          "risk_level": "medium",
+          "confidence": 0.6,
+          "reason": [
+            "图像检测结果更接近真实图片的规则基线表现。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\real_jpg\\real_012_food_retail_jpg_q95.jpg",
+          "final_label": "likely_real",
+          "risk_level": "medium",
+          "confidence": 0.6,
+          "reason": [
+            "图像检测结果更接近真实图片的规则基线表现。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\real_jpg\\real_014_food_retail_jpg_q95.jpg",
+          "final_label": "likely_real",
+          "risk_level": "medium",
+          "confidence": 0.6,
+          "reason": [
+            "图像检测结果更接近真实图片的规则基线表现。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\real_jpg\\real_015_food_retail_jpg_q95.jpg",
+          "final_label": "likely_real",
+          "risk_level": "medium",
+          "confidence": 0.6,
+          "reason": [
+            "图像检测结果更接近真实图片的规则基线表现。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\real_jpg\\real_021_indoor_home_jpg_q95.jpg",
+          "final_label": "likely_real",
+          "risk_level": "medium",
+          "confidence": 0.6,
+          "reason": [
+            "图像检测结果更接近真实图片的规则基线表现。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\real_jpg\\real_033_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_real",
+          "risk_level": "medium",
+          "confidence": 0.6,
+          "reason": [
+            "图像检测结果更接近真实图片的规则基线表现。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\real_jpg\\real_035_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_real",
+          "risk_level": "medium",
+          "confidence": 0.6,
+          "reason": [
+            "图像检测结果更接近真实图片的规则基线表现。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        }
+      ]
+    },
+    "medium_risk_samples": {
+      "total": 439,
+      "label_distribution": {
+        "uncertain": 344,
+        "likely_real": 95
+      },
+      "risk_level_distribution": {
+        "medium": 439
+      },
+      "average_confidence": 0.5111,
+      "uncertain_ratio": 0.783599,
+      "sample_examples": [
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_002_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_003_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.49,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_004_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.49,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_005_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.52,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_006_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.46,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_008_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_009_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_010_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.48,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_011_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_013_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.49,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        }
+      ]
+    },
+    "high_risk_samples": {
+      "total": 221,
+      "label_distribution": {
+        "likely_ai": 221
+      },
+      "risk_level_distribution": {
+        "high": 221
+      },
+      "average_confidence": 0.8753,
+      "uncertain_ratio": 0.0,
+      "sample_examples": [
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_001_food_retail_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.86,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_007_food_retail_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.85,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_012_food_retail_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.87,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_031_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.88,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_032_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.85,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_034_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.88,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_035_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.88,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_036_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.86,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_039_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.86,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_040_lowlight_weather_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.88,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        }
+      ]
+    },
+    "possible_format_risk_samples": {
+      "total": 657,
+      "label_distribution": {
+        "likely_ai": 220,
+        "uncertain": 342,
+        "likely_real": 95
+      },
+      "risk_level_distribution": {
+        "high": 220,
+        "medium": 437
+      },
+      "average_confidence": 0.6332,
+      "uncertain_ratio": 0.520548,
+      "sample_examples": [
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_001_food_retail_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.86,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_002_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_003_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.49,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_004_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.49,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_005_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.52,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_006_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.46,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_007_food_retail_jpg_q95.jpg",
+          "final_label": "likely_ai",
+          "risk_level": "high",
+          "confidence": 0.85,
+          "reason": [
+            "图像检测结果更接近 AI 生成或强生成式处理的模式。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_008_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_009_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.5,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "多分辨率检测结果保持一致。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_010_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.48,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        }
+      ]
+    },
+    "resolution_sensitive_samples": {
+      "total": 298,
+      "label_distribution": {
+        "uncertain": 203,
+        "likely_real": 95
+      },
+      "risk_level_distribution": {
+        "medium": 298
+      },
+      "average_confidence": 0.5184,
+      "uncertain_ratio": 0.681208,
+      "sample_examples": [
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_003_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.49,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_006_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.46,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_010_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.48,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_014_food_retail_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.46,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_017_indoor_home_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.47,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_022_indoor_home_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.48,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_024_indoor_home_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.49,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_026_indoor_home_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.45,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_027_indoor_home_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.47,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        },
+        {
+          "image_path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_028_indoor_home_jpg_q95.jpg",
+          "final_label": "uncertain",
+          "risk_level": "medium",
+          "confidence": 0.49,
+          "reason": [
+            "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+            "不同分辨率下的检测结果存在翻转或不稳定。"
+          ]
+        }
+      ]
+    }
+  },
+  "notes": [],
+  "output_json": "D:\\ai image\\ai-image-trust-scanner\\reports\\day17_selective_evaluation.json",
+  "output_md": "D:\\ai image\\ai-image-trust-scanner\\reports\\day17_selective_evaluation.md"
+}

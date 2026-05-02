@@ -12,6 +12,7 @@ from core.metadata_analyzer import analyze_metadata
 from core.model_detector import detect_with_model
 from core.report_generator import build_report, write_reports
 from core.score_fusion import fuse_scores
+from src.product_output_schema import build_product_output
 
 
 def _skipped_result(reason: str) -> dict[str, Any]:
@@ -71,6 +72,15 @@ def main(argv: list[str] | None = None) -> int:
         default="outputs/reports",
         help="Directory for JSON and Markdown reports.",
     )
+    parser.add_argument(
+        "--product-output",
+        action="store_true",
+        help="Also emit the Day17 product-level JSON schema for this image.",
+    )
+    parser.add_argument(
+        "--product-output-file",
+        help="Optional product-level JSON output path. Defaults to <output-dir>/<image>_product.json.",
+    )
     args = parser.parse_args(argv)
 
     report = run_pipeline(args.image, output_dir=args.output_dir)
@@ -79,6 +89,20 @@ def main(argv: list[str] | None = None) -> int:
         "final_result": report.get("final_result"),
         "report_paths": report.get("report_paths"),
     }
+    if args.product_output:
+        product_output = build_product_output(report, image_path=args.image, debug=True)
+        product_path = (
+            Path(args.product_output_file)
+            if args.product_output_file
+            else Path(args.output_dir) / f"{Path(args.image).stem or 'image'}_product.json"
+        )
+        product_path.parent.mkdir(parents=True, exist_ok=True)
+        product_path.write_text(
+            json.dumps(product_output, ensure_ascii=False, indent=2, default=str),
+            encoding="utf-8",
+        )
+        summary["product_output"] = product_output
+        summary["product_output_path"] = str(product_path.resolve())
     if not report.get("ok"):
         summary["error"] = report.get("image_info", {}).get("error")
     print(json.dumps(summary, ensure_ascii=False, indent=2))

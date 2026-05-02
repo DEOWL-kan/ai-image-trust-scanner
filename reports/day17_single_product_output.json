@@ -1,0 +1,176 @@
+{
+  "image_path": "D:\\ai image\\ai-image-trust-scanner\\data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_001_food_retail_jpg_q95.jpg",
+  "final_label": "uncertain",
+  "risk_level": "medium",
+  "confidence": 0.52,
+  "decision_reason": [
+    "图像处于不确定区间，当前证据不足以给出稳定的 AI / Real 判断。",
+    "图片为 JPEG/JPG 容器，压缩痕迹可能影响规则判断。",
+    "元数据或 EXIF 证据缺失，因此结果需要谨慎理解。"
+  ],
+  "recommendation": "当前图片处于不确定区间。建议上传原始分辨率图片、保留 EXIF 的原图，或结合人工复核和更多证据。",
+  "user_facing_summary": "这张图片目前处于不确定区间。建议上传原始图片或结合更多来源证据后再判断。",
+  "technical_explanation": "Product layer mapped the raw label `uncertain` and baseline label `ai` to `uncertain`. It used rule-based score fields, metadata/format fields, and Day16.1 uncertain decision evidence when present; 未发现可用的 multi-resolution consistency 字段. Observed score=0.175444, risk_level=medium, decision_confidence=0.52 (rule-based decision confidence, not model probability). Risk factors: jpeg_container_or_compression, missing_exif, uncertain_decision. Stability factors: 未发现明确稳定性字段. Uncertainty flags: score_inside_uncertain_band.",
+  "debug_evidence": {
+    "raw_score": 0.175444,
+    "base_label": "ai",
+    "uncertain_label": "uncertain",
+    "threshold_used": 0.15,
+    "score_margin": 0.025444,
+    "uncertainty_flags": [
+      "score_inside_uncertain_band"
+    ],
+    "multi_resolution": {
+      "available": false,
+      "original_score": null,
+      "resize_mean_score": null,
+      "resize_delta": null,
+      "mean_score": null,
+      "median_score": null,
+      "min_score": null,
+      "max_score": null,
+      "score_std": null,
+      "score_range": null,
+      "resolution_flip_count": 0,
+      "ai_vote_count": 0,
+      "real_vote_count": 0,
+      "consistency_status": null
+    },
+    "format_info": {
+      "format": "jpeg",
+      "image_path": "D:\\ai image\\ai-image-trust-scanner\\data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_001_food_retail_jpg_q95.jpg",
+      "width": 1448,
+      "height": 1086
+    },
+    "exif_info": {
+      "has_exif": false,
+      "software": null,
+      "metadata_checked": true
+    },
+    "risk_factors": [
+      "jpeg_container_or_compression",
+      "missing_exif",
+      "uncertain_decision"
+    ],
+    "stability_factors": [],
+    "raw_result": {
+      "version": "V0.1 baseline",
+      "generated_at": "2026-05-02T14:11:17.406232+00:00",
+      "ok": true,
+      "image_info": {
+        "ok": true,
+        "image_path": "D:\\ai image\\ai-image-trust-scanner\\data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_001_food_retail_jpg_q95.jpg",
+        "filename": "ai_001_food_retail_jpg_q95.jpg",
+        "format": "JPEG",
+        "width": 1448,
+        "height": 1086,
+        "color_mode": "RGB",
+        "file_size_bytes": 503842,
+        "file_size_kb": 492.03,
+        "error": null
+      },
+      "metadata_result": {
+        "checked": true,
+        "has_exif": false,
+        "camera_make": null,
+        "camera_model": null,
+        "software": null,
+        "datetime_original": null,
+        "exif_field_count": 0,
+        "missing_exif_note": "No EXIF found. This limits provenance, but does not mean the image is AI-generated.",
+        "optional_interfaces": {
+          "exiftool": {
+            "status": "optional_placeholder",
+            "note": "Reserved for deeper EXIF/XMP/IPTC parsing in a later version."
+          },
+          "c2pa": {
+            "status": "optional_placeholder",
+            "note": "Reserved for Content Credentials / C2PA manifest parsing."
+          }
+        },
+        "error": null
+      },
+      "forensic_result": {
+        "checked": true,
+        "brightness_mean": 105.468166,
+        "brightness_std": 57.45636,
+        "color_channel_mean": {
+          "red": 122.762418,
+          "green": 102.496121,
+          "blue": 75.33547
+        },
+        "color_channel_std": {
+          "red": 61.760844,
+          "green": 57.64537,
+          "blue": 56.935008
+        },
+        "edge_density": 0.037163,
+        "laplacian_variance": 402.242571,
+        "noise_estimate": 4.833069,
+        "error": null
+      },
+      "frequency_result": {
+        "checked": true,
+        "high_frequency_energy_ratio": 0.442851,
+        "frequency_score": 0.442851,
+        "note": "Frequency analysis is a heuristic signal only, not an authenticity verdict.",
+        "error": null
+      },
+      "model_result": {
+        "checked": true,
+        "image_path": "D:\\ai image\\ai-image-trust-scanner\\data\\test_images\\day14_expansion\\paired_format\\ai_jpg\\ai_001_food_retail_jpg_q95.jpg",
+        "ai_probability": 0.5,
+        "model_name": "v0.1-baseline-placeholder",
+        "model_status": "placeholder",
+        "note": "No deep model is trained or loaded in V0.1. This neutral value is placeholder metadata and is not used as trained evidence.",
+        "error": null
+      },
+      "final_result": {
+        "final_score": 0.175444,
+        "raw_score": 0.175444,
+        "threshold": 0.15,
+        "baseline_threshold": 0.15,
+        "uncertainty_margin": 0.03,
+        "final_real_threshold": 0.12,
+        "final_ai_threshold": 0.18,
+        "binary_label_at_threshold": "ai",
+        "final_label": "uncertain",
+        "decision_status": "uncertain",
+        "confidence_distance": 0.025444,
+        "decision_reason": "score_inside_uncertain_band",
+        "risk_level": "low",
+        "component_scores": {
+          "metadata_score": 0.05,
+          "forensic_score": 0.0,
+          "frequency_score": 0.442851,
+          "model_score": 0.0
+        },
+        "component_weights": {
+          "metadata": 0.15,
+          "forensic": 0.35,
+          "frequency": 0.3,
+          "model": 0.0
+        },
+        "result_type": "baseline risk level",
+        "evidence_summary": [
+          "No EXIF found; this is only a weak provenance signal.",
+          "Basic forensic features did not trigger strong baseline warnings.",
+          "Frequency score is a weak heuristic based on high-frequency energy, not a final judgment.",
+          "Deep model detector is placeholder and is not used as trained evidence."
+        ],
+        "limitation_note": "AI Image Trust Scanner V0.1 is a baseline multi-evidence heuristic. It provides a heuristic evidence summary and is not a final authenticity judgment, not a legal forensic conclusion, and not a trained AI-generation detector."
+      },
+      "evidence_summary": [
+        "No EXIF found; this is only a weak provenance signal.",
+        "Basic forensic features did not trigger strong baseline warnings.",
+        "Frequency score is a weak heuristic based on high-frequency energy, not a final judgment.",
+        "Deep model detector is placeholder and is not used as trained evidence."
+      ],
+      "limitation_note": "This is AI Image Trust Scanner V0.1 baseline output. It combines simple metadata, forensic, frequency, and placeholder model signals. It is not a final detection conclusion and should not be treated as proof that an image is real or AI-generated.",
+      "report_paths": {
+        "json_report": "D:\\ai image\\ai-image-trust-scanner\\outputs\\reports\\ai_001_food_retail_jpg_q95_report.json",
+        "markdown_report": "D:\\ai image\\ai-image-trust-scanner\\outputs\\reports\\ai_001_food_retail_jpg_q95_report.md"
+      }
+    }
+  }
+}
