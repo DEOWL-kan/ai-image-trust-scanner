@@ -1,19 +1,38 @@
 from __future__ import annotations
 
+import logging
 import uuid
 from pathlib import Path
+from typing import Any
 
-from fastapi import FastAPI, File, UploadFile
+from fastapi import FastAPI, File, HTTPException, Query, Request, UploadFile
 from fastapi.responses import JSONResponse
 
 from app.schemas import DetectionResponse, HealthResponse
+from app.services.batch_detection import (
+    BatchDetectionInput,
+    build_path_inputs,
+    run_batch_detection,
+)
 from app.services.detection_service import DetectionServiceError, detect_image_for_api
+from app.services.history_store import (
+    CorruptHistoryError,
+    HistoryNotFoundError,
+    InvalidHistoryFilenameError,
+    duration_ms,
+    list_history,
+    new_history_id,
+    read_history,
+    save_history as write_history,
+    started_timer,
+)
 
 
 API_VERSION = "0.1.0"
 SUPPORTED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 UPLOAD_DIR = PROJECT_ROOT / ".tmp" / "api_uploads"
+logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AI Image Trust Scanner API", version=API_VERSION)
 
@@ -38,6 +57,77 @@ def _safe_filename(filename: str | None) -> str:
     return name or "uploaded_image"
 
 
+def _parse_bool(value: Any, default: bool = True) -> bool:
+    if isinstance(value, bool):
+        return value
+    if value is None:
+        return default
+    text = str(value).strip().lower()
+    if text in {"true", "1", "yes", "y", "on"}:
+        return True
+    if text in {"false", "0", "no", "n", "off"}:
+        return False
+    return default
+
+
+def _single_request(filename: str, source: str) -> dict[str, Any]:
+    return {
+        "mode": "single",
+        "input_count": 1,
+        "inputs": [
+            {
+                "filename": filename,
+                "source": source,
+            }
+        ],
+    }
+
+
+def _history_request_from_batch(inputs: list[BatchDetectionInput]) -> dict[str, Any]:
+    return {
+        "mode": "batch",
+        "input_count": len(inputs),
+        "inputs": [
+            {
+                "filename": item.filename,
+                "source": item.source,
+                "index": item.index,
+            }
+            for item in sorted(inputs, key=lambda value: value.index)
+        ],
+    }
+
+
+def _save_history_safely(
+    *,
+    history_type: str,
+    response_payload: dict[str, Any],
+    request_payload: dict[str, Any],
+    started_at: float,
+    history_id: str | None = None,
+    created_at: str | None = None,
+    attach_to_response: bool = True,
+) -> None:
+    try:
+        saved = write_history(
+            history_type=history_type,
+            response={key: value for key, value in response_payload.items() if key != "history"},
+            request=request_payload,
+            duration_ms_value=duration_ms(started_at),
+            history_id=history_id,
+            created_at=created_at,
+        )
+        if attach_to_response:
+            response_payload["history"] = {"saved": True, **saved}
+    except Exception as exc:
+        logger.warning("Failed to save API history JSON: %s", exc)
+        if attach_to_response:
+            response_payload["history"] = {
+                "saved": False,
+                "warning": "Detection succeeded, but history JSON could not be saved.",
+            }
+
+
 @app.get("/health", response_model=HealthResponse)
 def health() -> dict[str, str]:
     return {
@@ -48,40 +138,225 @@ def health() -> dict[str, str]:
 
 
 @app.post("/api/v1/detect", response_model=DetectionResponse)
-async def detect(file: UploadFile = File(...)) -> dict[str, object] | JSONResponse:
+async def detect(
+    file: UploadFile = File(...),
+    save_history: bool = Query(True),
+) -> dict[str, object] | JSONResponse:
+    started_at = started_timer()
     filename = _safe_filename(file.filename)
     suffix = Path(filename).suffix.lower()
     if suffix not in SUPPORTED_EXTENSIONS:
-        return _json_error(
-            400,
+        payload = _error_payload(
             "INVALID_FILE_TYPE",
             "Unsupported file type. Supported formats: jpg, jpeg, png, webp.",
         )
+        if save_history:
+            _save_history_safely(
+                history_type="single",
+                response_payload=payload,
+                request_payload=_single_request(filename, "upload"),
+                started_at=started_at,
+                history_id=new_history_id("single"),
+                attach_to_response=False,
+            )
+        return JSONResponse(status_code=400, content=payload)
 
     contents = await file.read()
     if not contents:
-        return _json_error(400, "EMPTY_FILE", "Uploaded file is empty.")
+        payload = _error_payload("EMPTY_FILE", "Uploaded file is empty.")
+        if save_history:
+            _save_history_safely(
+                history_type="single",
+                response_payload=payload,
+                request_payload=_single_request(filename, "upload"),
+                started_at=started_at,
+                history_id=new_history_id("single"),
+                attach_to_response=False,
+            )
+        return JSONResponse(status_code=400, content=payload)
 
     UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
     temp_path = UPLOAD_DIR / f"{uuid.uuid4().hex}{suffix}"
     try:
         temp_path.write_bytes(contents)
         data = detect_image_for_api(str(temp_path), filename=filename)
-        return {
+        payload: dict[str, Any] = {
             "success": True,
             "data": data,
             "error": None,
         }
+        if save_history:
+            _save_history_safely(
+                history_type="single",
+                response_payload=payload,
+                request_payload=_single_request(filename, "upload"),
+                started_at=started_at,
+                history_id=new_history_id("single"),
+            )
+        return payload
     except DetectionServiceError as exc:
-        return _json_error(500, "DETECTION_FAILED", str(exc))
+        payload = _error_payload("DETECTION_FAILED", str(exc))
+        if save_history:
+            _save_history_safely(
+                history_type="single",
+                response_payload=payload,
+                request_payload=_single_request(filename, "upload"),
+                started_at=started_at,
+                history_id=new_history_id("single"),
+                attach_to_response=False,
+            )
+        return JSONResponse(status_code=500, content=payload)
     except Exception:
-        return _json_error(
-            500,
+        payload = _error_payload(
             "INTERNAL_ERROR",
             "An unexpected error occurred while processing the image.",
         )
+        if save_history:
+            _save_history_safely(
+                history_type="single",
+                response_payload=payload,
+                request_payload=_single_request(filename, "upload"),
+                started_at=started_at,
+                history_id=new_history_id("single"),
+                attach_to_response=False,
+            )
+        return JSONResponse(status_code=500, content=payload)
     finally:
         try:
             temp_path.unlink(missing_ok=True)
         except OSError:
             pass
+
+
+async def _batch_inputs_from_multipart(
+    request: Request,
+    default_save_history: bool,
+) -> tuple[list[BatchDetectionInput], bool]:
+    form = await request.form()
+    save_history = _parse_bool(form.get("save_history"), default_save_history)
+    upload_items = []
+    for field_name in ("files", "file"):
+        upload_items.extend(form.getlist(field_name))
+
+    inputs: list[BatchDetectionInput] = []
+    UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+    for index, item in enumerate(upload_items):
+        filename = _safe_filename(getattr(item, "filename", None))
+        suffix = Path(filename).suffix.lower()
+        error: dict[str, Any] | None = None
+        temp_path: Path | None = None
+
+        if suffix not in SUPPORTED_EXTENSIONS:
+            error = {
+                "type": "ValueError",
+                "message": "Unsupported file type. Supported formats: jpg, jpeg, png, webp.",
+                "recoverable": True,
+            }
+        else:
+            contents = await item.read()
+            if not contents:
+                error = {
+                    "type": "ValueError",
+                    "message": "Uploaded file is empty.",
+                    "recoverable": True,
+                }
+            else:
+                temp_path = UPLOAD_DIR / f"{uuid.uuid4().hex}{suffix}"
+                temp_path.write_bytes(contents)
+
+        inputs.append(
+            BatchDetectionInput(
+                index=index,
+                filename=filename,
+                source="upload",
+                image_path=str(temp_path) if temp_path else None,
+                error=error,
+            )
+        )
+    return inputs, save_history
+
+
+async def _batch_inputs_from_json(
+    request: Request,
+    default_save_history: bool,
+) -> tuple[list[BatchDetectionInput], bool]:
+    try:
+        payload = await request.json()
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail="Request body must be JSON or multipart/form-data.") from exc
+
+    if not isinstance(payload, dict):
+        raise HTTPException(status_code=400, detail="JSON body must be an object.")
+    image_paths = payload.get("image_paths")
+    if not isinstance(image_paths, list):
+        raise HTTPException(status_code=400, detail="JSON body must include image_paths as a list.")
+    return build_path_inputs([str(item) for item in image_paths]), _parse_bool(
+        payload.get("save_history"),
+        default_save_history,
+    )
+
+
+@app.post("/detect/batch")
+@app.post("/api/v1/detect/batch")
+async def detect_batch(
+    request: Request,
+    save_history: bool = Query(True),
+) -> dict[str, Any]:
+    started_at = started_timer()
+    content_type = request.headers.get("content-type", "").lower()
+    temp_paths: list[Path] = []
+
+    try:
+        if content_type.startswith("multipart/form-data"):
+            inputs, body_save_history = await _batch_inputs_from_multipart(request, save_history)
+            save_history = body_save_history
+            temp_paths = [Path(item.image_path) for item in inputs if item.source == "upload" and item.image_path]
+        else:
+            inputs, body_save_history = await _batch_inputs_from_json(request, save_history)
+            save_history = body_save_history
+
+        if not inputs:
+            raise HTTPException(status_code=400, detail="Batch request must include at least one image.")
+
+        payload = run_batch_detection(inputs)
+        if save_history:
+            _save_history_safely(
+                history_type="batch",
+                response_payload=payload,
+                request_payload=_history_request_from_batch(inputs),
+                started_at=started_at,
+                history_id=str(payload["batch_id"]),
+                created_at=str(payload["created_at"]),
+            )
+        return payload
+    finally:
+        for temp_path in temp_paths:
+            try:
+                temp_path.unlink(missing_ok=True)
+            except OSError:
+                pass
+
+
+@app.get("/history")
+@app.get("/api/v1/history")
+def history(
+    limit: int = Query(20, ge=1, le=100),
+    history_type: str = Query("all"),
+) -> dict[str, Any]:
+    try:
+        return list_history(limit=limit, history_type=history_type)
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@app.get("/history/{filename}")
+@app.get("/api/v1/history/{filename}")
+def history_detail(filename: str) -> dict[str, Any]:
+    try:
+        return read_history(filename)
+    except InvalidHistoryFilenameError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except HistoryNotFoundError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except CorruptHistoryError as exc:
+        raise HTTPException(status_code=422, detail=str(exc)) from exc

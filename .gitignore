@@ -23,6 +23,7 @@ backend/outputs/*
 outputs/reports/*
 outputs/reports/*.json
 outputs/reports/*.md
+outputs/api_history/*
 !outputs/reports/.gitkeep
 data/outputs/
 data/day10_format_control/

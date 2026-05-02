@@ -32,3 +32,9 @@ class DetectionResponse(BaseModel):
     success: bool
     data: DetectionData | None
     error: ErrorResponse | None
+    history: dict[str, Any] | None = None
+
+
+class BatchPathRequest(BaseModel):
+    image_paths: list[str]
+    save_history: bool = True
