@@ -7,6 +7,25 @@
     "uncertainty_margin": 0.03,
     "notes": "Day12 product-facing decision layer. Baseline threshold remains the binary regression reference; final_label uses real <= 0.12, ai >= 0.18, and uncertain between them."
   },
+  "uncertain_decision_v2": {
+    "baseline_threshold": 0.15,
+    "real_safe_threshold": 0.12,
+    "ai_safe_threshold": 0.18,
+    "score_std_limit": 0.035,
+    "score_range_limit": 0.06,
+    "notes": "Day16 multi-resolution decision layer. These thresholds are diagnostic aggregation defaults and do not change the core detector fusion weights."
+  },
+  "uncertain_decision_v21": {
+    "baseline_threshold": 0.15,
+    "ai_safe_threshold": 0.18,
+    "real_original_safe_threshold": 0.145,
+    "real_min_safe_threshold": 0.13,
+    "ai_original_guard_threshold": 0.155,
+    "score_std_limit": 0.035,
+    "score_range_limit": 0.06,
+    "resize_delta_limit": 0.055,
+    "notes": "Day16.1 resize-bias calibrated decision layer. These values only affect aggregation over existing detector outputs; core detector weights are unchanged."
+  },
   "profiles": {
     "baseline": {
       "notes": "Day8-compatible baseline. Runtime fusion weights preserve the current V0.1 score behavior.",

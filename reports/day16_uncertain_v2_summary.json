@@ -1,0 +1,344 @@
+{
+  "total_images": 660,
+  "definite_count": 235,
+  "uncertain_count": 425,
+  "uncertain_rate": 0.643939,
+  "coverage": 0.356061,
+  "selective_accuracy": 0.719149,
+  "raw_accuracy_at_0_15": 0.669697,
+  "final_accuracy_count_uncertain_wrong": 0.256061,
+  "definite_fp_count": 66,
+  "definite_fn_count": 0,
+  "uncertain_ai_count": 161,
+  "uncertain_real_count": 264,
+  "resolution_flip_rate": 0.451515,
+  "avg_score_std": 0.019295,
+  "avg_score_range": 0.048131,
+  "category_level_summary": [
+    {
+      "group": "ai_jpg",
+      "total_images": 100,
+      "definite_count": 54,
+      "uncertain_count": 46,
+      "coverage": 0.54,
+      "selective_accuracy": 1.0,
+      "raw_accuracy_at_0_15": 0.8,
+      "definite_fp_count": 0,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.23,
+      "avg_score_std": 0.012449,
+      "avg_score_range": 0.031851
+    },
+    {
+      "group": "ai_png",
+      "total_images": 100,
+      "definite_count": 49,
+      "uncertain_count": 51,
+      "coverage": 0.49,
+      "selective_accuracy": 1.0,
+      "raw_accuracy_at_0_15": 0.78,
+      "definite_fp_count": 0,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.24,
+      "avg_score_std": 0.012345,
+      "avg_score_range": 0.031653
+    },
+    {
+      "group": "day8_small_30",
+      "total_images": 60,
+      "definite_count": 28,
+      "uncertain_count": 32,
+      "coverage": 0.466667,
+      "selective_accuracy": 0.607143,
+      "raw_accuracy_at_0_15": 0.55,
+      "definite_fp_count": 11,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.416667,
+      "avg_score_std": 0.0159,
+      "avg_score_range": 0.04015
+    },
+    {
+      "group": "food_retail",
+      "total_images": 30,
+      "definite_count": 4,
+      "uncertain_count": 26,
+      "coverage": 0.133333,
+      "selective_accuracy": 0.75,
+      "raw_accuracy_at_0_15": 0.6,
+      "definite_fp_count": 1,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.566667,
+      "avg_score_std": 0.019149,
+      "avg_score_range": 0.047428
+    },
+    {
+      "group": "indoor_home",
+      "total_images": 30,
+      "definite_count": 4,
+      "uncertain_count": 26,
+      "coverage": 0.133333,
+      "selective_accuracy": 0.0,
+      "raw_accuracy_at_0_15": 0.566667,
+      "definite_fp_count": 4,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.566667,
+      "avg_score_std": 0.015774,
+      "avg_score_range": 0.039645
+    },
+    {
+      "group": "lowlight_weather",
+      "total_images": 30,
+      "definite_count": 12,
+      "uncertain_count": 18,
+      "coverage": 0.4,
+      "selective_accuracy": 0.833333,
+      "raw_accuracy_at_0_15": 0.666667,
+      "definite_fp_count": 2,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.433333,
+      "avg_score_std": 0.02077,
+      "avg_score_range": 0.051563
+    },
+    {
+      "group": "nature_travel",
+      "total_images": 30,
+      "definite_count": 17,
+      "uncertain_count": 13,
+      "coverage": 0.566667,
+      "selective_accuracy": 0.764706,
+      "raw_accuracy_at_0_15": 0.8,
+      "definite_fp_count": 4,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.3,
+      "avg_score_std": 0.023296,
+      "avg_score_range": 0.057567
+    },
+    {
+      "group": "object_closeup",
+      "total_images": 30,
+      "definite_count": 7,
+      "uncertain_count": 23,
+      "coverage": 0.233333,
+      "selective_accuracy": 1.0,
+      "raw_accuracy_at_0_15": 0.766667,
+      "definite_fp_count": 0,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.633333,
+      "avg_score_std": 0.020934,
+      "avg_score_range": 0.052868
+    },
+    {
+      "group": "outdoor_street",
+      "total_images": 30,
+      "definite_count": 15,
+      "uncertain_count": 15,
+      "coverage": 0.5,
+      "selective_accuracy": 0.866667,
+      "raw_accuracy_at_0_15": 0.866667,
+      "definite_fp_count": 2,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.366667,
+      "avg_score_std": 0.023552,
+      "avg_score_range": 0.057446
+    },
+    {
+      "group": "people_partial",
+      "total_images": 20,
+      "definite_count": 3,
+      "uncertain_count": 17,
+      "coverage": 0.15,
+      "selective_accuracy": 1.0,
+      "raw_accuracy_at_0_15": 0.75,
+      "definite_fp_count": 0,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.65,
+      "avg_score_std": 0.019973,
+      "avg_score_range": 0.05049
+    },
+    {
+      "group": "real_jpg",
+      "total_images": 100,
+      "definite_count": 22,
+      "uncertain_count": 78,
+      "coverage": 0.22,
+      "selective_accuracy": 0.0,
+      "raw_accuracy_at_0_15": 0.54,
+      "definite_fp_count": 22,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.64,
+      "avg_score_std": 0.026315,
+      "avg_score_range": 0.064845
+    },
+    {
+      "group": "real_png",
+      "total_images": 100,
+      "definite_count": 20,
+      "uncertain_count": 80,
+      "coverage": 0.2,
+      "selective_accuracy": 0.0,
+      "raw_accuracy_at_0_15": 0.54,
+      "definite_fp_count": 20,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.63,
+      "avg_score_std": 0.025659,
+      "avg_score_range": 0.063169
+    }
+  ],
+  "format_level_summary": [
+    {
+      "group": "jpeg",
+      "total_images": 84,
+      "definite_count": 7,
+      "uncertain_count": 77,
+      "coverage": 0.083333,
+      "selective_accuracy": 0.0,
+      "raw_accuracy_at_0_15": 0.702381,
+      "definite_fp_count": 7,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.809524,
+      "avg_score_std": 0.030422,
+      "avg_score_range": 0.074498
+    },
+    {
+      "group": "jpg",
+      "total_images": 243,
+      "definite_count": 92,
+      "uncertain_count": 151,
+      "coverage": 0.378601,
+      "selective_accuracy": 0.586957,
+      "raw_accuracy_at_0_15": 0.625514,
+      "definite_fp_count": 38,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.460905,
+      "avg_score_std": 0.019611,
+      "avg_score_range": 0.048996
+    },
+    {
+      "group": "png",
+      "total_images": 333,
+      "definite_count": 136,
+      "uncertain_count": 197,
+      "coverage": 0.408408,
+      "selective_accuracy": 0.845588,
+      "raw_accuracy_at_0_15": 0.693694,
+      "definite_fp_count": 21,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.354354,
+      "avg_score_std": 0.016257,
+      "avg_score_range": 0.040848
+    }
+  ],
+  "false_positive_cluster_summary": [
+    {
+      "analysis_type": "decision_reason",
+      "group": "stable_ai_high_confidence",
+      "total_images": 235,
+      "false_positive_count": 66,
+      "false_positive_rate": 0.280851
+    },
+    {
+      "analysis_type": "category",
+      "group": "real_jpg",
+      "total_images": 100,
+      "false_positive_count": 22,
+      "false_positive_rate": 0.22
+    },
+    {
+      "analysis_type": "category",
+      "group": "real_png",
+      "total_images": 100,
+      "false_positive_count": 20,
+      "false_positive_rate": 0.2
+    },
+    {
+      "analysis_type": "category",
+      "group": "day8_small_30",
+      "total_images": 60,
+      "false_positive_count": 11,
+      "false_positive_rate": 0.183333
+    },
+    {
+      "analysis_type": "format",
+      "group": "jpg",
+      "total_images": 243,
+      "false_positive_count": 38,
+      "false_positive_rate": 0.156379
+    },
+    {
+      "analysis_type": "category",
+      "group": "indoor_home",
+      "total_images": 30,
+      "false_positive_count": 4,
+      "false_positive_rate": 0.133333
+    },
+    {
+      "analysis_type": "category",
+      "group": "nature_travel",
+      "total_images": 30,
+      "false_positive_count": 4,
+      "false_positive_rate": 0.133333
+    },
+    {
+      "analysis_type": "has_exif",
+      "group": "true",
+      "total_images": 111,
+      "false_positive_count": 13,
+      "false_positive_rate": 0.117117
+    },
+    {
+      "analysis_type": "has_exif",
+      "group": "false",
+      "total_images": 549,
+      "false_positive_count": 53,
+      "false_positive_rate": 0.096539
+    },
+    {
+      "analysis_type": "format",
+      "group": "jpeg",
+      "total_images": 84,
+      "false_positive_count": 7,
+      "false_positive_rate": 0.083333
+    },
+    {
+      "analysis_type": "category",
+      "group": "lowlight_weather",
+      "total_images": 30,
+      "false_positive_count": 2,
+      "false_positive_rate": 0.066667
+    },
+    {
+      "analysis_type": "category",
+      "group": "outdoor_street",
+      "total_images": 30,
+      "false_positive_count": 2,
+      "false_positive_rate": 0.066667
+    },
+    {
+      "analysis_type": "format",
+      "group": "png",
+      "total_images": 333,
+      "false_positive_count": 21,
+      "false_positive_rate": 0.063063
+    },
+    {
+      "analysis_type": "category",
+      "group": "food_retail",
+      "total_images": 30,
+      "false_positive_count": 1,
+      "false_positive_rate": 0.033333
+    }
+  ],
+  "false_negative_cluster_summary": [],
+  "scanned_files": 660,
+  "skipped_or_error_images": 0,
+  "no_upscale_variant_rows": 0,
+  "threshold_used": 0.15,
+  "decision_policy": {
+    "baseline_threshold": 0.15,
+    "real_safe_threshold": 0.12,
+    "ai_safe_threshold": 0.18,
+    "score_std_limit": 0.035,
+    "score_range_limit": 0.06
+  },
+  "cache_mode": true
+}

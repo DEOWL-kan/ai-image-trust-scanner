@@ -1,0 +1,367 @@
+{
+  "total_images": 660,
+  "raw_accuracy_at_0_15": 0.669697,
+  "v2_selective_accuracy": 0.719149,
+  "v21_selective_accuracy": 0.816456,
+  "v2_coverage": 0.356061,
+  "v21_coverage": 0.478788,
+  "v2_uncertain_rate": 0.643939,
+  "v21_uncertain_rate": 0.521212,
+  "v2_definite_fp_count": 66,
+  "v21_definite_fp_count": 58,
+  "v2_definite_fn_count": 0,
+  "v21_definite_fn_count": 0,
+  "v21_final_label_counts": {
+    "ai": 221,
+    "uncertain": 344,
+    "real": 95
+  },
+  "v21_real_output_count": 95,
+  "v21_ai_output_count": 221,
+  "v21_uncertain_count": 344,
+  "resolution_flip_rate": 0.451515,
+  "resize_delta_summary": {
+    "mean": 0.028597,
+    "median": 0.027744,
+    "max": 0.155256,
+    "min": -0.118648
+  },
+  "category_level_summary_v21": [
+    {
+      "group": "ai_jpg",
+      "total_images": 100,
+      "definite_count": 52,
+      "uncertain_count": 48,
+      "coverage": 0.52,
+      "selective_accuracy": 1.0,
+      "raw_accuracy_at_0_15": 0.8,
+      "definite_fp_count": 0,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.23,
+      "avg_score_std": 0.012449,
+      "avg_score_range": 0.031851
+    },
+    {
+      "group": "ai_png",
+      "total_images": 100,
+      "definite_count": 47,
+      "uncertain_count": 53,
+      "coverage": 0.47,
+      "selective_accuracy": 1.0,
+      "raw_accuracy_at_0_15": 0.78,
+      "definite_fp_count": 0,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.24,
+      "avg_score_std": 0.012345,
+      "avg_score_range": 0.031653
+    },
+    {
+      "group": "day8_small_30",
+      "total_images": 60,
+      "definite_count": 31,
+      "uncertain_count": 29,
+      "coverage": 0.516667,
+      "selective_accuracy": 0.645161,
+      "raw_accuracy_at_0_15": 0.55,
+      "definite_fp_count": 11,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.416667,
+      "avg_score_std": 0.0159,
+      "avg_score_range": 0.04015
+    },
+    {
+      "group": "food_retail",
+      "total_images": 30,
+      "definite_count": 12,
+      "uncertain_count": 18,
+      "coverage": 0.4,
+      "selective_accuracy": 0.916667,
+      "raw_accuracy_at_0_15": 0.6,
+      "definite_fp_count": 1,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.566667,
+      "avg_score_std": 0.019149,
+      "avg_score_range": 0.047428
+    },
+    {
+      "group": "indoor_home",
+      "total_images": 30,
+      "definite_count": 6,
+      "uncertain_count": 24,
+      "coverage": 0.2,
+      "selective_accuracy": 0.333333,
+      "raw_accuracy_at_0_15": 0.566667,
+      "definite_fp_count": 4,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.566667,
+      "avg_score_std": 0.015774,
+      "avg_score_range": 0.039645
+    },
+    {
+      "group": "lowlight_weather",
+      "total_images": 30,
+      "definite_count": 15,
+      "uncertain_count": 15,
+      "coverage": 0.5,
+      "selective_accuracy": 0.866667,
+      "raw_accuracy_at_0_15": 0.666667,
+      "definite_fp_count": 2,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.433333,
+      "avg_score_std": 0.02077,
+      "avg_score_range": 0.051563
+    },
+    {
+      "group": "nature_travel",
+      "total_images": 30,
+      "definite_count": 22,
+      "uncertain_count": 8,
+      "coverage": 0.733333,
+      "selective_accuracy": 0.863636,
+      "raw_accuracy_at_0_15": 0.8,
+      "definite_fp_count": 3,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.3,
+      "avg_score_std": 0.023296,
+      "avg_score_range": 0.057567
+    },
+    {
+      "group": "object_closeup",
+      "total_images": 30,
+      "definite_count": 13,
+      "uncertain_count": 17,
+      "coverage": 0.433333,
+      "selective_accuracy": 1.0,
+      "raw_accuracy_at_0_15": 0.766667,
+      "definite_fp_count": 0,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.633333,
+      "avg_score_std": 0.020934,
+      "avg_score_range": 0.052868
+    },
+    {
+      "group": "outdoor_street",
+      "total_images": 30,
+      "definite_count": 22,
+      "uncertain_count": 8,
+      "coverage": 0.733333,
+      "selective_accuracy": 0.909091,
+      "raw_accuracy_at_0_15": 0.866667,
+      "definite_fp_count": 2,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.366667,
+      "avg_score_std": 0.023552,
+      "avg_score_range": 0.057446
+    },
+    {
+      "group": "people_partial",
+      "total_images": 20,
+      "definite_count": 6,
+      "uncertain_count": 14,
+      "coverage": 0.3,
+      "selective_accuracy": 1.0,
+      "raw_accuracy_at_0_15": 0.75,
+      "definite_fp_count": 0,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.65,
+      "avg_score_std": 0.019973,
+      "avg_score_range": 0.05049
+    },
+    {
+      "group": "real_jpg",
+      "total_images": 100,
+      "definite_count": 47,
+      "uncertain_count": 53,
+      "coverage": 0.47,
+      "selective_accuracy": 0.617021,
+      "raw_accuracy_at_0_15": 0.54,
+      "definite_fp_count": 18,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.64,
+      "avg_score_std": 0.026315,
+      "avg_score_range": 0.064845
+    },
+    {
+      "group": "real_png",
+      "total_images": 100,
+      "definite_count": 43,
+      "uncertain_count": 57,
+      "coverage": 0.43,
+      "selective_accuracy": 0.604651,
+      "raw_accuracy_at_0_15": 0.54,
+      "definite_fp_count": 17,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.63,
+      "avg_score_std": 0.025659,
+      "avg_score_range": 0.063169
+    }
+  ],
+  "format_level_summary_v21": [
+    {
+      "group": "jpeg",
+      "total_images": 84,
+      "definite_count": 41,
+      "uncertain_count": 43,
+      "coverage": 0.488095,
+      "selective_accuracy": 0.853659,
+      "raw_accuracy_at_0_15": 0.702381,
+      "definite_fp_count": 6,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.809524,
+      "avg_score_std": 0.030422,
+      "avg_score_range": 0.074498
+    },
+    {
+      "group": "jpg",
+      "total_images": 243,
+      "definite_count": 120,
+      "uncertain_count": 123,
+      "coverage": 0.493827,
+      "selective_accuracy": 0.716667,
+      "raw_accuracy_at_0_15": 0.625514,
+      "definite_fp_count": 34,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.460905,
+      "avg_score_std": 0.019611,
+      "avg_score_range": 0.048996
+    },
+    {
+      "group": "png",
+      "total_images": 333,
+      "definite_count": 155,
+      "uncertain_count": 178,
+      "coverage": 0.465465,
+      "selective_accuracy": 0.883871,
+      "raw_accuracy_at_0_15": 0.693694,
+      "definite_fp_count": 18,
+      "definite_fn_count": 0,
+      "resolution_flip_rate": 0.354354,
+      "avg_score_std": 0.016257,
+      "avg_score_range": 0.040848
+    }
+  ],
+  "false_positive_cluster_summary_v21": [
+    {
+      "analysis_type": "decision_reason",
+      "group": "stable_ai_high_confidence_v21",
+      "total_images": 221,
+      "false_positive_count": 58,
+      "false_positive_rate": 0.262443
+    },
+    {
+      "analysis_type": "category",
+      "group": "day8_small_30",
+      "total_images": 60,
+      "false_positive_count": 11,
+      "false_positive_rate": 0.183333
+    },
+    {
+      "analysis_type": "category",
+      "group": "real_jpg",
+      "total_images": 100,
+      "false_positive_count": 18,
+      "false_positive_rate": 0.18
+    },
+    {
+      "analysis_type": "category",
+      "group": "real_png",
+      "total_images": 100,
+      "false_positive_count": 17,
+      "false_positive_rate": 0.17
+    },
+    {
+      "analysis_type": "format",
+      "group": "jpg",
+      "total_images": 243,
+      "false_positive_count": 34,
+      "false_positive_rate": 0.139918
+    },
+    {
+      "analysis_type": "category",
+      "group": "indoor_home",
+      "total_images": 30,
+      "false_positive_count": 4,
+      "false_positive_rate": 0.133333
+    },
+    {
+      "analysis_type": "has_exif",
+      "group": "true",
+      "total_images": 111,
+      "false_positive_count": 12,
+      "false_positive_rate": 0.108108
+    },
+    {
+      "analysis_type": "category",
+      "group": "nature_travel",
+      "total_images": 30,
+      "false_positive_count": 3,
+      "false_positive_rate": 0.1
+    },
+    {
+      "analysis_type": "has_exif",
+      "group": "false",
+      "total_images": 549,
+      "false_positive_count": 46,
+      "false_positive_rate": 0.083789
+    },
+    {
+      "analysis_type": "format",
+      "group": "jpeg",
+      "total_images": 84,
+      "false_positive_count": 6,
+      "false_positive_rate": 0.071429
+    },
+    {
+      "analysis_type": "category",
+      "group": "lowlight_weather",
+      "total_images": 30,
+      "false_positive_count": 2,
+      "false_positive_rate": 0.066667
+    },
+    {
+      "analysis_type": "category",
+      "group": "outdoor_street",
+      "total_images": 30,
+      "false_positive_count": 2,
+      "false_positive_rate": 0.066667
+    },
+    {
+      "analysis_type": "format",
+      "group": "png",
+      "total_images": 333,
+      "false_positive_count": 18,
+      "false_positive_rate": 0.054054
+    },
+    {
+      "analysis_type": "category",
+      "group": "food_retail",
+      "total_images": 30,
+      "false_positive_count": 1,
+      "false_positive_rate": 0.033333
+    }
+  ],
+  "false_negative_cluster_summary_v21": [],
+  "stable_ai_but_resize_biased_count": 70,
+  "stable_real_safe_v21_count": 95,
+  "decision_reason_counts_v21": {
+    "stable_ai_high_confidence_v21": 221,
+    "near_threshold_band_v21": 204,
+    "resolution_flip_v21": 45,
+    "weak_vote_majority_v21": 14,
+    "stable_ai_but_resize_biased": 70,
+    "unstable_score_v21": 11,
+    "stable_real_safe_v21": 95
+  },
+  "decision_policy_v21": {
+    "baseline_threshold": 0.15,
+    "ai_safe_threshold": 0.18,
+    "real_original_safe_threshold": 0.145,
+    "real_min_safe_threshold": 0.13,
+    "ai_original_guard_threshold": 0.155,
+    "score_std_limit": 0.035,
+    "score_range_limit": 0.06,
+    "resize_delta_limit": 0.055
+  },
+  "cache_mode": true,
+  "threshold_used": 0.15
+}

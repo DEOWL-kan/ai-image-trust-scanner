@@ -1,0 +1,237 @@
+{
+  "total_images": 660,
+  "resize_delta_summary": {
+    "mean": 0.028597,
+    "median": 0.027744,
+    "max": 0.155256,
+    "min": -0.118648
+  },
+  "resize_delta_by_true_label": [
+    {
+      "group": "ai",
+      "count": 330,
+      "mean": 0.01985,
+      "median": 0.021242,
+      "max": 0.059085,
+      "min": -0.076547
+    },
+    {
+      "group": "real",
+      "count": 330,
+      "mean": 0.037344,
+      "median": 0.05024,
+      "max": 0.155256,
+      "min": -0.118648
+    }
+  ],
+  "resize_delta_by_format": [
+    {
+      "group": "jpeg",
+      "count": 84,
+      "mean": 0.049242,
+      "median": 0.063094,
+      "max": 0.155256,
+      "min": -0.107697
+    },
+    {
+      "group": "jpg",
+      "count": 243,
+      "mean": 0.026657,
+      "median": 0.027934,
+      "max": 0.147179,
+      "min": -0.116425
+    },
+    {
+      "group": "png",
+      "count": 333,
+      "mean": 0.024805,
+      "median": 0.024124,
+      "max": 0.144048,
+      "min": -0.118648
+    }
+  ],
+  "resize_delta_by_category": [
+    {
+      "group": "ai_jpg",
+      "count": 100,
+      "mean": 0.019736,
+      "median": 0.022218,
+      "max": 0.05812,
+      "min": -0.073031
+    },
+    {
+      "group": "ai_png",
+      "count": 100,
+      "mean": 0.019746,
+      "median": 0.021024,
+      "max": 0.059085,
+      "min": -0.076547
+    },
+    {
+      "group": "day8_small_30",
+      "count": 60,
+      "mean": 0.020044,
+      "median": 0.021012,
+      "max": 0.147179,
+      "min": -0.081269
+    },
+    {
+      "group": "food_retail",
+      "count": 30,
+      "mean": 0.030481,
+      "median": 0.025648,
+      "max": 0.09434,
+      "min": -0.107697
+    },
+    {
+      "group": "indoor_home",
+      "count": 30,
+      "mean": 0.023077,
+      "median": 0.025641,
+      "max": 0.081503,
+      "min": -0.065531
+    },
+    {
+      "group": "lowlight_weather",
+      "count": 30,
+      "mean": 0.025804,
+      "median": 0.02518,
+      "max": 0.129559,
+      "min": -0.073324
+    },
+    {
+      "group": "nature_travel",
+      "count": 30,
+      "mean": 0.049207,
+      "median": 0.041153,
+      "max": 0.155256,
+      "min": -0.013823
+    },
+    {
+      "group": "object_closeup",
+      "count": 30,
+      "mean": 0.02576,
+      "median": 0.030093,
+      "max": 0.096554,
+      "min": -0.087837
+    },
+    {
+      "group": "outdoor_street",
+      "count": 30,
+      "mean": 0.053015,
+      "median": 0.038238,
+      "max": 0.124537,
+      "min": 0.010876
+    },
+    {
+      "group": "people_partial",
+      "count": 20,
+      "mean": 0.016365,
+      "median": 0.029832,
+      "max": 0.077339,
+      "min": -0.100009
+    },
+    {
+      "group": "real_jpg",
+      "count": 100,
+      "mean": 0.036727,
+      "median": 0.05024,
+      "max": 0.145854,
+      "min": -0.116425
+    },
+    {
+      "group": "real_png",
+      "count": 100,
+      "mean": 0.035029,
+      "median": 0.049363,
+      "max": 0.144048,
+      "min": -0.118648
+    }
+  ],
+  "original_score_vs_mean_score_diff": {
+    "mean": 0.021448,
+    "median": 0.020808,
+    "max": 0.116442,
+    "min": -0.088986
+  },
+  "stable_ai_high_confidence_false_positive_features": {
+    "count": 66,
+    "resize_delta_summary": {
+      "mean": 0.020231,
+      "median": 0.024705,
+      "max": 0.056624,
+      "min": -0.042696
+    },
+    "original_score_summary": {
+      "mean": 0.19518,
+      "median": 0.20113,
+      "max": 0.262213,
+      "min": 0.13983
+    },
+    "score_range_summary": {
+      "mean": 0.037291,
+      "median": 0.037337,
+      "max": 0.059726,
+      "min": 0.008986
+    },
+    "format_counts": {
+      "jpg": 38,
+      "png": 21,
+      "jpeg": 7
+    },
+    "has_exif_counts": {
+      "false": 53,
+      "true": 13
+    },
+    "category_counts": {
+      "real_jpg": 22,
+      "real_png": 20,
+      "food_retail": 1,
+      "indoor_home": 4,
+      "lowlight_weather": 2,
+      "nature_travel": 4,
+      "outdoor_street": 2,
+      "day8_small_30": 11
+    }
+  },
+  "uncertain_ai_features": {
+    "count": 161,
+    "resize_delta_summary": {
+      "mean": 0.015324,
+      "median": 0.018514,
+      "max": 0.059085,
+      "min": -0.076547
+    },
+    "original_score_summary": {
+      "mean": 0.154428,
+      "median": 0.15309,
+      "max": 0.225243,
+      "min": 0.1146
+    },
+    "score_range_summary": {
+      "mean": 0.031764,
+      "median": 0.023785,
+      "max": 0.101709,
+      "min": 0.007898
+    },
+    "vote_counts": {
+      "ai=4,real=0": 73,
+      "ai=3,real=1": 53,
+      "ai=0,real=4": 13,
+      "ai=2,real=2": 15,
+      "ai=1,real=3": 7
+    },
+    "category_counts": {
+      "ai_jpg": 46,
+      "ai_png": 51,
+      "food_retail": 12,
+      "indoor_home": 15,
+      "lowlight_weather": 5,
+      "nature_travel": 2,
+      "object_closeup": 8,
+      "outdoor_street": 2,
+      "people_partial": 7,
+      "day8_small_30": 13
+    }
+  }
+}
