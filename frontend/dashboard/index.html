@@ -1,0 +1,176 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AI Image Trust Scanner Dashboard</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="page-shell">
+      <header class="top-header">
+        <div class="brand-block">
+          <p class="eyebrow">Trust Console</p>
+          <h1>AI Image Trust Scanner</h1>
+          <p class="subtitle">Lightweight image authenticity dashboard</p>
+        </div>
+        <div class="header-actions">
+          <div class="status-pill" id="service-status" data-status="loading">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="service-status-text">Checking</span>
+          </div>
+          <button class="button button-primary" id="refresh-button" type="button">
+            Refresh
+          </button>
+        </div>
+      </header>
+
+      <section class="action-panel" aria-labelledby="upload-title">
+        <div class="action-copy">
+          <p class="eyebrow">Analyze</p>
+          <h2 id="upload-title">Image Detection</h2>
+          <p>Upload one or multiple images to analyze authenticity risk.</p>
+        </div>
+
+        <div class="upload-grid">
+          <article class="upload-card">
+            <div class="upload-card-header">
+              <div>
+                <h3>Single Image</h3>
+                <p>Run one image through the existing detector.</p>
+              </div>
+              <span class="mini-badge">POST /api/v1/detect</span>
+            </div>
+            <label class="file-drop" for="single-file-input">
+              <span class="file-drop-title" id="single-file-label">Choose an image</span>
+              <span class="file-drop-meta">JPG, JPEG, PNG, or WEBP</span>
+            </label>
+            <input id="single-file-input" type="file" accept="image/jpeg,image/png,image/webp" />
+            <button class="button button-primary button-full" id="single-detect-button" type="button">
+              Detect Image
+            </button>
+          </article>
+
+          <article class="upload-card">
+            <div class="upload-card-header">
+              <div>
+                <h3>Batch Images</h3>
+                <p>Analyze a small group with the batch endpoint.</p>
+              </div>
+              <span class="mini-badge">POST /detect/batch</span>
+            </div>
+            <label class="file-drop" for="batch-file-input">
+              <span class="file-drop-title" id="batch-file-label">Choose multiple images</span>
+              <span class="file-drop-meta" id="batch-file-meta">No images selected</span>
+            </label>
+            <input id="batch-file-input" type="file" accept="image/jpeg,image/png,image/webp" multiple />
+            <button class="button button-secondary button-full" id="batch-detect-button" type="button">
+              Batch Detect
+            </button>
+          </article>
+        </div>
+
+        <div class="upload-result" id="upload-result" aria-live="polite">
+          <div class="empty-state compact">Detection results will appear here.</div>
+        </div>
+      </section>
+
+      <section class="summary-grid" aria-label="Summary statistics">
+        <article class="stat-card">
+          <p>Total Scans</p>
+          <strong data-summary-key="totalScans">--</strong>
+          <span>Detection jobs</span>
+        </article>
+        <article class="stat-card">
+          <p>AI Detected</p>
+          <strong data-summary-key="aiDetected">--</strong>
+          <span>AI generated</span>
+        </article>
+        <article class="stat-card">
+          <p>Real Detected</p>
+          <strong data-summary-key="realDetected">--</strong>
+          <span>Likely authentic</span>
+        </article>
+        <article class="stat-card">
+          <p>Uncertain</p>
+          <strong data-summary-key="uncertain">--</strong>
+          <span>Needs review</span>
+        </article>
+        <article class="stat-card">
+          <p>High Risk</p>
+          <strong data-summary-key="highRisk">--</strong>
+          <span>Risk flagged</span>
+        </article>
+        <article class="stat-card">
+          <p>Average Confidence</p>
+          <strong data-summary-key="averageConfidence">--</strong>
+          <span>Loaded results</span>
+        </article>
+      </section>
+
+      <section class="dashboard-card">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Signals</p>
+            <h2>Distribution Charts</h2>
+            <p>Compact views of label, risk, and confidence distribution.</p>
+          </div>
+          <span class="timestamp" id="chart-updated-at">--</span>
+        </div>
+        <div class="chart-grid">
+          <article class="chart-panel">
+            <div class="panel-heading">
+              <h3>Label Distribution</h3>
+              <span>AI / Real / Uncertain</span>
+            </div>
+            <div class="bar-chart" id="label-chart"></div>
+          </article>
+          <article class="chart-panel">
+            <div class="panel-heading">
+              <h3>Risk Distribution</h3>
+              <span>Low / Medium / High</span>
+            </div>
+            <div class="bar-chart" id="risk-chart"></div>
+          </article>
+          <article class="chart-panel">
+            <div class="panel-heading">
+              <h3>Confidence Distribution</h3>
+              <span>High / Medium / Low</span>
+            </div>
+            <div class="bar-chart" id="confidence-chart"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="dashboard-card">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">History</p>
+            <h2>Recent Results</h2>
+            <p>Latest compact detection records saved by the API.</p>
+          </div>
+          <span class="timestamp" id="recent-count">--</span>
+        </div>
+        <div class="table-shell">
+          <table>
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Filename</th>
+                <th>Label</th>
+                <th>Risk</th>
+                <th>Confidence</th>
+                <th>Summary</th>
+              </tr>
+            </thead>
+            <tbody id="recent-results-body"></tbody>
+          </table>
+          <div class="empty-state" id="recent-empty-state" hidden>
+            No recent detection results yet.
+          </div>
+        </div>
+      </section>
+    </main>
+    <script src="./app.js" defer></script>
+  </body>
+</html>

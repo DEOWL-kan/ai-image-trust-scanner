@@ -7,6 +7,7 @@ from typing import Any
 
 from fastapi import FastAPI, File, HTTPException, Query, Request, UploadFile
 from fastapi.responses import JSONResponse
+from fastapi.staticfiles import StaticFiles
 
 from app.schemas import (
     DashboardChartDataResponse,
@@ -43,9 +44,16 @@ API_VERSION = "0.1.0"
 SUPPORTED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 UPLOAD_DIR = PROJECT_ROOT / ".tmp" / "api_uploads"
+FRONTEND_DASHBOARD_DIR = PROJECT_ROOT / "frontend" / "dashboard"
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AI Image Trust Scanner API", version=API_VERSION)
+if FRONTEND_DASHBOARD_DIR.exists():
+    app.mount(
+        "/dashboard-ui",
+        StaticFiles(directory=FRONTEND_DASHBOARD_DIR, html=True),
+        name="dashboard-ui",
+    )
 
 DASHBOARD_FINAL_LABEL_FILTERS = {"ai_generated", "real", "uncertain"}
 DASHBOARD_RISK_LEVEL_FILTERS = {"low", "medium", "high", "unknown"}
