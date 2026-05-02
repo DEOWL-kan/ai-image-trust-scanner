@@ -2,3 +2,6 @@ Pillow
 numpy
 opencv-python
 pytest
+fastapi
+uvicorn
+python-multipart
