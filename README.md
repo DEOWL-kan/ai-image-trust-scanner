@@ -8,9 +8,9 @@ V0.1 does not prove whether an image is real or AI-generated. It is a baseline e
 
 ## Current Version
 
-V0.1 baseline CLI.
+V0.1 baseline CLI plus a minimal FastAPI service for product-facing detection and dashboard data APIs.
 
-The project remains a Python command-line tool. It does not include Flask, FastAPI, a web frontend, GUI, database, model training, or downloaded model weights.
+The project does not include a web frontend, GUI, database, model training, or downloaded model weights.
 
 ## Features
 
@@ -29,6 +29,7 @@ The project remains a Python command-line tool. It does not include Flask, FastA
 - Analyze threshold calibration, error cases, and borderline samples in Day6 reports
 - Run Day7 threshold sweep, regression evaluation, and stable baseline reporting
 - Output `final_label` as `ai`, `real`, or `uncertain` with a configurable uncertainty margin
+- Serve single-image detection, batch detection, history, and dashboard summary APIs through FastAPI
 
 ## Project Structure
 
@@ -465,6 +466,96 @@ or:
 ```bash
 python -m pytest
 ```
+
+## Dashboard API
+
+Day21 adds frontend-ready dashboard data endpoints built from Day20 history JSON files in `outputs/api_history/`.
+
+These APIs summarize existing detection results for future dashboard cards, charts, and lists. They do not change detector weights, do not improve model accuracy, do not add a database, and do not connect pretrained models.
+
+Start the API service:
+
+```bash
+uvicorn app.main:app --reload
+```
+
+### GET /dashboard/summary
+
+Returns summary statistics, recent results, recent batches, chart data, alerts, and optional debug metadata.
+
+Parameters:
+
+- `limit_recent`: integer, default `10`
+- `include_debug`: boolean, default `false`
+
+Example:
+
+```bash
+curl "http://127.0.0.1:8000/dashboard/summary?limit_recent=10"
+```
+
+Main response fields:
+
+- `summary.total_detections`
+- `summary.single_detection_count`
+- `summary.batch_detection_count`
+- `summary.total_images_processed`
+- `summary.final_label_distribution`
+- `summary.risk_level_distribution`
+- `summary.confidence_distribution`
+- `summary.decision_quality`
+- `recent_results`
+- `recent_batches`
+- `chart_data`
+- `alerts`
+
+### GET /dashboard/recent-results
+
+Returns compact image-level history records for tables or cards. Full `debug_evidence` is intentionally excluded.
+
+Parameters:
+
+- `limit`: integer, default `20`
+- `final_label`: optional, one of `ai_generated`, `real`, `uncertain`
+- `risk_level`: optional, one of `low`, `medium`, `high`, `unknown`
+
+Examples:
+
+```bash
+curl "http://127.0.0.1:8000/dashboard/recent-results?limit=20"
+curl "http://127.0.0.1:8000/dashboard/recent-results?final_label=uncertain"
+curl "http://127.0.0.1:8000/dashboard/recent-results?risk_level=high"
+```
+
+Each result includes:
+
+- `id`
+- `timestamp`
+- `filename`
+- `final_label`
+- `risk_level`
+- `confidence`
+- `user_facing_summary`
+- `recommendation`
+
+### GET /dashboard/chart-data
+
+Returns chart-only arrays that can be passed directly to ECharts, Recharts, Chart.js, or similar libraries.
+
+Example:
+
+```bash
+curl "http://127.0.0.1:8000/dashboard/chart-data"
+```
+
+Chart fields:
+
+- `label_distribution`
+- `risk_distribution`
+- `confidence_distribution`
+- `daily_detection_trend`
+
+See `docs/day21_dashboard_api.md` for full JSON contracts and examples.
 
 ## Output Meaning
 

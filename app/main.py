@@ -8,13 +8,24 @@ from typing import Any
 from fastapi import FastAPI, File, HTTPException, Query, Request, UploadFile
 from fastapi.responses import JSONResponse
 
-from app.schemas import DetectionResponse, HealthResponse
+from app.schemas import (
+    DashboardChartDataResponse,
+    DashboardRecentResultsResponse,
+    DashboardSummaryResponse,
+    DetectionResponse,
+    HealthResponse,
+)
 from app.services.batch_detection import (
     BatchDetectionInput,
     build_path_inputs,
     run_batch_detection,
 )
 from app.services.detection_service import DetectionServiceError, detect_image_for_api
+from app.services.dashboard_summary import (
+    build_chart_data_payload,
+    build_dashboard_payload,
+    build_recent_results_payload,
+)
 from app.services.history_store import (
     CorruptHistoryError,
     HistoryNotFoundError,
@@ -35,6 +46,9 @@ UPLOAD_DIR = PROJECT_ROOT / ".tmp" / "api_uploads"
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AI Image Trust Scanner API", version=API_VERSION)
+
+DASHBOARD_FINAL_LABEL_FILTERS = {"ai_generated", "real", "uncertain"}
+DASHBOARD_RISK_LEVEL_FILTERS = {"low", "medium", "high", "unknown"}
 
 
 def _error_payload(code: str, message: str) -> dict[str, object]:
@@ -360,3 +374,42 @@ def history_detail(filename: str) -> dict[str, Any]:
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except CorruptHistoryError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc
+
+
+@app.get("/dashboard/summary", response_model=DashboardSummaryResponse)
+def dashboard_summary(
+    limit_recent: int = Query(10, ge=1, le=100),
+    include_debug: bool = Query(False),
+) -> dict[str, Any]:
+    return build_dashboard_payload(
+        limit_recent=limit_recent,
+        include_debug=include_debug,
+    )
+
+
+@app.get("/dashboard/recent-results", response_model=DashboardRecentResultsResponse)
+def dashboard_recent_results(
+    limit: int = Query(20, ge=1, le=100),
+    final_label: str | None = Query(None),
+    risk_level: str | None = Query(None),
+) -> dict[str, Any]:
+    if final_label is not None and final_label not in DASHBOARD_FINAL_LABEL_FILTERS:
+        raise HTTPException(
+            status_code=400,
+            detail="final_label must be one of: ai_generated, real, uncertain.",
+        )
+    if risk_level is not None and risk_level not in DASHBOARD_RISK_LEVEL_FILTERS:
+        raise HTTPException(
+            status_code=400,
+            detail="risk_level must be one of: low, medium, high, unknown.",
+        )
+    return build_recent_results_payload(
+        limit=limit,
+        final_label=final_label,
+        risk_level=risk_level,
+    )
+
+
+@app.get("/dashboard/chart-data", response_model=DashboardChartDataResponse)
+def dashboard_chart_data() -> dict[str, Any]:
+    return build_chart_data_payload()
