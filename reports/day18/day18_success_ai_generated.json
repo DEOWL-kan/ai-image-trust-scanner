@@ -1,0 +1,100 @@
+{
+  "schema_version": "1.0.0",
+  "status": "success",
+  "request_id": "day18-sample-ai",
+  "data": {
+    "image": {
+      "filename": "contract_sample.png",
+      "width": 1024,
+      "height": 768,
+      "format": "png",
+      "size_bytes": 204800
+    },
+    "result": {
+      "final_label": "ai_generated",
+      "risk_level": "high",
+      "confidence": 0.84,
+      "decision_reason": [
+        {
+          "code": "stable_ai_high_confidence_v21",
+          "message": "stable_ai_high_confidence_v21",
+          "severity": "critical"
+        }
+      ],
+      "recommendation": {
+        "action": "warn",
+        "message": "Use the adapted Day18 response contract for frontend display."
+      },
+      "user_facing_summary": "Sample Day17 product output for likely_ai.",
+      "technical_explanation": {
+        "score": 0.191,
+        "threshold_used": 0.15,
+        "decision_layer": "day17_product_output_schema",
+        "main_signals": [
+          "ai_like_score_pattern",
+          "multi_resolution_label_consistency",
+          "stable_ai_high_confidence_v21"
+        ]
+      },
+      "debug_evidence": {
+        "enabled": true,
+        "raw_score": 0.191,
+        "feature_summary": {
+          "component_scores": {},
+          "risk_factors": [
+            "ai_like_score_pattern"
+          ],
+          "stability_factors": [
+            "multi_resolution_label_consistency"
+          ],
+          "raw_debug_evidence": {
+            "raw_score": 0.191,
+            "threshold_used": 0.15,
+            "risk_factors": [
+              "ai_like_score_pattern"
+            ],
+            "stability_factors": [
+              "multi_resolution_label_consistency"
+            ],
+            "uncertainty_flags": [],
+            "multi_resolution": {
+              "score_range": 0.02,
+              "resolution_flip_count": 0
+            },
+            "format_info": {
+              "format": "png"
+            },
+            "exif_info": {
+              "has_exif": false
+            }
+          }
+        },
+        "consistency_checks": {
+          "uncertainty_flags": [],
+          "multi_resolution": {
+            "score_range": 0.02,
+            "resolution_flip_count": 0
+          }
+        },
+        "format_evidence": {
+          "format_info": {
+            "format": "png"
+          },
+          "exif_info": {
+            "has_exif": false
+          }
+        },
+        "resolution_evidence": {
+          "score_range": 0.02,
+          "resolution_flip_count": 0
+        }
+      }
+    }
+  },
+  "meta": {
+    "processed_at": "2026-05-02T14:35:36.464319+00:00",
+    "adapter_version": "day18_api_adapter_v1",
+    "model_family": "handcrafted_detector",
+    "notes": []
+  }
+}

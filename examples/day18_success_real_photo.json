@@ -1,0 +1,70 @@
+{
+  "schema_version": "1.0.0",
+  "status": "success",
+  "request_id": "example-real-photo",
+  "data": {
+    "image": {
+      "filename": "example_real.jpg",
+      "width": 1600,
+      "height": 1200,
+      "format": "jpg",
+      "size_bytes": 524288
+    },
+    "result": {
+      "final_label": "real_photo",
+      "risk_level": "low",
+      "confidence": 0.78,
+      "decision_reason": [
+        {
+          "code": "stable_real_safe_v21",
+          "message": "Stable real-photo support was found in the decision layer.",
+          "severity": "info"
+        }
+      ],
+      "recommendation": {
+        "action": "allow",
+        "message": "No strong AI-generation warning was found, but use source context for high-risk scenarios."
+      },
+      "user_facing_summary": "This image currently looks closer to a real photo under the available rule-based checks.",
+      "technical_explanation": {
+        "score": 0.104,
+        "threshold_used": 0.15,
+        "decision_layer": "day17_product_output_schema",
+        "main_signals": ["stable_real_safe_v21", "baseline_label_supports_real"]
+      },
+      "debug_evidence": {
+        "enabled": true,
+        "raw_score": 0.104,
+        "feature_summary": {
+          "risk_factors": [],
+          "stability_factors": ["baseline_label_supports_real"]
+        },
+        "consistency_checks": {
+          "uncertainty_flags": [],
+          "multi_resolution": {
+            "score_range": 0.018,
+            "resolution_flip_count": 0
+          }
+        },
+        "format_evidence": {
+          "format_info": {
+            "format": "jpg"
+          },
+          "exif_info": {
+            "has_exif": true
+          }
+        },
+        "resolution_evidence": {
+          "score_range": 0.018,
+          "resolution_flip_count": 0
+        }
+      }
+    }
+  },
+  "meta": {
+    "processed_at": "2026-05-02T00:00:00+00:00",
+    "adapter_version": "day18_api_adapter_v1",
+    "model_family": "handcrafted_detector",
+    "notes": []
+  }
+}

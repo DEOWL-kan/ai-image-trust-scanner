@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0.0",
+  "status": "error",
+  "request_id": "day18-sample-error",
+  "error": {
+    "code": "INVALID_IMAGE",
+    "message": "The uploaded file could not be opened as a supported image.",
+    "details": {
+      "filename": "broken.txt"
+    }
+  },
+  "data": null,
+  "meta": {
+    "processed_at": "2026-05-02T14:35:36.464319+00:00",
+    "adapter_version": "day18_api_adapter_v1"
+  }
+}

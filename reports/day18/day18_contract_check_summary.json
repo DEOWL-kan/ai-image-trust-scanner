@@ -1,0 +1,35 @@
+{
+  "adapter_version": "day18_api_adapter_v1",
+  "output_dir": "D:\\ai image\\ai-image-trust-scanner\\reports\\day18",
+  "all_complete": true,
+  "checks": [
+    {
+      "name": "day18_success_ai_generated",
+      "status": "success",
+      "complete": true,
+      "missing": [],
+      "path": "D:\\ai image\\ai-image-trust-scanner\\reports\\day18\\day18_success_ai_generated.json"
+    },
+    {
+      "name": "day18_success_real_photo",
+      "status": "success",
+      "complete": true,
+      "missing": [],
+      "path": "D:\\ai image\\ai-image-trust-scanner\\reports\\day18\\day18_success_real_photo.json"
+    },
+    {
+      "name": "day18_success_uncertain",
+      "status": "success",
+      "complete": true,
+      "missing": [],
+      "path": "D:\\ai image\\ai-image-trust-scanner\\reports\\day18\\day18_success_uncertain.json"
+    },
+    {
+      "name": "day18_error_invalid_image",
+      "status": "error",
+      "complete": true,
+      "missing": [],
+      "path": "D:\\ai image\\ai-image-trust-scanner\\reports\\day18\\day18_error_invalid_image.json"
+    }
+  ]
+}

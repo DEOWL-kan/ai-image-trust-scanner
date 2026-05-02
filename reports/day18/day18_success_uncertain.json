@@ -1,0 +1,53 @@
+{
+  "schema_version": "1.0.0",
+  "status": "success",
+  "request_id": "day18-sample-uncertain",
+  "data": {
+    "image": {
+      "filename": "contract_uncertain.webp",
+      "width": 1024,
+      "height": 768,
+      "format": "webp",
+      "size_bytes": 204800
+    },
+    "result": {
+      "final_label": "uncertain",
+      "risk_level": "medium",
+      "confidence": 0.52,
+      "decision_reason": [
+        {
+          "code": "near_threshold_band_v21",
+          "message": "near_threshold_band_v21",
+          "severity": "warning"
+        }
+      ],
+      "recommendation": {
+        "action": "review",
+        "message": "Use the adapted Day18 response contract for frontend display."
+      },
+      "user_facing_summary": "Sample Day17 product output for uncertain.",
+      "technical_explanation": {
+        "score": 0.151,
+        "threshold_used": 0.15,
+        "decision_layer": "day17_product_output_schema",
+        "main_signals": [
+          "near_threshold_band_v21"
+        ]
+      },
+      "debug_evidence": {
+        "enabled": false,
+        "raw_score": null,
+        "feature_summary": {},
+        "consistency_checks": {},
+        "format_evidence": {},
+        "resolution_evidence": {}
+      }
+    }
+  },
+  "meta": {
+    "processed_at": "2026-05-02T14:35:36.464319+00:00",
+    "adapter_version": "day18_api_adapter_v1",
+    "model_family": "handcrafted_detector",
+    "notes": []
+  }
+}
