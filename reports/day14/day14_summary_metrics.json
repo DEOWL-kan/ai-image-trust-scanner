@@ -1,0 +1,1576 @@
+{
+  "threshold": 0.15,
+  "decision_policy": {
+    "threshold": 0.15,
+    "baseline_threshold": 0.15,
+    "final_real_threshold": 0.12,
+    "final_ai_threshold": 0.18,
+    "uncertainty_margin": 0.03
+  },
+  "dataset_counts": {
+    "raw_total": 200,
+    "format_total": 400,
+    "resolution_total": 1200,
+    "all_total": 1800
+  },
+  "label_count_table": [
+    {
+      "label": "ai",
+      "raw": 100,
+      "format": 200,
+      "resolution": 600,
+      "total": 900
+    },
+    {
+      "label": "real",
+      "raw": 100,
+      "format": 200,
+      "resolution": 600,
+      "total": 900
+    }
+  ],
+  "scene_count_table": [
+    {
+      "label": "ai",
+      "scene_type": "food_retail",
+      "count": "135"
+    },
+    {
+      "label": "ai",
+      "scene_type": "indoor_home",
+      "count": "135"
+    },
+    {
+      "label": "ai",
+      "scene_type": "lowlight_weather",
+      "count": "135"
+    },
+    {
+      "label": "ai",
+      "scene_type": "nature_travel",
+      "count": "135"
+    },
+    {
+      "label": "ai",
+      "scene_type": "object_closeup",
+      "count": "135"
+    },
+    {
+      "label": "ai",
+      "scene_type": "outdoor_street",
+      "count": "135"
+    },
+    {
+      "label": "ai",
+      "scene_type": "people_partial",
+      "count": "90"
+    },
+    {
+      "label": "real",
+      "scene_type": "food_retail",
+      "count": "135"
+    },
+    {
+      "label": "real",
+      "scene_type": "indoor_home",
+      "count": "135"
+    },
+    {
+      "label": "real",
+      "scene_type": "lowlight_weather",
+      "count": "135"
+    },
+    {
+      "label": "real",
+      "scene_type": "nature_travel",
+      "count": "135"
+    },
+    {
+      "label": "real",
+      "scene_type": "object_closeup",
+      "count": "135"
+    },
+    {
+      "label": "real",
+      "scene_type": "outdoor_street",
+      "count": "135"
+    },
+    {
+      "label": "real",
+      "scene_type": "people_partial",
+      "count": "90"
+    }
+  ],
+  "raw_baseline": {
+    "count": 200,
+    "overall_accuracy": 0.305,
+    "ai_accuracy": 0.39,
+    "real_accuracy": 0.22,
+    "per_scene_accuracy": {
+      "food_retail": {
+        "count": 30,
+        "correct_count": 5,
+        "accuracy": 0.166667,
+        "uncertain_count": 22
+      },
+      "indoor_home": {
+        "count": 30,
+        "correct_count": 1,
+        "accuracy": 0.033333,
+        "uncertain_count": 25
+      },
+      "lowlight_weather": {
+        "count": 30,
+        "correct_count": 11,
+        "accuracy": 0.366667,
+        "uncertain_count": 13
+      },
+      "nature_travel": {
+        "count": 30,
+        "correct_count": 15,
+        "accuracy": 0.5,
+        "uncertain_count": 11
+      },
+      "object_closeup": {
+        "count": 30,
+        "correct_count": 12,
+        "accuracy": 0.4,
+        "uncertain_count": 15
+      },
+      "outdoor_street": {
+        "count": 30,
+        "correct_count": 12,
+        "accuracy": 0.4,
+        "uncertain_count": 16
+      },
+      "people_partial": {
+        "count": 20,
+        "correct_count": 5,
+        "accuracy": 0.25,
+        "uncertain_count": 13
+      }
+    },
+    "per_format_accuracy": {
+      "jpeg": {
+        "count": 84,
+        "correct_count": 21,
+        "accuracy": 0.25,
+        "uncertain_count": 49
+      },
+      "jpg": {
+        "count": 13,
+        "correct_count": 1,
+        "accuracy": 0.076923,
+        "uncertain_count": 5
+      },
+      "png": {
+        "count": 103,
+        "correct_count": 39,
+        "accuracy": 0.378641,
+        "uncertain_count": 61
+      }
+    },
+    "per_resolution_accuracy": {
+      "native": {
+        "count": 200,
+        "correct_count": 61,
+        "accuracy": 0.305,
+        "uncertain_count": 115
+      }
+    },
+    "false_positive_count": 23,
+    "false_negative_count": 1,
+    "uncertain_count": 115,
+    "uncertain_rate": 0.575,
+    "hard_candidate_count": 167,
+    "pipeline_error_count": 0
+  },
+  "format_eval": {
+    "count": 400,
+    "overall_accuracy": 0.2775,
+    "ai_accuracy": 0.405,
+    "real_accuracy": 0.15,
+    "per_scene_accuracy": {
+      "food_retail": {
+        "count": 60,
+        "correct_count": 8,
+        "accuracy": 0.133333,
+        "uncertain_count": 44
+      },
+      "indoor_home": {
+        "count": 60,
+        "correct_count": 3,
+        "accuracy": 0.05,
+        "uncertain_count": 49
+      },
+      "lowlight_weather": {
+        "count": 60,
+        "correct_count": 18,
+        "accuracy": 0.3,
+        "uncertain_count": 30
+      },
+      "nature_travel": {
+        "count": 60,
+        "correct_count": 31,
+        "accuracy": 0.516667,
+        "uncertain_count": 21
+      },
+      "object_closeup": {
+        "count": 60,
+        "correct_count": 20,
+        "accuracy": 0.333333,
+        "uncertain_count": 34
+      },
+      "outdoor_street": {
+        "count": 60,
+        "correct_count": 22,
+        "accuracy": 0.366667,
+        "uncertain_count": 34
+      },
+      "people_partial": {
+        "count": 40,
+        "correct_count": 9,
+        "accuracy": 0.225,
+        "uncertain_count": 27
+      }
+    },
+    "per_format_accuracy": {
+      "jpg": {
+        "count": 200,
+        "correct_count": 57,
+        "accuracy": 0.285,
+        "uncertain_count": 118
+      },
+      "png": {
+        "count": 200,
+        "correct_count": 54,
+        "accuracy": 0.27,
+        "uncertain_count": 121
+      }
+    },
+    "per_resolution_accuracy": {
+      "native": {
+        "count": 400,
+        "correct_count": 111,
+        "accuracy": 0.2775,
+        "uncertain_count": 239
+      }
+    },
+    "false_positive_count": 48,
+    "false_negative_count": 2,
+    "uncertain_count": 239,
+    "uncertain_rate": 0.5975,
+    "hard_candidate_count": 346,
+    "pipeline_error_count": 0
+  },
+  "resolution_eval": {
+    "count": 1200,
+    "overall_accuracy": 0.31,
+    "ai_accuracy": 0.62,
+    "real_accuracy": 0.0,
+    "per_scene_accuracy": {
+      "food_retail": {
+        "count": 180,
+        "correct_count": 29,
+        "accuracy": 0.161111,
+        "uncertain_count": 95
+      },
+      "indoor_home": {
+        "count": 180,
+        "correct_count": 18,
+        "accuracy": 0.1,
+        "uncertain_count": 114
+      },
+      "lowlight_weather": {
+        "count": 180,
+        "correct_count": 66,
+        "accuracy": 0.366667,
+        "uncertain_count": 55
+      },
+      "nature_travel": {
+        "count": 180,
+        "correct_count": 84,
+        "accuracy": 0.466667,
+        "uncertain_count": 6
+      },
+      "object_closeup": {
+        "count": 180,
+        "correct_count": 59,
+        "accuracy": 0.327778,
+        "uncertain_count": 79
+      },
+      "outdoor_street": {
+        "count": 180,
+        "correct_count": 88,
+        "accuracy": 0.488889,
+        "uncertain_count": 2
+      },
+      "people_partial": {
+        "count": 120,
+        "correct_count": 28,
+        "accuracy": 0.233333,
+        "uncertain_count": 71
+      }
+    },
+    "per_format_accuracy": {
+      "jpg": {
+        "count": 600,
+        "correct_count": 189,
+        "accuracy": 0.315,
+        "uncertain_count": 206
+      },
+      "png": {
+        "count": 600,
+        "correct_count": 183,
+        "accuracy": 0.305,
+        "uncertain_count": 216
+      }
+    },
+    "per_resolution_accuracy": {
+      "long1024": {
+        "count": 400,
+        "correct_count": 121,
+        "accuracy": 0.3025,
+        "uncertain_count": 154
+      },
+      "long512": {
+        "count": 400,
+        "correct_count": 122,
+        "accuracy": 0.305,
+        "uncertain_count": 134
+      },
+      "long768": {
+        "count": 400,
+        "correct_count": 129,
+        "accuracy": 0.3225,
+        "uncertain_count": 134
+      }
+    },
+    "false_positive_count": 406,
+    "false_negative_count": 0,
+    "uncertain_count": 422,
+    "uncertain_rate": 0.351667,
+    "hard_candidate_count": 942,
+    "pipeline_error_count": 0
+  },
+  "all_metrics": {
+    "count": 1800,
+    "overall_accuracy": 0.302222,
+    "ai_accuracy": 0.546667,
+    "real_accuracy": 0.057778,
+    "per_scene_accuracy": {
+      "food_retail": {
+        "count": 270,
+        "correct_count": 42,
+        "accuracy": 0.155556,
+        "uncertain_count": 161
+      },
+      "indoor_home": {
+        "count": 270,
+        "correct_count": 22,
+        "accuracy": 0.081481,
+        "uncertain_count": 188
+      },
+      "lowlight_weather": {
+        "count": 270,
+        "correct_count": 95,
+        "accuracy": 0.351852,
+        "uncertain_count": 98
+      },
+      "nature_travel": {
+        "count": 270,
+        "correct_count": 130,
+        "accuracy": 0.481481,
+        "uncertain_count": 38
+      },
+      "object_closeup": {
+        "count": 270,
+        "correct_count": 91,
+        "accuracy": 0.337037,
+        "uncertain_count": 128
+      },
+      "outdoor_street": {
+        "count": 270,
+        "correct_count": 122,
+        "accuracy": 0.451852,
+        "uncertain_count": 52
+      },
+      "people_partial": {
+        "count": 180,
+        "correct_count": 42,
+        "accuracy": 0.233333,
+        "uncertain_count": 111
+      }
+    },
+    "per_format_accuracy": {
+      "jpeg": {
+        "count": 84,
+        "correct_count": 21,
+        "accuracy": 0.25,
+        "uncertain_count": 49
+      },
+      "jpg": {
+        "count": 813,
+        "correct_count": 247,
+        "accuracy": 0.303813,
+        "uncertain_count": 329
+      },
+      "png": {
+        "count": 903,
+        "correct_count": 276,
+        "accuracy": 0.305648,
+        "uncertain_count": 398
+      }
+    },
+    "per_resolution_accuracy": {
+      "long1024": {
+        "count": 400,
+        "correct_count": 121,
+        "accuracy": 0.3025,
+        "uncertain_count": 154
+      },
+      "long512": {
+        "count": 400,
+        "correct_count": 122,
+        "accuracy": 0.305,
+        "uncertain_count": 134
+      },
+      "long768": {
+        "count": 400,
+        "correct_count": 129,
+        "accuracy": 0.3225,
+        "uncertain_count": 134
+      },
+      "native": {
+        "count": 600,
+        "correct_count": 172,
+        "accuracy": 0.286667,
+        "uncertain_count": 354
+      }
+    },
+    "false_positive_count": 477,
+    "false_negative_count": 3,
+    "uncertain_count": 776,
+    "uncertain_rate": 0.431111,
+    "hard_candidate_count": 1455,
+    "pipeline_error_count": 0
+  },
+  "overall_accuracy": 0.305,
+  "ai_accuracy": 0.39,
+  "real_accuracy": 0.22,
+  "per_scene_accuracy": {
+    "food_retail": {
+      "count": 30,
+      "correct_count": 5,
+      "accuracy": 0.166667,
+      "uncertain_count": 22
+    },
+    "indoor_home": {
+      "count": 30,
+      "correct_count": 1,
+      "accuracy": 0.033333,
+      "uncertain_count": 25
+    },
+    "lowlight_weather": {
+      "count": 30,
+      "correct_count": 11,
+      "accuracy": 0.366667,
+      "uncertain_count": 13
+    },
+    "nature_travel": {
+      "count": 30,
+      "correct_count": 15,
+      "accuracy": 0.5,
+      "uncertain_count": 11
+    },
+    "object_closeup": {
+      "count": 30,
+      "correct_count": 12,
+      "accuracy": 0.4,
+      "uncertain_count": 15
+    },
+    "outdoor_street": {
+      "count": 30,
+      "correct_count": 12,
+      "accuracy": 0.4,
+      "uncertain_count": 16
+    },
+    "people_partial": {
+      "count": 20,
+      "correct_count": 5,
+      "accuracy": 0.25,
+      "uncertain_count": 13
+    }
+  },
+  "per_format_accuracy": {
+    "jpg": {
+      "count": 200,
+      "correct_count": 57,
+      "accuracy": 0.285,
+      "uncertain_count": 118
+    },
+    "png": {
+      "count": 200,
+      "correct_count": 54,
+      "accuracy": 0.27,
+      "uncertain_count": 121
+    }
+  },
+  "per_resolution_accuracy": {
+    "long1024": {
+      "count": 400,
+      "correct_count": 121,
+      "accuracy": 0.3025,
+      "uncertain_count": 154
+    },
+    "long512": {
+      "count": 400,
+      "correct_count": 122,
+      "accuracy": 0.305,
+      "uncertain_count": 134
+    },
+    "long768": {
+      "count": 400,
+      "correct_count": 129,
+      "accuracy": 0.3225,
+      "uncertain_count": 134
+    }
+  },
+  "false_positive_count": 477,
+  "false_negative_count": 3,
+  "uncertain_count": 776,
+  "uncertain_rate": 0.431111,
+  "format_flip_rate": 0.015,
+  "resolution_flip_rate": 0.585,
+  "source_level_accuracy": 0.302222,
+  "source_level_accuracy_detail": {
+    "source_count": 200,
+    "source_level_accuracy": 0.302222,
+    "majority_source_accuracy": 0.385,
+    "all_variants_correct_rate": 0.17
+  },
+  "hard_candidate_count": 1455,
+  "format_flip": {
+    "complete_pair_count": 200,
+    "flip_count": 3,
+    "format_flip_rate": 0.015,
+    "flips": [
+      {
+        "image_id": "ai_019",
+        "label": "ai",
+        "scene_type": "indoor_home",
+        "png_final_label": "uncertain",
+        "jpg_q95_final_label": "ai",
+        "png_score": "0.179842",
+        "jpg_q95_score": "0.182392"
+      },
+      {
+        "image_id": "ai_052",
+        "label": "ai",
+        "scene_type": "nature_travel",
+        "png_final_label": "uncertain",
+        "jpg_q95_final_label": "ai",
+        "png_score": "0.178931",
+        "jpg_q95_score": "0.181410"
+      },
+      {
+        "image_id": "ai_093",
+        "label": "ai",
+        "scene_type": "people_partial",
+        "png_final_label": "uncertain",
+        "jpg_q95_final_label": "ai",
+        "png_score": "0.179479",
+        "jpg_q95_score": "0.181552"
+      }
+    ]
+  },
+  "resolution_flip": {
+    "complete_group_count": 400,
+    "flip_count": 234,
+    "resolution_flip_rate": 0.585,
+    "flips": [
+      {
+        "image_id": "ai_001",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "food_retail",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.192053",
+          "long512": "0.183648",
+          "long768": "0.192589",
+          "native": "0.175444"
+        }
+      },
+      {
+        "image_id": "ai_001",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "food_retail",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.190258",
+          "long512": "0.182001",
+          "long768": "0.190948",
+          "native": "0.173999"
+        }
+      },
+      {
+        "image_id": "ai_003",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "food_retail",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "ai",
+          "long768": "uncertain",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.156896",
+          "long512": "0.182806",
+          "long768": "0.175060",
+          "native": "0.122375"
+        }
+      },
+      {
+        "image_id": "ai_003",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "food_retail",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "ai",
+          "long768": "uncertain",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.154732",
+          "long512": "0.181294",
+          "long768": "0.173255",
+          "native": "0.120662"
+        }
+      },
+      {
+        "image_id": "ai_007",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "food_retail",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.193863",
+          "long512": "0.196844",
+          "long768": "0.200874",
+          "native": "0.168416"
+        }
+      },
+      {
+        "image_id": "ai_007",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "food_retail",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.191431",
+          "long512": "0.194890",
+          "long768": "0.198945",
+          "native": "0.166198"
+        }
+      },
+      {
+        "image_id": "ai_008",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "food_retail",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.178204",
+          "long512": "0.183716",
+          "long768": "0.183410",
+          "native": "0.158356"
+        }
+      },
+      {
+        "image_id": "ai_008",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "food_retail",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.176236",
+          "long512": "0.182273",
+          "long768": "0.181745",
+          "native": "0.155961"
+        }
+      },
+      {
+        "image_id": "ai_009",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "food_retail",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.180938",
+          "long512": "0.186115",
+          "long768": "0.185935",
+          "native": "0.160059"
+        }
+      },
+      {
+        "image_id": "ai_009",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "food_retail",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.178313",
+          "long512": "0.183900",
+          "long768": "0.183702",
+          "native": "0.157663"
+        }
+      },
+      {
+        "image_id": "ai_016",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "indoor_home",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.181168",
+          "long512": "0.183481",
+          "long768": "0.181683",
+          "native": "0.172683"
+        }
+      },
+      {
+        "image_id": "ai_016",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "indoor_home",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "ai",
+          "long768": "uncertain",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.178925",
+          "long512": "0.181655",
+          "long768": "0.179753",
+          "native": "0.170478"
+        }
+      },
+      {
+        "image_id": "ai_019",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "indoor_home",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "uncertain",
+          "long768": "ai",
+          "native": "ai"
+        },
+        "scores": {
+          "long1024": "0.188990",
+          "long512": "0.165710",
+          "long768": "0.180868",
+          "native": "0.182392"
+        }
+      },
+      {
+        "image_id": "ai_019",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "indoor_home",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "uncertain",
+          "long768": "uncertain",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.185373",
+          "long512": "0.162825",
+          "long768": "0.177484",
+          "native": "0.179842"
+        }
+      },
+      {
+        "image_id": "ai_021",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "indoor_home",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "uncertain",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.182936",
+          "long512": "0.174702",
+          "long768": "0.182895",
+          "native": "0.168238"
+        }
+      },
+      {
+        "image_id": "ai_021",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "indoor_home",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "uncertain",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.180900",
+          "long512": "0.173073",
+          "long768": "0.180915",
+          "native": "0.167078"
+        }
+      },
+      {
+        "image_id": "ai_025",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "indoor_home",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "uncertain",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.183707",
+          "long512": "0.171656",
+          "long768": "0.182107",
+          "native": "0.168455"
+        }
+      },
+      {
+        "image_id": "ai_025",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "indoor_home",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "uncertain",
+          "long768": "uncertain",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.181246",
+          "long512": "0.170046",
+          "long768": "0.179883",
+          "native": "0.167106"
+        }
+      },
+      {
+        "image_id": "ai_026",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "indoor_home",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.179823",
+          "long512": "0.199564",
+          "long768": "0.193211",
+          "native": "0.148956"
+        }
+      },
+      {
+        "image_id": "ai_026",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "indoor_home",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.177619",
+          "long512": "0.197898",
+          "long768": "0.191358",
+          "native": "0.147618"
+        }
+      },
+      {
+        "image_id": "ai_028",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "indoor_home",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "uncertain",
+          "long768": "uncertain",
+          "native": "real"
+        },
+        "scores": {
+          "long1024": "0.133836",
+          "long512": "0.165737",
+          "long768": "0.146916",
+          "native": "0.116493"
+        }
+      },
+      {
+        "image_id": "ai_028",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "indoor_home",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "uncertain",
+          "long768": "uncertain",
+          "native": "real"
+        },
+        "scores": {
+          "long1024": "0.132149",
+          "long512": "0.164184",
+          "long768": "0.145136",
+          "native": "0.116275"
+        }
+      },
+      {
+        "image_id": "ai_032",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.190392",
+          "long512": "0.196164",
+          "long768": "0.197743",
+          "native": "0.168121"
+        }
+      },
+      {
+        "image_id": "ai_032",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.189930",
+          "long512": "0.195259",
+          "long768": "0.196816",
+          "native": "0.169755"
+        }
+      },
+      {
+        "image_id": "ai_036",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.198163",
+          "long512": "0.205144",
+          "long768": "0.202941",
+          "native": "0.178706"
+        }
+      },
+      {
+        "image_id": "ai_036",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.195893",
+          "long512": "0.203097",
+          "long768": "0.200958",
+          "native": "0.176653"
+        }
+      },
+      {
+        "image_id": "ai_038",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.178505",
+          "long512": "0.202208",
+          "long768": "0.193392",
+          "native": "0.150864"
+        }
+      },
+      {
+        "image_id": "ai_038",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.177228",
+          "long512": "0.201229",
+          "long768": "0.192281",
+          "native": "0.149874"
+        }
+      },
+      {
+        "image_id": "ai_039",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.189079",
+          "long512": "0.182268",
+          "long768": "0.189971",
+          "native": "0.172570"
+        }
+      },
+      {
+        "image_id": "ai_039",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.186954",
+          "long512": "0.180443",
+          "long768": "0.188158",
+          "native": "0.170805"
+        }
+      },
+      {
+        "image_id": "ai_041",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "uncertain",
+          "long768": "uncertain",
+          "native": "ai"
+        },
+        "scores": {
+          "long1024": "0.164305",
+          "long512": "0.148380",
+          "long768": "0.159031",
+          "native": "0.213678"
+        }
+      },
+      {
+        "image_id": "ai_041",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "uncertain",
+          "long768": "uncertain",
+          "native": "ai"
+        },
+        "scores": {
+          "long1024": "0.164934",
+          "long512": "0.150061",
+          "long768": "0.159909",
+          "native": "0.215443"
+        }
+      },
+      {
+        "image_id": "ai_043",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "ai",
+          "long768": "uncertain",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.162509",
+          "long512": "0.187689",
+          "long768": "0.175937",
+          "native": "0.137148"
+        }
+      },
+      {
+        "image_id": "ai_043",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "ai",
+          "long768": "uncertain",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.160987",
+          "long512": "0.186427",
+          "long768": "0.174527",
+          "native": "0.136805"
+        }
+      },
+      {
+        "image_id": "ai_045",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.210432",
+          "long512": "0.236123",
+          "long768": "0.226714",
+          "native": "0.173650"
+        }
+      },
+      {
+        "image_id": "ai_045",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "lowlight_weather",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.208203",
+          "long512": "0.235109",
+          "long768": "0.225382",
+          "native": "0.170793"
+        }
+      },
+      {
+        "image_id": "ai_049",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "nature_travel",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.206878",
+          "long512": "0.208530",
+          "long768": "0.215227",
+          "native": "0.175567"
+        }
+      },
+      {
+        "image_id": "ai_049",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "nature_travel",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.204883",
+          "long512": "0.207173",
+          "long768": "0.213789",
+          "native": "0.173427"
+        }
+      },
+      {
+        "image_id": "ai_052",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "nature_travel",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.207831",
+          "long512": "0.223926",
+          "long768": "0.218642",
+          "native": "0.178931"
+        }
+      },
+      {
+        "image_id": "ai_065",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "object_closeup",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "uncertain",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.173371",
+          "long512": "0.177253",
+          "long768": "0.184086",
+          "native": "0.145129"
+        }
+      },
+      {
+        "image_id": "ai_065",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "object_closeup",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "uncertain",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.170938",
+          "long512": "0.175325",
+          "long768": "0.182022",
+          "native": "0.143727"
+        }
+      },
+      {
+        "image_id": "ai_066",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "object_closeup",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.186920",
+          "long512": "0.191382",
+          "long768": "0.192682",
+          "native": "0.167650"
+        }
+      },
+      {
+        "image_id": "ai_066",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "object_closeup",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.183091",
+          "long512": "0.188039",
+          "long768": "0.189278",
+          "native": "0.164940"
+        }
+      },
+      {
+        "image_id": "ai_069",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "object_closeup",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "uncertain",
+          "long768": "uncertain",
+          "native": "ai"
+        },
+        "scores": {
+          "long1024": "0.172161",
+          "long512": "0.134246",
+          "long768": "0.137529",
+          "native": "0.221010"
+        }
+      },
+      {
+        "image_id": "ai_069",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "object_closeup",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "uncertain",
+          "long768": "uncertain",
+          "native": "ai"
+        },
+        "scores": {
+          "long1024": "0.173660",
+          "long512": "0.134548",
+          "long768": "0.137880",
+          "native": "0.225243"
+        }
+      },
+      {
+        "image_id": "ai_070",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "object_closeup",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "uncertain",
+          "long768": "uncertain",
+          "native": "ai"
+        },
+        "scores": {
+          "long1024": "0.196930",
+          "long512": "0.151675",
+          "long768": "0.177601",
+          "native": "0.195141"
+        }
+      },
+      {
+        "image_id": "ai_070",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "object_closeup",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "uncertain",
+          "long768": "uncertain",
+          "native": "ai"
+        },
+        "scores": {
+          "long1024": "0.194891",
+          "long512": "0.149250",
+          "long768": "0.175468",
+          "native": "0.193343"
+        }
+      },
+      {
+        "image_id": "ai_071",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "object_closeup",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.191802",
+          "long512": "0.207898",
+          "long768": "0.205956",
+          "native": "0.156276"
+        }
+      },
+      {
+        "image_id": "ai_071",
+        "format_family": "png",
+        "label": "ai",
+        "scene_type": "object_closeup",
+        "final_labels": {
+          "long1024": "ai",
+          "long512": "ai",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.190338",
+          "long512": "0.206992",
+          "long768": "0.204946",
+          "native": "0.154528"
+        }
+      },
+      {
+        "image_id": "ai_072",
+        "format_family": "jpg_q95",
+        "label": "ai",
+        "scene_type": "object_closeup",
+        "final_labels": {
+          "long1024": "uncertain",
+          "long512": "uncertain",
+          "long768": "ai",
+          "native": "uncertain"
+        },
+        "scores": {
+          "long1024": "0.179807",
+          "long512": "0.177807",
+          "long768": "0.183792",
+          "native": "0.161490"
+        }
+      }
+    ]
+  },
+  "false_positive_clusters": [
+    {
+      "scene_type": "nature_travel",
+      "variant": "png_long1024",
+      "resolution_type": "long1024",
+      "count": 15
+    },
+    {
+      "scene_type": "nature_travel",
+      "variant": "png_long768",
+      "resolution_type": "long768",
+      "count": 15
+    },
+    {
+      "scene_type": "nature_travel",
+      "variant": "png_long512",
+      "resolution_type": "long512",
+      "count": 15
+    },
+    {
+      "scene_type": "nature_travel",
+      "variant": "jpg_q95_long1024",
+      "resolution_type": "long1024",
+      "count": 15
+    },
+    {
+      "scene_type": "nature_travel",
+      "variant": "jpg_q95_long768",
+      "resolution_type": "long768",
+      "count": 15
+    },
+    {
+      "scene_type": "nature_travel",
+      "variant": "jpg_q95_long512",
+      "resolution_type": "long512",
+      "count": 15
+    },
+    {
+      "scene_type": "outdoor_street",
+      "variant": "png_long1024",
+      "resolution_type": "long1024",
+      "count": 15
+    },
+    {
+      "scene_type": "outdoor_street",
+      "variant": "png_long768",
+      "resolution_type": "long768",
+      "count": 15
+    },
+    {
+      "scene_type": "outdoor_street",
+      "variant": "png_long512",
+      "resolution_type": "long512",
+      "count": 15
+    },
+    {
+      "scene_type": "outdoor_street",
+      "variant": "jpg_q95_long1024",
+      "resolution_type": "long1024",
+      "count": 15
+    }
+  ],
+  "false_negative_clusters": [
+    {
+      "scene_type": "indoor_home",
+      "variant": "native",
+      "resolution_type": "native",
+      "count": 1
+    },
+    {
+      "scene_type": "indoor_home",
+      "variant": "png",
+      "resolution_type": "native",
+      "count": 1
+    },
+    {
+      "scene_type": "indoor_home",
+      "variant": "jpg_q95",
+      "resolution_type": "native",
+      "count": 1
+    }
+  ]
+}

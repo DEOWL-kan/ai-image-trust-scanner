@@ -1,0 +1,15 @@
+scene_type,start_id,end_id,count,label
+food_retail,001,015,15,ai
+indoor_home,016,030,15,ai
+lowlight_weather,031,045,15,ai
+nature_travel,046,060,15,ai
+object_closeup,061,075,15,ai
+outdoor_street,076,090,15,ai
+people_partial,091,100,10,ai
+food_retail,001,015,15,real
+indoor_home,016,030,15,real
+lowlight_weather,031,045,15,real
+nature_travel,046,060,15,real
+object_closeup,061,075,15,real
+outdoor_street,076,090,15,real
+people_partial,091,100,10,real
