@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, File, HTTPException, Query, Request, UploadFile
-from fastapi.responses import JSONResponse
+from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.schemas import (
@@ -27,6 +27,14 @@ from app.services.dashboard_summary import (
     build_dashboard_payload,
     build_recent_results_payload,
 )
+from app.services.error_gallery import (
+    DATA_ROOT,
+    ErrorItemNotFound,
+    build_error_summary,
+    get_error_item,
+    list_error_items,
+    save_review_note,
+)
 from app.services.history_store import (
     CorruptHistoryError,
     HistoryNotFoundError,
@@ -45,10 +53,22 @@ SUPPORTED_EXTENSIONS = {".jpg", ".jpeg", ".png", ".webp"}
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 UPLOAD_DIR = PROJECT_ROOT / ".tmp" / "api_uploads"
 FRONTEND_DASHBOARD_DIR = PROJECT_ROOT / "frontend" / "dashboard"
+ERROR_GALLERY_PAGE = FRONTEND_DASHBOARD_DIR / "errors.html"
 logger = logging.getLogger(__name__)
 
 app = FastAPI(title="AI Image Trust Scanner API", version=API_VERSION)
+if DATA_ROOT.exists():
+    app.mount(
+        "/media",
+        StaticFiles(directory=DATA_ROOT, html=False, follow_symlink=False),
+        name="media",
+    )
 if FRONTEND_DASHBOARD_DIR.exists():
+    app.mount(
+        "/dashboard-assets",
+        StaticFiles(directory=FRONTEND_DASHBOARD_DIR, html=False),
+        name="dashboard-assets",
+    )
     app.mount(
         "/dashboard-ui",
         StaticFiles(directory=FRONTEND_DASHBOARD_DIR, html=True),
@@ -421,3 +441,76 @@ def dashboard_recent_results(
 @app.get("/dashboard/chart-data", response_model=DashboardChartDataResponse)
 def dashboard_chart_data() -> dict[str, Any]:
     return build_chart_data_payload()
+
+
+@app.get("/errors")
+@app.get("/dashboard/errors")
+def error_gallery_page() -> FileResponse:
+    if not ERROR_GALLERY_PAGE.exists():
+        raise HTTPException(status_code=404, detail="Error Gallery page is not available.")
+    return FileResponse(ERROR_GALLERY_PAGE)
+
+
+@app.get("/api/v1/errors/summary")
+def errors_summary() -> dict[str, Any]:
+    return build_error_summary()
+
+
+@app.get("/api/v1/errors")
+def errors(
+    type_: str = Query("all", alias="type"),
+    scenario: str | None = Query(None),
+    format: str | None = Query(None),
+    difficulty: str | None = Query(None),
+    resolution_bucket: str | None = Query(None),
+    source_folder: str | None = Query(None),
+    min_confidence: float | None = Query(None, ge=0.0, le=1.0),
+    max_confidence: float | None = Query(None, ge=0.0, le=1.0),
+    sort: str = Query("confidence_desc"),
+    limit: int = Query(50, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+) -> dict[str, Any]:
+    try:
+        return list_error_items(
+            item_type=type_,
+            scenario=scenario,
+            format=format,
+            difficulty=difficulty,
+            resolution_bucket=resolution_bucket,
+            source_folder=source_folder,
+            min_confidence=min_confidence,
+            max_confidence=max_confidence,
+            sort=sort,
+            limit=limit,
+            offset=offset,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@app.get("/api/v1/errors/{item_id}")
+def error_detail(item_id: str) -> dict[str, Any]:
+    try:
+        return get_error_item(item_id)
+    except ErrorItemNotFound as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@app.post("/api/v1/errors/{item_id}/review")
+async def error_review(item_id: str, request: Request) -> dict[str, Any]:
+    try:
+        payload = await request.json()
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail="Request body must be JSON.") from exc
+    if not isinstance(payload, dict):
+        raise HTTPException(status_code=400, detail="Request body must be a JSON object.")
+    try:
+        review = save_review_note(item_id, payload)
+    except ErrorItemNotFound as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return {
+        "status": "ok",
+        "review": review,
+    }

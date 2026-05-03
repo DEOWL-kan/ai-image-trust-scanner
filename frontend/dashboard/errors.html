@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Error Gallery / Misclassification Review</title>
+    <link rel="stylesheet" href="/dashboard-assets/styles.css" />
+  </head>
+  <body>
+    <main class="page-shell error-page">
+      <header class="error-topbar">
+        <div class="brand-block">
+          <p class="eyebrow">AI 图像信任扫描器</p>
+          <h1>Error Gallery / Misclassification Review</h1>
+          <p class="subtitle">错误图库 / 误分类审查</p>
+        </div>
+        <div class="header-actions">
+          <a class="button button-secondary" href="/dashboard-ui/">返回仪表板</a>
+          <button class="button button-primary" id="errors-refresh-button" type="button">刷新</button>
+          <div class="status-pill" id="error-service-status" data-status="loading">
+            <span class="status-dot" aria-hidden="true"></span>
+            <span id="error-service-status-text">检查中</span>
+          </div>
+        </div>
+      </header>
+
+      <section class="summary-grid error-summary-grid" aria-label="Error summary statistics">
+        <article class="stat-card">
+          <p>Total Samples</p>
+          <strong data-error-summary-key="totalSamples">--</strong>
+          <span>Day23 benchmark</span>
+        </article>
+        <article class="stat-card">
+          <p>FP</p>
+          <strong data-error-summary-key="fp">--</strong>
+          <span>Real → AI</span>
+        </article>
+        <article class="stat-card">
+          <p>FN</p>
+          <strong data-error-summary-key="fn">--</strong>
+          <span>AI → Real</span>
+        </article>
+        <article class="stat-card">
+          <p>Uncertain</p>
+          <strong data-error-summary-key="uncertain">--</strong>
+          <span>Needs review</span>
+        </article>
+        <article class="stat-card">
+          <p>Error Rate</p>
+          <strong data-error-summary-key="errorRate">--</strong>
+          <span>FP + FN + Uncertain</span>
+        </article>
+        <article class="stat-card">
+          <p>Reviewed</p>
+          <strong data-error-summary-key="reviewed">--</strong>
+          <span>Human notes saved</span>
+        </article>
+      </section>
+
+      <section class="filter-panel" aria-label="Error gallery filters">
+        <div class="type-tabs" id="error-type-tabs" role="tablist" aria-label="Error type">
+          <button class="type-tab active" type="button" data-type="all">全部</button>
+          <button class="type-tab" type="button" data-type="fp">FP</button>
+          <button class="type-tab" type="button" data-type="fn">FN</button>
+          <button class="type-tab" type="button" data-type="uncertain">Uncertain</button>
+          <button class="type-tab" type="button" data-type="tp">TP</button>
+          <button class="type-tab" type="button" data-type="tn">TN</button>
+        </div>
+
+        <div class="filter-grid">
+          <label>
+            <span>Scenario</span>
+            <select id="filter-scenario"></select>
+          </label>
+          <label>
+            <span>Format</span>
+            <select id="filter-format"></select>
+          </label>
+          <label>
+            <span>Resolution bucket</span>
+            <select id="filter-resolution"></select>
+          </label>
+          <label>
+            <span>Source folder</span>
+            <select id="filter-source-folder"></select>
+          </label>
+          <label>
+            <span>Sort</span>
+            <select id="filter-sort">
+              <option value="confidence_desc">Confidence high to low</option>
+              <option value="confidence_asc">Confidence low to high</option>
+              <option value="score_desc">Score high to low</option>
+              <option value="score_asc">Score low to high</option>
+              <option value="filename">Filename</option>
+            </select>
+          </label>
+        </div>
+      </section>
+
+      <section class="gallery-toolbar" aria-live="polite">
+        <span id="gallery-count">正在加载样本...</span>
+        <div class="pager-actions">
+          <button class="button button-secondary" id="prev-page-button" type="button">上一页</button>
+          <button class="button button-secondary" id="next-page-button" type="button">下一页</button>
+        </div>
+      </section>
+
+      <section class="error-gallery-grid" id="error-gallery-grid" aria-label="Benchmark error gallery">
+        <div class="loading-state gallery-empty">正在加载样本...</div>
+      </section>
+    </main>
+
+    <aside class="detail-drawer" id="detail-drawer" aria-hidden="true">
+      <div class="drawer-backdrop" id="drawer-backdrop"></div>
+      <div class="drawer-panel" role="dialog" aria-modal="true" aria-labelledby="drawer-title">
+        <div class="drawer-header">
+          <div>
+            <p class="eyebrow">Review Sample</p>
+            <h2 id="drawer-title">--</h2>
+          </div>
+          <button class="icon-button" id="drawer-close-button" type="button" aria-label="Close">×</button>
+        </div>
+        <div class="drawer-body" id="drawer-body"></div>
+      </div>
+    </aside>
+
+    <script src="/dashboard-assets/error-gallery.js" defer></script>
+  </body>
+</html>
