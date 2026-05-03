@@ -1,0 +1,395 @@
+{
+  "dataset_root": "data",
+  "root_exists": true,
+  "total_image_files_found_before_label_filter": 2241,
+  "labeled_image_count": 2241,
+  "ai_count": 1111,
+  "real_count": 1130,
+  "skipped_unknown_label_count": 0,
+  "top_skipped_parent_dirs": [],
+  "top_all_parent_dirs": [
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\resolution_control\\long_1024",
+      "count": 400
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\resolution_control\\long_512",
+      "count": 400
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\resolution_control\\long_768",
+      "count": 400
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg",
+      "count": 100
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\paired_format\\ai_png",
+      "count": 100
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\paired_format\\real_jpg",
+      "count": 100
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\paired_format\\real_png",
+      "count": 100
+    },
+    {
+      "parent_dir": "data\\day10_format_control\\ai\\jpeg_q85",
+      "count": 30
+    },
+    {
+      "parent_dir": "data\\day10_format_control\\ai\\jpeg_q95",
+      "count": 30
+    },
+    {
+      "parent_dir": "data\\day10_format_control\\ai\\png",
+      "count": 30
+    },
+    {
+      "parent_dir": "data\\day10_format_control\\real\\jpeg_q85",
+      "count": 30
+    },
+    {
+      "parent_dir": "data\\day10_format_control\\real\\jpeg_q95",
+      "count": 30
+    },
+    {
+      "parent_dir": "data\\day10_format_control\\real\\png",
+      "count": 30
+    },
+    {
+      "parent_dir": "data\\day11_resolution_control\\ai\\long_edge_1024",
+      "count": 30
+    },
+    {
+      "parent_dir": "data\\day11_resolution_control\\ai\\long_edge_512",
+      "count": 30
+    },
+    {
+      "parent_dir": "data\\day11_resolution_control\\ai\\long_edge_768",
+      "count": 30
+    },
+    {
+      "parent_dir": "data\\day11_resolution_control\\real\\long_edge_512",
+      "count": 30
+    },
+    {
+      "parent_dir": "data\\test_images\\legacy\\day8_small_30\\ai",
+      "count": 30
+    },
+    {
+      "parent_dir": "data\\test_images\\legacy\\day8_small_30\\real",
+      "count": 30
+    },
+    {
+      "parent_dir": "data\\day11_resolution_control\\real\\long_edge_1024",
+      "count": 29
+    },
+    {
+      "parent_dir": "data\\day11_resolution_control\\real\\long_edge_768",
+      "count": 29
+    },
+    {
+      "parent_dir": "data\\day11_resolution_control\\real\\long_edge_1536",
+      "count": 22
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\ai\\food_retail",
+      "count": 15
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\ai\\indoor_home",
+      "count": 15
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\ai\\lowlight_weather",
+      "count": 15
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\ai\\nature_travel",
+      "count": 15
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\ai\\object_closeup",
+      "count": 15
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\ai\\outdoor_street",
+      "count": 15
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\real\\food_retail",
+      "count": 15
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\real\\indoor_home",
+      "count": 15
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\real\\lowlight_weather",
+      "count": 15
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\real\\nature_travel",
+      "count": 15
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\real\\object_closeup",
+      "count": 15
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\real\\outdoor_street",
+      "count": 15
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\ai\\people_partial",
+      "count": 10
+    },
+    {
+      "parent_dir": "data\\test_images\\day14_expansion\\raw\\real\\people_partial",
+      "count": 10
+    },
+    {
+      "parent_dir": "data\\samples_ai",
+      "count": 1
+    }
+  ],
+  "recognized_label_anchors": {
+    "ai": [
+      {
+        "anchor": "data\\test_images\\day14_expansion\\resolution_control [filename_prefix]",
+        "count": 600
+      },
+      {
+        "anchor": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg [path_segment]",
+        "count": 100
+      },
+      {
+        "anchor": "data\\test_images\\day14_expansion\\paired_format\\ai_png [path_segment]",
+        "count": 100
+      },
+      {
+        "anchor": "data\\test_images\\day14_expansion\\raw\\ai [path_segment]",
+        "count": 100
+      },
+      {
+        "anchor": "data\\day10_format_control\\ai [path_segment]",
+        "count": 90
+      },
+      {
+        "anchor": "data\\day11_resolution_control\\ai [path_segment]",
+        "count": 90
+      },
+      {
+        "anchor": "data\\test_images\\legacy\\day8_small_30\\ai [path_segment]",
+        "count": 30
+      },
+      {
+        "anchor": "data\\samples_ai [path_segment]",
+        "count": 1
+      }
+    ],
+    "real": [
+      {
+        "anchor": "data\\test_images\\day14_expansion\\resolution_control [filename_prefix]",
+        "count": 600
+      },
+      {
+        "anchor": "data\\day11_resolution_control\\real [path_segment]",
+        "count": 110
+      },
+      {
+        "anchor": "data\\test_images\\day14_expansion\\paired_format\\real_jpg [path_segment]",
+        "count": 100
+      },
+      {
+        "anchor": "data\\test_images\\day14_expansion\\paired_format\\real_png [path_segment]",
+        "count": 100
+      },
+      {
+        "anchor": "data\\test_images\\day14_expansion\\raw\\real [path_segment]",
+        "count": 100
+      },
+      {
+        "anchor": "data\\day10_format_control\\real [path_segment]",
+        "count": 90
+      },
+      {
+        "anchor": "data\\test_images\\legacy\\day8_small_30\\real [path_segment]",
+        "count": 30
+      }
+    ]
+  },
+  "skipped_examples": [],
+  "first_level_directories": [
+    "data\\day10_format_control",
+    "data\\day11_resolution_control",
+    "data\\outputs",
+    "data\\samples_ai",
+    "data\\samples_real",
+    "data\\test_images"
+  ],
+  "second_level_directories": [
+    "data\\day10_format_control\\ai",
+    "data\\day10_format_control\\real",
+    "data\\day11_resolution_control\\ai",
+    "data\\day11_resolution_control\\real",
+    "data\\test_images\\ai",
+    "data\\test_images\\day14_expansion",
+    "data\\test_images\\legacy",
+    "data\\test_images\\real"
+  ],
+  "image_directories": [
+    {
+      "path": "data\\day10_format_control\\ai\\jpeg_q85",
+      "image_count": 30
+    },
+    {
+      "path": "data\\day10_format_control\\ai\\jpeg_q95",
+      "image_count": 30
+    },
+    {
+      "path": "data\\day10_format_control\\ai\\png",
+      "image_count": 30
+    },
+    {
+      "path": "data\\day10_format_control\\real\\jpeg_q85",
+      "image_count": 30
+    },
+    {
+      "path": "data\\day10_format_control\\real\\jpeg_q95",
+      "image_count": 30
+    },
+    {
+      "path": "data\\day10_format_control\\real\\png",
+      "image_count": 30
+    },
+    {
+      "path": "data\\day11_resolution_control\\ai\\long_edge_1024",
+      "image_count": 30
+    },
+    {
+      "path": "data\\day11_resolution_control\\ai\\long_edge_512",
+      "image_count": 30
+    },
+    {
+      "path": "data\\day11_resolution_control\\ai\\long_edge_768",
+      "image_count": 30
+    },
+    {
+      "path": "data\\day11_resolution_control\\real\\long_edge_1024",
+      "image_count": 29
+    },
+    {
+      "path": "data\\day11_resolution_control\\real\\long_edge_1536",
+      "image_count": 22
+    },
+    {
+      "path": "data\\day11_resolution_control\\real\\long_edge_512",
+      "image_count": 30
+    },
+    {
+      "path": "data\\day11_resolution_control\\real\\long_edge_768",
+      "image_count": 29
+    },
+    {
+      "path": "data\\samples_ai",
+      "image_count": 1
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\paired_format\\ai_jpg",
+      "image_count": 100
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\paired_format\\ai_png",
+      "image_count": 100
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\paired_format\\real_jpg",
+      "image_count": 100
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\paired_format\\real_png",
+      "image_count": 100
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\ai\\food_retail",
+      "image_count": 15
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\ai\\indoor_home",
+      "image_count": 15
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\ai\\lowlight_weather",
+      "image_count": 15
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\ai\\nature_travel",
+      "image_count": 15
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\ai\\object_closeup",
+      "image_count": 15
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\ai\\outdoor_street",
+      "image_count": 15
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\ai\\people_partial",
+      "image_count": 10
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\real\\food_retail",
+      "image_count": 15
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\real\\indoor_home",
+      "image_count": 15
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\real\\lowlight_weather",
+      "image_count": 15
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\real\\nature_travel",
+      "image_count": 15
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\real\\object_closeup",
+      "image_count": 15
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\real\\outdoor_street",
+      "image_count": 15
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\raw\\real\\people_partial",
+      "image_count": 10
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\resolution_control\\long_1024",
+      "image_count": 400
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\resolution_control\\long_512",
+      "image_count": 400
+    },
+    {
+      "path": "data\\test_images\\day14_expansion\\resolution_control\\long_768",
+      "image_count": 400
+    },
+    {
+      "path": "data\\test_images\\legacy\\day8_small_30\\ai",
+      "image_count": 30
+    },
+    {
+      "path": "data\\test_images\\legacy\\day8_small_30\\real",
+      "image_count": 30
+    }
+  ]
+}
