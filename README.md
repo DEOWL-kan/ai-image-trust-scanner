@@ -1,111 +1,105 @@
 # AI Image Trust Scanner
 
-AI Image Trust Scanner is a local Python command-line project for baseline AI image risk analysis.
+## Project Overview
 
-The project combines multiple weak signals instead of making a single absolute claim. V0.1 inspects image properties, basic EXIF metadata, simple forensic features, simple frequency-domain features, and a placeholder model interface, then writes JSON and Markdown reports.
+AI Image Trust Scanner is a product-oriented AI image authenticity detection system with Web/API dashboard, uncertainty decision layer, error taxonomy, and benchmark reports.
 
-V0.1 does not prove whether an image is real or AI-generated. It is a baseline engineering prototype, not a final detector, not a trained model, and not a legal forensic conclusion.
+The project combines multiple weak signals instead of making a single absolute claim. It should be treated as an engineering prototype and product risk-assessment workflow, not a legal forensic conclusion or a final trained detector.
 
-## Current Version
+## Current Progress
 
-V0.1 baseline CLI plus a minimal FastAPI service for product-facing detection and dashboard data APIs.
+- Day16: uncertain decision layer v2.1 calibration
+- Day17: product-level output schema
+- Day19: FastAPI single-image detect endpoint
+- Day20: batch detection API and result history export
+- Day21: dashboard data API
+- Day22: web dashboard v1
+- Day23: benchmark protocol v2
+- Day24: error gallery and misclassification review UI
+- Day25: error taxonomy, root cause tagging, and fix priority ranking
+- Day25.1: calibrated root cause tagging with evidence strength scoring
 
-The project does not include a web frontend, GUI, database, model training, or downloaded model weights.
+## Core Features
 
-## Features
+- Single image detection
+- Batch detection
+- Product-level JSON output
+- Dashboard summary and recent-results API
+- Error gallery for FP / FN / uncertain samples
+- Error taxonomy and root cause tagging
+- Calibrated evidence strength scoring
+- Fix priority ranking
+- Benchmark protocol v2 reports
+- JSON, CSV, and Markdown reporting outputs
 
-- Read local JPG, JPEG, PNG, and WEBP files
-- Report file name, format, resolution, color mode, and file size
-- Read basic EXIF fields with Pillow
-- Preserve the distinction between missing EXIF and AI evidence
-- Compute baseline forensic features with OpenCV and numpy
-- Compute a basic FFT high-frequency energy ratio
-- Provide a placeholder deep model detector interface
-- Fuse metadata, forensic, and frequency heuristics into a baseline risk level
-- Exclude placeholder model probability from score fusion until a future model reports `model_status: active`
-- Generate JSON and Markdown reports in `outputs/reports/`
-- Run labeled test-set evaluation with threshold scanning
-- Generate explainable feature reports for image-level review
-- Analyze threshold calibration, error cases, and borderline samples in Day6 reports
-- Run Day7 threshold sweep, regression evaluation, and stable baseline reporting
-- Output `final_label` as `ai`, `real`, or `uncertain` with a configurable uncertainty margin
-- Serve single-image detection, batch detection, history, and dashboard summary APIs through FastAPI
+## API Endpoints
 
-## Project Structure
+- `POST /api/v1/detect`
+- `POST /api/v1/detect/batch`
+- `GET /dashboard/summary`
+- `GET /dashboard/recent-results`
+- `GET /dashboard/chart-data`
+- `GET /dashboard/error-taxonomy`
+- `GET /dashboard/error-taxonomy?version=calibrated`
+- `GET /api/v1/error-taxonomy`
+- `GET /api/v1/error-taxonomy?version=calibrated`
 
-```text
-ai-image-trust-scanner/
-|-- main.py
-|-- requirements.txt
-|-- README.md
-|-- core/
-|   |-- image_loader.py
-|   |-- metadata_analyzer.py
-|   |-- forensic_analyzer.py
-|   |-- frequency_analyzer.py
-|   |-- model_detector.py
-|   |-- score_fusion.py
-|   `-- report_generator.py
-|-- data/
-|   |-- samples_real/
-|   |-- samples_ai/
-|   `-- test_images/
-|-- outputs/
-|   |-- reports/
-|   `-- day6/
-|-- reports/
-|   |-- day4_eval/
-|   `-- day5/
-|-- scripts/
-|   |-- run_batch_test.py
-|   |-- evaluate_results.py
-|   |-- day6_threshold_analysis.py
-|   |-- threshold_sweep.py
-|   `-- regression_eval.py
-|-- tools/
-|   `-- evaluate_testset.py
-|-- src/
-|   |-- day5.py
-|   |-- day5_reports.py
-|   |-- explainable.py
-|   `-- features.py
-|-- tests/
-|   `-- test_pipeline.py
-|-- docs/
-|   |-- day1_acceptance.md
-|   |-- day2_plan.md
-|   `-- DAY7_THRESHOLD_CALIBRATION.md
-`-- backend/
-    `-- Day 1 historical CLI implementation
-```
+## Day25 / Day25.1 Reports
 
-## Installation
+- `reports/day25_error_taxonomy_report.md`: human-readable Day25 taxonomy and fix-priority report.
+- `reports/day25_error_taxonomy_samples.json`: machine-readable Day25 sample-level root cause tags.
+- `reports/day25_error_taxonomy_summary.csv`: Day25 root cause summary table.
+- `reports/day25_fix_priority_ranking.csv`: Day25 fix priority ranking.
+- `reports/day25_1_error_taxonomy_calibrated_report.md`: calibrated Day25.1 report with evidence strength scoring.
+- `reports/day25_1_error_taxonomy_samples.json`: machine-readable calibrated sample-level output.
+- `reports/day25_1_error_taxonomy_summary.csv`: calibrated weak / medium / strong root cause summary.
+- `reports/day25_1_fix_priority_ranking.csv`: calibrated fix priority ranking.
+
+## How to Run
 
 Use Python 3.10+.
 
-```bash
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
 pip install -r requirements.txt
+uvicorn app.main:app --reload
 ```
 
-## Run
+Run the original CLI detector:
 
-Place an image under `data/test_images/`, then run:
-
-```bash
+```powershell
 python main.py --image data/test_images/example.jpg
 ```
 
-Reports are written to:
+Regenerate Day25.1 calibrated taxonomy outputs:
 
-```text
-outputs/reports/
+```powershell
+python tools/day25_error_taxonomy.py --calibrated
 ```
 
-You can also choose another output directory:
+## Run Tests
 
-```bash
-python main.py --image data/test_images/example.jpg --output-dir outputs/reports
+```powershell
+$env:PYTHONPATH='.'; pytest -q
 ```
+
+## Roadmap
+
+- Day26: Metadata Handling Policy Patch v1 + No-EXIF JPEG FP Guard
+- Day27-Day30: Product-level website and report export
+- Day31-Day35: Public dataset manager + Benchmark v3 + open-source detector integration
+- Day36-Day40: self-trained baseline + model adapter + ensemble v1
+- Day41-Day50: calibration, robustness benchmark, product demo, competition-ready version
+
+## Notes
+
+- Current project status: prototype / pre-product stage.
+- Detection results are risk hints, not legal final judgments.
+- Large public datasets, model weights, private user uploads, secrets, and local environment files should not be committed to GitHub.
+- Day25 / Day25.1 reports are intentionally committed as milestone evidence and dashboard/API data sources.
+
+## Historical Development Notes
 
 ## Day 3 Batch Detection
 

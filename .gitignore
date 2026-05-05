@@ -17,6 +17,17 @@ __pycache__/
 *.key
 *.pem
 
+# Large/local datasets, uploads, and model artifacts
+data/public/
+data/raw/
+data/uploads/
+uploads/
+artifacts/
+model_checkpoints/
+models/*.pt
+models/*.pth
+models/*.onnx
+
 # Local outputs
 backend/outputs/*
 !backend/outputs/.gitkeep
