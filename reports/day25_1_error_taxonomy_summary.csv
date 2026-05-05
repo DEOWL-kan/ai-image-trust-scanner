@@ -1,0 +1,10 @@
+tag,weak_count,medium_count,strong_count,total_count,strong_ratio,affected_samples,primary_count,fp_count,fn_count,uncertain_count,representative_samples,recommended_fix,recommended_fix_category,model_change_required
+score_overlap,0,0,972,972,1.0,972,972,0,0,972,"[""9ce4c6e227891728"", ""95e5fbc2d4dbe1aa"", ""6fbc59903db84625""]",优化 uncertain 输出和用户解释,uncertainty_policy_fix,False
+uncertain_boundary,0,0,972,972,1.0,972,0,0,0,972,"[""9ce4c6e227891728"", ""89ef7f7801183068"", ""7783285ef7c10699""]",优化 uncertain 输出和用户解释,uncertainty_policy_fix,False
+metadata_dependency,0,972,606,1578,0.384,1578,211,599,7,972,"[""e8788bb571711a93"", ""a23d246b50c1270d"", ""4c08d658de8d1ec1""]",降低或校准 metadata 依赖,metadata_handling_fix,False
+format_bias,778,434,366,1578,0.2319,1578,6,599,7,972,"[""51b496a666effedc"", ""c75aae8f32cd5b41"", ""32e39e78ea5696a7""]",修数据集/格式/来源偏差,data_pipeline_fix,False
+no_exif_jpeg,0,291,359,650,0.5523,650,359,359,0,291,"[""e8788bb571711a93"", ""a23d246b50c1270d"", ""4c08d658de8d1ec1""]",降低或校准 metadata 依赖,metadata_handling_fix,False
+high_compression,65,442,346,853,0.4056,853,0,359,3,491,"[""51b496a666effedc"", ""e8788bb571711a93"", ""a23d246b50c1270d""]",改产品级决策策略，不改模型,decision_policy_patch,False
+resolution_flip,760,16,203,979,0.2074,979,30,474,0,505,"[""3b6fa1ceef0be07a"", ""395f0cad6b8fe0d6"", ""b49dd2365f577cae""]",补测试协议或分场景指标,benchmark_protocol_fix,False
+source_folder_bias,840,738,0,1578,0.0,1578,0,599,7,972,"[""9ce4c6e227891728"", ""89ef7f7801183068"", ""7783285ef7c10699""]",修数据集/格式/来源偏差,data_pipeline_fix,False
+realistic_ai,7,0,0,7,0.0,7,0,0,7,0,"[""51b496a666effedc"", ""c75aae8f32cd5b41"", ""eb9658fe327e769a""]",后续接预训练模型或训练模型,model_training_needed,True

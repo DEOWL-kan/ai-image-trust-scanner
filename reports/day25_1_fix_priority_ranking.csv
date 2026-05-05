@@ -1,0 +1,10 @@
+rank,tag,affected_samples,strong_count,primary_count,main_error_type,severity,fix_priority_score,recommended_fix_category,recommended_fix,model_change_required,day26_priority
+1,metadata_dependency,1578,606,211,Uncertain,critical,67.28,metadata_handling_fix,降低或校准 metadata 依赖,False,yes
+2,no_exif_jpeg,650,359,359,FP,critical,65.24,metadata_handling_fix,降低或校准 metadata 依赖,False,yes
+3,format_bias,1578,366,6,Uncertain,critical,60.87,data_pipeline_fix,修数据集/格式/来源偏差,False,yes
+4,high_compression,853,346,0,Uncertain,critical,60.48,decision_policy_patch,改产品级决策策略，不改模型,False,yes
+5,score_overlap,972,972,972,Uncertain,medium,59.72,uncertainty_policy_fix,优化 uncertain 输出和用户解释,False,yes
+6,resolution_flip,979,203,30,Uncertain,critical,58.6,benchmark_protocol_fix,补测试协议或分场景指标,False,yes
+7,source_folder_bias,1578,0,0,Uncertain,critical,55.0,data_pipeline_fix,修数据集/格式/来源偏差,False,yes
+8,uncertain_boundary,972,972,0,Uncertain,medium,47.4,uncertainty_policy_fix,优化 uncertain 输出和用户解释,False,yes
+9,realistic_ai,7,0,0,FN,high,43.0,model_training_needed,后续接预训练模型或训练模型,True,yes

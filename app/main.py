@@ -35,6 +35,11 @@ from app.services.error_gallery import (
     list_error_items,
     save_review_note,
 )
+from app.services.error_taxonomy import (
+    Day25InputError,
+    api_payload as build_error_taxonomy_payload,
+    calibrated_api_payload as build_calibrated_error_taxonomy_payload,
+)
 from app.services.history_store import (
     CorruptHistoryError,
     HistoryNotFoundError,
@@ -514,3 +519,15 @@ async def error_review(item_id: str, request: Request) -> dict[str, Any]:
         "status": "ok",
         "review": review,
     }
+
+
+@app.get("/dashboard/error-taxonomy")
+@app.get("/api/v1/error-taxonomy")
+def error_taxonomy(version: str = Query("day25")) -> dict[str, Any]:
+    try:
+        version_text = version.lower() if isinstance(version, str) else "day25"
+        if version_text in {"calibrated", "day25_1", "day25.1"}:
+            return build_calibrated_error_taxonomy_payload()
+        return build_error_taxonomy_payload()
+    except Day25InputError as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
