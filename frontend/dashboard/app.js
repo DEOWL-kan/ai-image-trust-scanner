@@ -182,9 +182,9 @@ const translations = {
       empty: "暂无最近检测结果。",
       loadFailed: "最近结果加载失败。",
       results: "{count} 条结果",
-      viewJson: "查看 JSON",
+      viewJson: "查看详情",
       copyResult: "复制结果",
-      reportSoon: "报告 Soon",
+      reportSoon: "报告",
       filterAll: "全部",
       filterAi: "AI 生成",
       filterUncertain: "不确定",
@@ -415,9 +415,9 @@ const translations = {
       empty: "No recent detection results yet.",
       loadFailed: "Failed to load recent results.",
       results: "{count} results",
-      viewJson: "View JSON",
+      viewJson: "Detail",
       copyResult: "Copy Result",
-      reportSoon: "Report soon",
+      reportSoon: "Report",
       filterAll: "All",
       filterAi: "AI Generated",
       filterUncertain: "Uncertain",
@@ -655,9 +655,9 @@ mergeTranslations(translations.zh, {
     empty: "暂无最近检测结果。",
     loadFailed: "最近结果加载失败。",
     results: "{count} 条结果",
-    viewJson: "查看 JSON",
-    copyResult: "复制结果",
-    reportSoon: "报告 Soon",
+      viewJson: "查看详情",
+      copyResult: "复制结果",
+      reportSoon: "报告",
     filterAll: "全部",
     filterAi: "AI 生成",
     filterUncertain: "不确定",
@@ -1485,7 +1485,7 @@ function renderRecentRows(results, countValue = results.length) {
       const filename = firstDefined(item.filename, "unknown");
       const summary = resultSummaryText(item);
       return `
-        <tr>
+        <tr class="audit-row" tabindex="0" data-action="open-recent-detail" data-id="${escapeHtml(id)}" aria-label="Open detection detail for ${escapeHtml(filename)}">
           <td>${escapeHtml(formatTimestamp(item.timestamp || item.created_at || item.processed_at))}</td>
           <td class="filename-cell" title="${escapeHtml(filename)}">${escapeHtml(filename)}</td>
           <td><span class="badge ${slug(label)}">${escapeHtml(displayLabel(label))}</span></td>
@@ -1495,9 +1495,9 @@ function renderRecentRows(results, countValue = results.length) {
             <span class="summary-clamp">${escapeHtml(summary)}</span>
           </td>
           <td class="action-cell">
-            <button class="table-action" type="button" data-action="view-recent-json" data-id="${escapeHtml(id)}">${escapeHtml(t("recent.viewJson"))}</button>
+            <button class="table-action" type="button" data-action="view-recent-detail" data-id="${escapeHtml(id)}">${escapeHtml(t("recent.viewJson"))}</button>
             <button class="table-action" type="button" data-action="copy-recent-json" data-id="${escapeHtml(id)}">${escapeHtml(t("recent.copyResult"))}</button>
-            <button class="table-action muted" type="button" disabled>${escapeHtml(t("recent.reportSoon"))}</button>
+            <button class="table-action" type="button" data-action="report-recent-detail" data-id="${escapeHtml(id)}">${escapeHtml(t("recent.reportSoon"))}</button>
           </td>
         </tr>
       `;
@@ -2000,7 +2000,27 @@ function downloadJson(payload, filename = "minerva-result.json") {
 }
 
 async function copyJson(payload) {
-  await navigator.clipboard.writeText(JSON.stringify(payload, null, 2));
+  const text = JSON.stringify(payload, null, 2);
+  try {
+    if (navigator.clipboard?.writeText) {
+      await navigator.clipboard.writeText(text);
+      return;
+    }
+  } catch {
+    // Fall back to the legacy textarea copy path below.
+  }
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.setAttribute("readonly", "");
+  textarea.style.position = "fixed";
+  textarea.style.left = "-9999px";
+  document.body.append(textarea);
+  textarea.select();
+  const copied = document.execCommand("copy");
+  textarea.remove();
+  if (!copied) {
+    throw new Error("Copy failed");
+  }
 }
 
 function currentPayload() {
@@ -2117,6 +2137,15 @@ elements.auditFilters?.addEventListener("click", (event) => {
   renderRecentRows(filtered, filtered.length);
 });
 
+elements.recentBody?.addEventListener("keydown", (event) => {
+  const row = event.target.closest(".audit-row");
+  if (!row || (event.key !== "Enter" && event.key !== " ")) {
+    return;
+  }
+  event.preventDefault();
+  row.click();
+});
+
 elements.demoTabs?.addEventListener("click", (event) => {
   const button = event.target.closest("[data-demo-tab]");
   if (!button) return;
@@ -2202,18 +2231,27 @@ document.addEventListener("click", async (event) => {
       await copyJson(currentPayload());
       target.textContent = t("result.copied");
     }
-    if (action === "view-recent-json") {
+    if (action === "open-recent-detail" || action === "view-recent-detail" || action === "report-recent-detail") {
       const payload = state.recentResults.get(target.dataset.id);
       if (payload) {
-        downloadJson(payload, `minerva-${payload.id || "recent"}-result.json`);
+        window.DetectionDetails?.open(payload, {
+          trigger: target,
+          focusReport: action === "report-recent-detail",
+        });
       }
+      return;
     }
     if (action === "copy-recent-json") {
       const payload = state.recentResults.get(target.dataset.id);
       if (payload) {
-        await copyJson(payload);
+        if (window.DetectionDetails?.copyJson) {
+          await window.DetectionDetails.copyJson(payload);
+        } else {
+          await copyJson(payload);
+        }
         target.textContent = t("result.copied");
       }
+      return;
     }
   } catch {
     target.textContent = t("result.copyFailed");
