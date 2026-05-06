@@ -1325,12 +1325,12 @@ function renderSinglePreview(file) {
   }
   state.selectedSingleObjectUrl = URL.createObjectURL(file);
   elements.singlePreview.innerHTML = `
-    <img src="${state.selectedSingleObjectUrl}" alt="${escapeHtml(file.name)}" />
-    <div class="file-preview-copy">
-      <strong title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</strong>
-      <span>${escapeHtml(formatFileSize(file.size))} - ${escapeHtml(fileFormat(file))}</span>
+    <img class="selected-file-thumb" src="${state.selectedSingleObjectUrl}" alt="${escapeHtml(file.name)}" />
+    <div class="selected-file-meta file-preview-copy">
+      <strong class="selected-file-name" title="${escapeHtml(file.name)}">${escapeHtml(file.name)}</strong>
+      <span class="selected-file-subtitle">${escapeHtml(formatFileSize(file.size))} - ${escapeHtml(file.type || fileFormat(file))}</span>
     </div>
-    <button class="preview-remove" type="button" data-action="remove-single-file" aria-label="${escapeHtml(t("single.remove"))}">x</button>
+    <button class="selected-file-remove preview-remove" type="button" data-action="remove-single-file" aria-label="${escapeHtml(t("single.remove"))}">x</button>
   `;
 }
 
@@ -2234,7 +2234,17 @@ document.addEventListener("click", async (event) => {
     if (action === "open-recent-detail" || action === "view-recent-detail" || action === "report-recent-detail") {
       const payload = state.recentResults.get(target.dataset.id);
       if (payload) {
-        window.DetectionDetails?.open(payload, {
+        const debugPayload = {
+          id: firstDefined(payload.id, payload.history_file, target.dataset.id),
+          filename: firstDefined(payload.filename, "unknown"),
+          final_label: firstDefined(payload.final_label, payload.label, "uncertain"),
+        };
+        console.log(action === "report-recent-detail" ? "[Day27] report clicked" : "[Day27] detail clicked", debugPayload);
+        if (!window.DetectionDetails?.open) {
+          console.warn("[Day27] detail drawer module is not available");
+          return;
+        }
+        window.DetectionDetails.open(payload, {
           trigger: target,
           focusReport: action === "report-recent-detail",
         });
