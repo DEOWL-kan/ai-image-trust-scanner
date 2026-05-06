@@ -1,6 +1,9 @@
 const API_ENDPOINTS = {
   summary: "/dashboard/summary",
-  recentResults: "/dashboard/recent-results?limit=20",
+  recentResults: "/api/v1/reports/search?limit=100",
+  reportQueue: "/api/v1/reports/queue?limit=20",
+  reportReview: (id) => `/api/v1/reports/${encodeURIComponent(id)}/review`,
+  reportExport: "/api/v1/reports/export",
   chartData: "/dashboard/chart-data",
   detectSingle: "/api/v1/detect",
   detectBatchCandidates: ["/detect/batch", "/api/v1/detect/batch"],
@@ -168,10 +171,10 @@ const translations = {
       apiError: "图表数据加载失败。",
       updated: "更新于 {time}",
     },
-    recent: {
-      eyebrow: "审计日志",
-      title: "最近检测结果",
-      description: "API 保存的最新检测记录。",
+  recent: {
+    eyebrow: "审计日志",
+    title: "最近检测结果",
+    description: "API 保存的最新检测记录。",
       time: "时间",
       file: "文件",
       verdict: "结论",
@@ -401,10 +404,10 @@ const translations = {
       apiError: "Failed to load chart data.",
       updated: "Updated {time}",
     },
-    recent: {
-      eyebrow: "Audit Log",
-      title: "Recent Results",
-      description: "Latest detection records saved by the API.",
+  recent: {
+    eyebrow: "Audit Log",
+    title: "Recent Results",
+    description: "Latest detection records saved by the API.",
       time: "Time",
       file: "File",
       verdict: "Verdict",
@@ -420,10 +423,104 @@ const translations = {
       reportSoon: "Report",
       filterAll: "All",
       filterAi: "AI Generated",
-      filterUncertain: "Uncertain",
-      filterHigh: "High Risk",
+    filterUncertain: "Uncertain",
+    filterHigh: "High Risk",
+  },
+  reportCenter: {
+    eyebrow: "Report Center",
+    title: "Report Center",
+    description: "Search, review, and export detection audit records.",
+    filteredStatus: "{count} filtered",
+    empty: "No report records found.",
+    loadFailed: "Failed to load report records.",
+    queueFailed: "Review queue failed to load.",
+    queueEmpty: "No records waiting for review.",
+    summary: {
+      total: "Total",
+      filtered: "Filtered",
+      pending: "Pending Review",
+      highRisk: "High Risk",
+      uncertain: "Uncertain",
     },
-    story: {
+    filters: {
+      search: "Search",
+      searchPlaceholder: "Filename, record ID, label, reason...",
+      risk: "Risk",
+      label: "Label",
+      review: "Review",
+      date: "Date Range",
+      confidence: "Confidence",
+      sort: "Sort",
+    },
+    options: {
+      all: "All",
+    },
+    risk: {
+      high: "High",
+      medium: "Medium",
+      low: "Low",
+      unknown: "Unknown",
+      unknownUnset: "Unknown / Unset",
+    },
+    verdict: {
+      ai: "AI generated",
+      real: "Real",
+      uncertain: "Uncertain",
+      unknown: "Unknown",
+    },
+    review: {
+      pending_review: "Pending Review",
+      reviewed: "Reviewed",
+      confirmed_ai: "Confirmed AI",
+      confirmed_real: "Confirmed Real",
+      false_positive: "False Positive",
+      false_negative: "False Negative",
+      needs_follow_up: "Needs Follow-up",
+      ignored: "Ignored",
+    },
+    date: {
+      all: "All",
+      today: "Today",
+      last_7_days: "Last 7 days",
+      last_30_days: "Last 30 days",
+    },
+    confidence: {
+      all: "All",
+      gte_0_8: ">= 0.8",
+      mid: "0.5 - 0.8",
+      lt_0_5: "< 0.5",
+    },
+    sort: {
+      newest: "Newest first",
+      oldest: "Oldest first",
+      risk_priority: "Risk priority",
+      confidence_desc: "Confidence high to low",
+      confidence_asc: "Confidence low to high",
+    },
+    table: {
+      time: "Time",
+      fileRecord: "File / Record",
+      verdict: "Verdict",
+      risk: "Risk",
+      confidence: "Confidence",
+      review: "Review",
+      summary: "Summary",
+      action: "Action",
+    },
+    actions: {
+      reset: "Reset Filters",
+      exportJson: "Export JSON",
+      exportCsv: "Export CSV",
+      viewDetail: "View Detail",
+      report: "Report",
+      review: "Review",
+    },
+    queue: {
+      title: "Risk Review Queue",
+      subtitle: "High risk, uncertain, and pending review",
+    },
+  },
+  story: {
       eyebrow: "Product Story",
       title: "Why Minerva",
       evidenceTitle: "Evidence-first detection",
@@ -662,6 +759,100 @@ mergeTranslations(translations.zh, {
     filterAi: "AI 生成",
     filterUncertain: "不确定",
     filterHigh: "高风险",
+  },
+  reportCenter: {
+    eyebrow: "报告中心",
+    title: "报告中心",
+    description: "搜索、复核并导出检测审计记录。",
+    filteredStatus: "已筛选 {count} 条",
+    empty: "没有找到符合条件的报告记录。",
+    loadFailed: "报告记录加载失败。",
+    queueFailed: "风险复核队列加载失败。",
+    queueEmpty: "暂无需要复核的记录。",
+    summary: {
+      total: "总记录",
+      filtered: "筛选结果",
+      pending: "待复核",
+      highRisk: "高风险",
+      uncertain: "不确定",
+    },
+    filters: {
+      search: "搜索",
+      searchPlaceholder: "搜索文件名、记录 ID、结论或原因……",
+      risk: "风险等级",
+      label: "检测结论",
+      review: "复核状态",
+      date: "时间范围",
+      confidence: "置信度",
+      sort: "排序",
+    },
+    options: {
+      all: "全部",
+    },
+    risk: {
+      high: "高",
+      medium: "中",
+      low: "低",
+      unknown: "未知",
+      unknownUnset: "未知 / 未设置",
+    },
+    verdict: {
+      ai: "AI 生成",
+      real: "真实",
+      uncertain: "不确定",
+      unknown: "未知",
+    },
+    review: {
+      pending_review: "待复核",
+      reviewed: "已复核",
+      confirmed_ai: "确认为 AI",
+      confirmed_real: "确认为真实",
+      false_positive: "误判为 AI",
+      false_negative: "漏判 AI",
+      needs_follow_up: "需要跟进",
+      ignored: "已忽略",
+    },
+    date: {
+      all: "全部",
+      today: "今天",
+      last_7_days: "最近 7 天",
+      last_30_days: "最近 30 天",
+    },
+    confidence: {
+      all: "全部",
+      gte_0_8: ">= 0.8",
+      mid: "0.5 - 0.8",
+      lt_0_5: "< 0.5",
+    },
+    sort: {
+      newest: "最新优先",
+      oldest: "最早优先",
+      risk_priority: "风险优先",
+      confidence_desc: "置信度从高到低",
+      confidence_asc: "置信度从低到高",
+    },
+    table: {
+      time: "时间",
+      fileRecord: "文件 / 记录",
+      verdict: "结论",
+      risk: "风险",
+      confidence: "置信度",
+      review: "复核",
+      summary: "摘要",
+      action: "操作",
+    },
+    actions: {
+      reset: "重置筛选",
+      exportJson: "导出 JSON",
+      exportCsv: "导出 CSV",
+      viewDetail: "查看详情",
+      report: "报告",
+      review: "复核",
+    },
+    queue: {
+      title: "风险复核队列",
+      subtitle: "高风险、不确定与待复核记录",
+    },
   },
   story: {
     eyebrow: "产品叙事",
@@ -1011,6 +1202,17 @@ const state = {
   recentResults: new Map(),
   recentAllResults: [],
   recentFilter: "all",
+  reportFilters: {
+    q: "",
+    risk_level: "all",
+    final_label: "all",
+    review_status: "all",
+    date_range: "all",
+    confidence_range: "all",
+    sort: "newest",
+  },
+  reportQueue: [],
+  reportSearchTimer: 0,
   demoTab: "upload",
   resultView: "simple",
   prefersReducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -1025,6 +1227,17 @@ const elements = {
   recentBody: document.querySelector("#recent-results-body"),
   recentEmptyState: document.querySelector("#recent-empty-state"),
   auditFilters: document.querySelector("#audit-filters"),
+  reportSummaryStrip: document.querySelector("#report-summary-strip"),
+  reportSearchInput: document.querySelector("#report-search-input"),
+  reportRiskFilter: document.querySelector("#report-risk-filter"),
+  reportLabelFilter: document.querySelector("#report-label-filter"),
+  reportReviewFilter: document.querySelector("#report-review-filter"),
+  reportDateFilter: document.querySelector("#report-date-filter"),
+  reportConfidenceFilter: document.querySelector("#report-confidence-filter"),
+  reportSortFilter: document.querySelector("#report-sort-filter"),
+  reportResetButton: document.querySelector("#report-reset-button"),
+  reviewQueueList: document.querySelector("#review-queue-list"),
+  reviewQueueCount: document.querySelector("#review-queue-count"),
   labelChart: document.querySelector("#label-chart"),
   riskChart: document.querySelector("#risk-chart"),
   confidenceChart: document.querySelector("#confidence-chart"),
@@ -1069,6 +1282,12 @@ function applyI18n() {
   document.querySelectorAll("[data-i18n]").forEach((node) => {
     node.textContent = t(node.dataset.i18n);
   });
+  document.querySelectorAll("[data-i18n-placeholder]").forEach((node) => {
+    node.setAttribute("placeholder", t(node.dataset.i18nPlaceholder));
+  });
+  document.querySelectorAll("[data-i18n-aria-label]").forEach((node) => {
+    node.setAttribute("aria-label", t(node.dataset.i18nAriaLabel));
+  });
   document.querySelectorAll(".language-button").forEach((button) => {
     const isActive = button.dataset.lang === state.lang;
     button.textContent = button.dataset.lang === "zh" ? "中文" : "English";
@@ -1090,6 +1309,9 @@ function applyI18n() {
   }
   if (state.recentAllResults.length) {
     renderRecentRows(filteredRecentResults(), filteredRecentResults().length);
+  }
+  if (state.reportQueue.length) {
+    renderReviewQueue({ items: state.reportQueue, total: state.reportQueue.length });
   }
 }
 
@@ -1241,6 +1463,100 @@ function textFromValue(value, fallback = "--") {
 
 function resultSummaryText(item) {
   return textFromValue(firstDefined(item.user_facing_summary, item.summary, item.decision_reason, item.recommendation), "--");
+}
+
+function normalizeRiskKey(value) {
+  const risk = String(value || "").trim().toLowerCase().replaceAll("-", "_");
+  if (["high", "very_high", "critical"].includes(risk)) return "high";
+  if (["medium", "moderate"].includes(risk)) return "medium";
+  if (["low", "minimal"].includes(risk)) return "low";
+  return "unknown";
+}
+
+function normalizeVerdictKey(value) {
+  const label = String(value || "").trim().toLowerCase().replaceAll("-", "_");
+  if (["ai", "ai_generated", "ai generated", "likely_ai", "generated", "synthetic", "artificial"].includes(label)) return "ai";
+  if (["real", "real_photo", "likely_real", "authentic", "photo", "camera"].includes(label)) return "real";
+  if (["uncertain", "unsure", "review", "undetermined"].includes(label)) return "uncertain";
+  return "unknown";
+}
+
+function normalizeReviewStatusKey(value) {
+  const status = String(value || "pending_review").trim().toLowerCase().replaceAll("-", "_").replaceAll(" ", "_");
+  const allowed = ["pending_review", "reviewed", "confirmed_ai", "confirmed_real", "false_positive", "false_negative", "needs_follow_up", "ignored"];
+  return allowed.includes(status) ? status : "pending_review";
+}
+
+function getRiskLabel(value, locale = state.lang) {
+  const lang = locale === "zh" ? "zh" : "en";
+  const key = normalizeRiskKey(value);
+  return translations[lang]?.reportCenter?.risk?.[key] || t(`reportCenter.risk.${key}`);
+}
+
+function getRiskTone(value) {
+  return normalizeRiskKey(value);
+}
+
+function getVerdictLabel(value, locale = state.lang) {
+  const lang = locale === "zh" ? "zh" : "en";
+  const key = normalizeVerdictKey(value);
+  return translations[lang]?.reportCenter?.verdict?.[key] || t(`reportCenter.verdict.${key}`);
+}
+
+function getReviewStatusLabel(value, locale = state.lang) {
+  const lang = locale === "zh" ? "zh" : "en";
+  const key = normalizeReviewStatusKey(value);
+  return translations[lang]?.reportCenter?.review?.[key] || t(`reportCenter.review.${key}`);
+}
+
+function getSortLabel(value, locale = state.lang) {
+  const lang = locale === "zh" ? "zh" : "en";
+  const key = String(value || "newest");
+  return translations[lang]?.reportCenter?.sort?.[key] || t(`reportCenter.sort.${key}`);
+}
+
+function getDateRangeLabel(value, locale = state.lang) {
+  const lang = locale === "zh" ? "zh" : "en";
+  const key = String(value || "all");
+  return translations[lang]?.reportCenter?.date?.[key] || t(`reportCenter.date.${key}`);
+}
+
+function getConfidenceRangeLabel(value, locale = state.lang) {
+  const lang = locale === "zh" ? "zh" : "en";
+  const key = value === "0_5_0_8" ? "mid" : String(value || "all");
+  return translations[lang]?.reportCenter?.confidence?.[key] || t(`reportCenter.confidence.${key}`);
+}
+
+function getReportSearchPlaceholder(locale = state.lang) {
+  const lang = locale === "zh" ? "zh" : "en";
+  return translations[lang]?.reportCenter?.filters?.searchPlaceholder || t("reportCenter.filters.searchPlaceholder");
+}
+
+function reportFilterParams(extra = {}) {
+  const params = new URLSearchParams();
+  const filters = { ...state.reportFilters, ...extra };
+  Object.entries(filters).forEach(([key, value]) => {
+    if (value !== undefined && value !== null && value !== "") {
+      params.set(key, value);
+    }
+  });
+  return params;
+}
+
+function reportSearchUrl(extra = {}) {
+  const params = reportFilterParams({ limit: 100, offset: 0, ...extra });
+  return `/api/v1/reports/search?${params.toString()}`;
+}
+
+function reportExportUrl(format) {
+  const params = reportFilterParams({ format, limit: 500, offset: 0 });
+  return `${API_ENDPOINTS.reportExport}?${params.toString()}`;
+}
+
+function timestampForFilename() {
+  const date = new Date();
+  const pad = (value) => String(value).padStart(2, "0");
+  return `${date.getFullYear()}${pad(date.getMonth() + 1)}${pad(date.getDate())}_${pad(date.getHours())}${pad(date.getMinutes())}${pad(date.getSeconds())}`;
 }
 
 async function fetchJson(url, options = {}) {
@@ -1444,12 +1760,30 @@ function renderChartsError() {
 function renderRecentResults(payload) {
   const results = Array.isArray(payload?.results)
     ? payload.results
-    : Array.isArray(payload?.recent_results)
-      ? payload.recent_results
-      : [];
+    : Array.isArray(payload?.items)
+      ? payload.items
+      : Array.isArray(payload?.recent_results)
+        ? payload.recent_results
+        : [];
 
   state.recentAllResults = results;
-  renderRecentRows(results, firstDefined(payload?.count, results.length));
+  renderReportSummary(payload, results.length);
+  renderRecentRows(results, firstDefined(payload?.filtered_total, payload?.count, results.length));
+}
+
+function renderReportSummary(payload, shownCount) {
+  const summary = payload?.summary || {};
+  const values = {
+    total_records: firstDefined(summary.total_records, payload?.total, shownCount),
+    filtered_total: firstDefined(payload?.filtered_total, payload?.count, shownCount),
+    pending_review: firstDefined(summary.pending_review, 0),
+    high_risk: firstDefined(summary.high_risk, 0),
+    uncertain: firstDefined(summary.uncertain, 0),
+  };
+  Object.entries(values).forEach(([key, value]) => {
+    const node = document.querySelector(`[data-report-summary="${key}"]`);
+    if (node) node.textContent = formatInteger(value);
+  });
 }
 
 function filteredRecentResults() {
@@ -1467,10 +1801,10 @@ function filteredRecentResults() {
 
 function renderRecentRows(results, countValue = results.length) {
   state.recentResults.clear();
-  elements.recentCount.textContent = t("recent.results", { count: formatInteger(countValue) });
+  elements.recentCount.textContent = t("reportCenter.filteredStatus", { count: formatInteger(countValue) });
   elements.recentBody.innerHTML = "";
   elements.recentEmptyState.hidden = results.length > 0;
-  elements.recentEmptyState.textContent = t("recent.empty");
+  elements.recentEmptyState.textContent = t("reportCenter.empty");
 
   if (!results.length) {
     return;
@@ -1483,21 +1817,29 @@ function renderRecentRows(results, countValue = results.length) {
       const label = firstDefined(item.final_label, item.label, "uncertain");
       const risk = firstDefined(item.risk_level, item.risk, "unknown");
       const filename = firstDefined(item.filename, "unknown");
+      const reviewStatus = firstDefined(item.review_status, "pending_review");
       const summary = resultSummaryText(item);
+      const labelTone = normalizeVerdictKey(label) === "ai" ? "ai-generated" : normalizeVerdictKey(label);
+      const riskTone = getRiskTone(risk);
+      const reviewTone = normalizeReviewStatusKey(reviewStatus);
       return `
         <tr class="audit-row" tabindex="0" data-action="open-recent-detail" data-id="${escapeHtml(id)}" aria-label="Open detection detail for ${escapeHtml(filename)}">
           <td>${escapeHtml(formatTimestamp(item.timestamp || item.created_at || item.processed_at))}</td>
-          <td class="filename-cell" title="${escapeHtml(filename)}">${escapeHtml(filename)}</td>
-          <td><span class="badge ${slug(label)}">${escapeHtml(displayLabel(label))}</span></td>
-          <td><span class="badge ${slug(risk)}">${escapeHtml(displayLabel(risk))}</span></td>
+          <td class="filename-cell" title="${escapeHtml(`${filename} / ${id}`)}">
+            <strong>${escapeHtml(filename)}</strong>
+            <span>${escapeHtml(id)}</span>
+          </td>
+          <td><span class="badge ${slug(labelTone)}">${escapeHtml(getVerdictLabel(label))}</span></td>
+          <td><span class="badge ${slug(riskTone)}">${escapeHtml(getRiskLabel(risk))}</span></td>
           <td>${escapeHtml(formatConfidence(item.confidence))}</td>
+          <td><span class="badge review-${slug(reviewTone)}">${escapeHtml(getReviewStatusLabel(reviewStatus))}</span></td>
           <td class="summary-cell" title="${escapeHtml(summary)}">
             <span class="summary-clamp">${escapeHtml(summary)}</span>
           </td>
           <td class="action-cell">
-            <button class="table-action" type="button" data-action="view-recent-detail" data-id="${escapeHtml(id)}">${escapeHtml(t("recent.viewJson"))}</button>
-            <button class="table-action" type="button" data-action="copy-recent-json" data-id="${escapeHtml(id)}">${escapeHtml(t("recent.copyResult"))}</button>
-            <button class="table-action" type="button" data-action="report-recent-detail" data-id="${escapeHtml(id)}">${escapeHtml(t("recent.reportSoon"))}</button>
+            <button class="table-action" type="button" data-action="view-recent-detail" data-id="${escapeHtml(id)}">${escapeHtml(t("reportCenter.actions.viewDetail"))}</button>
+            <button class="table-action" type="button" data-action="report-recent-detail" data-id="${escapeHtml(id)}">${escapeHtml(t("reportCenter.actions.report"))}</button>
+            <button class="table-action" type="button" data-action="review-recent-detail" data-id="${escapeHtml(id)}">${escapeHtml(t("reportCenter.actions.review"))}</button>
           </td>
         </tr>
       `;
@@ -1509,7 +1851,49 @@ function renderRecentResultsError() {
   elements.recentCount.textContent = t("nav.apiError");
   elements.recentBody.innerHTML = "";
   elements.recentEmptyState.hidden = false;
-  elements.recentEmptyState.textContent = t("recent.loadFailed");
+  elements.recentEmptyState.textContent = t("reportCenter.loadFailed");
+}
+
+function renderReviewQueue(payload) {
+  const items = Array.isArray(payload?.items) ? payload.items : [];
+  state.reportQueue = items;
+  if (elements.reviewQueueCount) {
+    elements.reviewQueueCount.textContent = formatInteger(firstDefined(payload?.total, items.length));
+  }
+  if (!elements.reviewQueueList) return;
+  if (!items.length) {
+    elements.reviewQueueList.innerHTML = `<div class="empty-state compact">${escapeHtml(t("reportCenter.queueEmpty"))}</div>`;
+    return;
+  }
+  elements.reviewQueueList.innerHTML = items
+    .map((item, index) => {
+      const id = String(firstDefined(item.id, item.history_file, `queue-${index}`));
+      state.recentResults.set(id, item);
+      const reason = resultSummaryText(item);
+      const labelTone = normalizeVerdictKey(item.final_label) === "ai" ? "ai-generated" : normalizeVerdictKey(item.final_label);
+      const riskTone = getRiskTone(item.risk_level);
+      const reviewTone = normalizeReviewStatusKey(item.review_status);
+      return `
+        <button class="review-queue-item" type="button" data-action="review-queue-detail" data-id="${escapeHtml(id)}">
+          <span class="queue-title" title="${escapeHtml(firstDefined(item.filename, id))}">${escapeHtml(firstDefined(item.filename, id))}</span>
+          <span class="queue-badges">
+            <em class="badge ${slug(labelTone)}">${escapeHtml(getVerdictLabel(item.final_label))}</em>
+            <em class="badge ${slug(riskTone)}">${escapeHtml(getRiskLabel(item.risk_level))}</em>
+            <em class="badge review-${slug(reviewTone)}">${escapeHtml(getReviewStatusLabel(item.review_status))}</em>
+          </span>
+          <span class="queue-meta">${escapeHtml(formatConfidence(item.confidence))} / ${escapeHtml(formatTimestamp(item.created_at || item.timestamp))}</span>
+          <span class="queue-reason">${escapeHtml(reason)}</span>
+        </button>
+      `;
+    })
+    .join("");
+}
+
+function renderReviewQueueError() {
+  if (elements.reviewQueueCount) elements.reviewQueueCount.textContent = "--";
+  if (elements.reviewQueueList) {
+    elements.reviewQueueList.innerHTML = `<div class="error-state compact">${escapeHtml(t("reportCenter.queueFailed"))}</div>`;
+  }
 }
 
 function applyResultView() {
@@ -1881,10 +2265,11 @@ async function loadDashboardData({ silent = false } = {}) {
   elements.refreshButton.textContent = silent ? t("nav.syncing") : t("nav.refreshing");
   setServiceStatus("loading", t("nav.checking"));
 
-  const [summaryResult, recentResult, chartResult] = await Promise.allSettled([
+  const [summaryResult, recentResult, chartResult, queueResult] = await Promise.allSettled([
     fetchJson(API_ENDPOINTS.summary),
-    fetchJson(API_ENDPOINTS.recentResults),
+    fetchJson(reportSearchUrl()),
     fetchJson(API_ENDPOINTS.chartData),
+    fetchJson(API_ENDPOINTS.reportQueue),
   ]);
 
   if (summaryResult.status === "fulfilled") {
@@ -1907,9 +2292,85 @@ async function loadDashboardData({ silent = false } = {}) {
     renderChartsError();
   }
 
+  if (queueResult.status === "fulfilled") {
+    renderReviewQueue(queueResult.value);
+  } else {
+    renderReviewQueueError();
+  }
+
   state.dashboardLoading = false;
   elements.refreshButton.disabled = false;
   elements.refreshButton.textContent = t("nav.refresh");
+}
+
+function syncReportFiltersFromControls() {
+  state.reportFilters = {
+    q: elements.reportSearchInput?.value || "",
+    risk_level: elements.reportRiskFilter?.value || "all",
+    final_label: elements.reportLabelFilter?.value || "all",
+    review_status: elements.reportReviewFilter?.value || "all",
+    date_range: elements.reportDateFilter?.value || "all",
+    confidence_range: elements.reportConfidenceFilter?.value || "all",
+    sort: elements.reportSortFilter?.value || "newest",
+  };
+}
+
+async function refreshReportCenter({ silent = true } = {}) {
+  syncReportFiltersFromControls();
+  try {
+    const [reports, queue] = await Promise.all([fetchJson(reportSearchUrl()), fetchJson(API_ENDPOINTS.reportQueue)]);
+    renderRecentResults(reports);
+    renderReviewQueue(queue);
+    if (!silent) setServiceStatus("online", t("nav.online"));
+  } catch (error) {
+    renderRecentResultsError();
+    renderReviewQueueError();
+    if (!silent) setServiceStatus("offline", t("nav.apiError"));
+  }
+}
+
+function scheduleReportRefresh() {
+  window.clearTimeout(state.reportSearchTimer);
+  state.reportSearchTimer = window.setTimeout(() => refreshReportCenter(), 220);
+}
+
+function resetReportFilters() {
+  if (elements.reportSearchInput) elements.reportSearchInput.value = "";
+  if (elements.reportRiskFilter) elements.reportRiskFilter.value = "all";
+  if (elements.reportLabelFilter) elements.reportLabelFilter.value = "all";
+  if (elements.reportReviewFilter) elements.reportReviewFilter.value = "all";
+  if (elements.reportDateFilter) elements.reportDateFilter.value = "all";
+  if (elements.reportConfidenceFilter) elements.reportConfidenceFilter.value = "all";
+  if (elements.reportSortFilter) elements.reportSortFilter.value = "newest";
+  syncReportFiltersFromControls();
+  refreshReportCenter();
+}
+
+function downloadBlob(text, filename, type) {
+  const blob = new Blob([text], { type });
+  const url = URL.createObjectURL(blob);
+  const anchor = document.createElement("a");
+  anchor.href = url;
+  anchor.download = filename;
+  document.body.append(anchor);
+  anchor.click();
+  anchor.remove();
+  URL.revokeObjectURL(url);
+}
+
+async function exportReportCenter(format) {
+  syncReportFiltersFromControls();
+  const response = await fetch(reportExportUrl(format), { cache: "no-store" });
+  if (!response.ok) {
+    throw new Error(`Export failed: ${response.status}`);
+  }
+  const suffix = timestampForFilename();
+  if (format === "csv") {
+    downloadBlob(await response.text(), `report_center_export_${suffix}.csv`, "text/csv;charset=utf-8");
+    return;
+  }
+  const payload = await response.json();
+  downloadJson(payload, `report_center_export_${suffix}.json`);
 }
 
 async function detectSingleImage() {
@@ -2137,6 +2598,24 @@ elements.auditFilters?.addEventListener("click", (event) => {
   renderRecentRows(filtered, filtered.length);
 });
 
+elements.reportSearchInput?.addEventListener("input", scheduleReportRefresh);
+[
+  elements.reportRiskFilter,
+  elements.reportLabelFilter,
+  elements.reportReviewFilter,
+  elements.reportDateFilter,
+  elements.reportConfidenceFilter,
+  elements.reportSortFilter,
+].forEach((control) => {
+  control?.addEventListener("change", () => refreshReportCenter());
+});
+elements.reportResetButton?.addEventListener("click", resetReportFilters);
+
+window.addEventListener("minerva:report-review-updated", () => {
+  refreshReportCenter();
+  loadDashboardData({ silent: true });
+});
+
 elements.recentBody?.addEventListener("keydown", (event) => {
   const row = event.target.closest(".audit-row");
   if (!row || (event.key !== "Enter" && event.key !== " ")) {
@@ -2231,7 +2710,7 @@ document.addEventListener("click", async (event) => {
       await copyJson(currentPayload());
       target.textContent = t("result.copied");
     }
-    if (action === "open-recent-detail" || action === "view-recent-detail" || action === "report-recent-detail") {
+    if (action === "open-recent-detail" || action === "view-recent-detail" || action === "report-recent-detail" || action === "review-recent-detail" || action === "review-queue-detail") {
       const payload = state.recentResults.get(target.dataset.id);
       if (payload) {
         const debugPayload = {
@@ -2247,6 +2726,7 @@ document.addEventListener("click", async (event) => {
         window.DetectionDetails.open(payload, {
           trigger: target,
           focusReport: action === "report-recent-detail",
+          focusReview: action === "review-recent-detail" || action === "review-queue-detail",
         });
       }
       return;
@@ -2261,6 +2741,14 @@ document.addEventListener("click", async (event) => {
         }
         target.textContent = t("result.copied");
       }
+      return;
+    }
+    if (action === "export-report-center-json") {
+      await exportReportCenter("json");
+      return;
+    }
+    if (action === "export-report-center-csv") {
+      await exportReportCenter("csv");
       return;
     }
   } catch {

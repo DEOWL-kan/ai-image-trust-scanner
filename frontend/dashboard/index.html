@@ -252,37 +252,128 @@
         </div>
       </section>
 
-      <section class="audit-section reveal-section" id="audit-log" data-motion="audit">
-        <div class="section-heading">
+      <section class="audit-section report-center-section reveal-section" id="audit-log" data-motion="audit">
+        <div class="section-heading report-center-heading">
           <div>
-            <p class="eyebrow" data-i18n="recent.eyebrow">Audit Log Preview</p>
-            <h2 data-i18n="recent.title">Recent Results</h2>
-            <p data-i18n="recent.description">Every scan becomes a reviewable record with risk level, confidence, summary, and exportable JSON.</p>
+            <p class="eyebrow" data-i18n="reportCenter.eyebrow">Report Center</p>
+            <h2 data-i18n="reportCenter.title">Report Center</h2>
+            <p data-i18n="reportCenter.description">Search, review, and export detection audit records.</p>
           </div>
           <span class="timestamp" id="recent-count">--</span>
         </div>
-        <div class="audit-filters" id="audit-filters" aria-label="Audit log filters">
-          <button class="filter-chip active" type="button" data-filter="all" data-i18n="recent.filterAll">All</button>
-          <button class="filter-chip" type="button" data-filter="ai" data-i18n="recent.filterAi">AI Generated</button>
-          <button class="filter-chip" type="button" data-filter="uncertain" data-i18n="recent.filterUncertain">Uncertain</button>
-          <button class="filter-chip" type="button" data-filter="high" data-i18n="recent.filterHigh">High Risk</button>
+        <div class="report-summary-strip" id="report-summary-strip" aria-label="Report center summary">
+          <span><em data-i18n="reportCenter.summary.total">Total</em><strong data-report-summary="total_records">--</strong></span>
+          <span><em data-i18n="reportCenter.summary.filtered">Filtered</em><strong data-report-summary="filtered_total">--</strong></span>
+          <span><em data-i18n="reportCenter.summary.pending">Pending Review</em><strong data-report-summary="pending_review">--</strong></span>
+          <span data-summary-tone="high"><em data-i18n="reportCenter.summary.highRisk">High Risk</em><strong data-report-summary="high_risk">--</strong></span>
+          <span><em data-i18n="reportCenter.summary.uncertain">Uncertain</em><strong data-report-summary="uncertain">--</strong></span>
         </div>
-        <div class="table-shell">
-          <table>
-            <thead>
-              <tr>
-                <th data-i18n="recent.time">Time</th>
-                <th data-i18n="recent.file">File</th>
-                <th data-i18n="recent.verdict">Verdict</th>
-                <th data-i18n="recent.risk">Risk</th>
-                <th data-i18n="recent.confidence">Confidence</th>
-                <th data-i18n="recent.summary">Summary</th>
-                <th data-i18n="recent.action">Action</th>
-              </tr>
-            </thead>
-            <tbody id="recent-results-body"></tbody>
-          </table>
-          <div class="empty-state" id="recent-empty-state" hidden data-i18n="recent.empty">No recent detection results yet.</div>
+        <div class="audit-filters report-toolbar" id="audit-filters" aria-label="Report Center filters">
+          <div class="report-toolbar-row primary">
+            <label class="report-search-field">
+              <span data-i18n="reportCenter.filters.search">Search</span>
+              <input id="report-search-input" type="search" placeholder="Filename, record ID, label, reason..." data-i18n-placeholder="reportCenter.filters.searchPlaceholder" autocomplete="off" />
+            </label>
+            <label>
+              <span data-i18n="reportCenter.filters.risk">Risk</span>
+            <select id="report-risk-filter">
+              <option value="all" data-i18n="reportCenter.options.all">All</option>
+              <option value="high" data-i18n="reportCenter.risk.high">High</option>
+              <option value="medium" data-i18n="reportCenter.risk.medium">Medium</option>
+              <option value="low" data-i18n="reportCenter.risk.low">Low</option>
+              <option value="unknown" data-i18n="reportCenter.risk.unknownUnset">Unknown / Unset</option>
+            </select>
+            </label>
+            <label>
+              <span data-i18n="reportCenter.filters.label">Label</span>
+            <select id="report-label-filter">
+              <option value="all" data-i18n="reportCenter.options.all">All</option>
+              <option value="ai_generated" data-i18n="reportCenter.verdict.ai">AI-generated</option>
+              <option value="real" data-i18n="reportCenter.verdict.real">Real</option>
+              <option value="uncertain" data-i18n="reportCenter.verdict.uncertain">Uncertain</option>
+              <option value="unknown" data-i18n="reportCenter.verdict.unknown">Unknown</option>
+            </select>
+            </label>
+            <label>
+              <span data-i18n="reportCenter.filters.review">Review</span>
+            <select id="report-review-filter">
+              <option value="all" data-i18n="reportCenter.options.all">All</option>
+              <option value="pending_review" data-i18n="reportCenter.review.pending_review">Pending Review</option>
+              <option value="reviewed" data-i18n="reportCenter.review.reviewed">Reviewed</option>
+              <option value="confirmed_ai" data-i18n="reportCenter.review.confirmed_ai">Confirmed AI</option>
+              <option value="confirmed_real" data-i18n="reportCenter.review.confirmed_real">Confirmed Real</option>
+              <option value="false_positive" data-i18n="reportCenter.review.false_positive">False Positive</option>
+              <option value="false_negative" data-i18n="reportCenter.review.false_negative">False Negative</option>
+              <option value="needs_follow_up" data-i18n="reportCenter.review.needs_follow_up">Needs Follow-up</option>
+              <option value="ignored" data-i18n="reportCenter.review.ignored">Ignored</option>
+            </select>
+            </label>
+          </div>
+          <div class="report-toolbar-row secondary">
+            <label>
+              <span data-i18n="reportCenter.filters.date">Date Range</span>
+            <select id="report-date-filter">
+              <option value="all" data-i18n="reportCenter.options.all">All</option>
+              <option value="today" data-i18n="reportCenter.date.today">Today</option>
+              <option value="last_7_days" data-i18n="reportCenter.date.last_7_days">Last 7 days</option>
+              <option value="last_30_days" data-i18n="reportCenter.date.last_30_days">Last 30 days</option>
+            </select>
+            </label>
+            <label>
+              <span data-i18n="reportCenter.filters.confidence">Confidence</span>
+            <select id="report-confidence-filter">
+              <option value="all" data-i18n="reportCenter.options.all">All</option>
+              <option value="gte_0_8" data-i18n="reportCenter.confidence.gte_0_8">&gt;= 0.8</option>
+              <option value="0_5_0_8" data-i18n="reportCenter.confidence.mid">0.5 - 0.8</option>
+              <option value="lt_0_5" data-i18n="reportCenter.confidence.lt_0_5">&lt; 0.5</option>
+            </select>
+            </label>
+            <label class="report-sort-field">
+              <span data-i18n="reportCenter.filters.sort">Sort</span>
+            <select id="report-sort-filter">
+              <option value="newest" data-i18n="reportCenter.sort.newest">Newest first</option>
+              <option value="oldest" data-i18n="reportCenter.sort.oldest">Oldest first</option>
+              <option value="risk_priority" data-i18n="reportCenter.sort.risk_priority">Risk priority</option>
+              <option value="confidence_desc" data-i18n="reportCenter.sort.confidence_desc">Confidence high to low</option>
+              <option value="confidence_asc" data-i18n="reportCenter.sort.confidence_asc">Confidence low to high</option>
+            </select>
+            </label>
+            <button class="filter-chip report-reset" id="report-reset-button" type="button" data-i18n="reportCenter.actions.reset">Reset Filters</button>
+            <div class="report-export-actions">
+              <button class="button button-secondary report-export-button" type="button" data-action="export-report-center-json" data-i18n="reportCenter.actions.exportJson">Export JSON</button>
+              <button class="button button-primary report-export-button" type="button" data-action="export-report-center-csv" data-i18n="reportCenter.actions.exportCsv">Export CSV</button>
+            </div>
+          </div>
+        </div>
+        <div class="report-center-layout">
+          <div class="table-shell report-table-shell">
+            <table>
+              <thead>
+                <tr>
+                  <th data-i18n="reportCenter.table.time">Time</th>
+                  <th data-i18n="reportCenter.table.fileRecord">File / Record</th>
+                  <th data-i18n="reportCenter.table.verdict">Verdict</th>
+                  <th data-i18n="reportCenter.table.risk">Risk</th>
+                  <th data-i18n="reportCenter.table.confidence">Confidence</th>
+                  <th data-i18n="reportCenter.table.review">Review</th>
+                  <th data-i18n="reportCenter.table.summary">Summary</th>
+                  <th data-i18n="reportCenter.table.action">Action</th>
+                </tr>
+              </thead>
+              <tbody id="recent-results-body"></tbody>
+            </table>
+            <div class="empty-state" id="recent-empty-state" hidden data-i18n="reportCenter.empty">No report records found.</div>
+          </div>
+          <aside class="review-queue-panel" aria-label="Risk Review Queue" data-i18n-aria-label="reportCenter.queue.title">
+            <div class="panel-heading compact-heading">
+              <div>
+                <h3 data-i18n="reportCenter.queue.title">Risk Review Queue</h3>
+                <span data-i18n="reportCenter.queue.subtitle">High risk, uncertain, and pending review</span>
+              </div>
+              <strong id="review-queue-count">--</strong>
+            </div>
+            <div class="review-queue-list" id="review-queue-list"></div>
+          </aside>
         </div>
       </section>
 

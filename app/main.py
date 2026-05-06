@@ -6,7 +6,7 @@ from pathlib import Path
 from typing import Any
 
 from fastapi import FastAPI, File, HTTPException, Query, Request, UploadFile
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse, JSONResponse, PlainTextResponse
 from fastapi.staticfiles import StaticFiles
 
 from app.schemas import (
@@ -50,6 +50,13 @@ from app.services.history_store import (
     read_history,
     save_history as write_history,
     started_timer,
+)
+from app.services.report_center import (
+    ReportRecordNotFound,
+    export_csv,
+    search_reports,
+    review_queue,
+    update_review,
 )
 
 
@@ -446,6 +453,91 @@ def dashboard_recent_results(
 @app.get("/dashboard/chart-data", response_model=DashboardChartDataResponse)
 def dashboard_chart_data() -> dict[str, Any]:
     return build_chart_data_payload()
+
+
+@app.get("/api/v1/reports/search")
+def reports_search(
+    q: str | None = Query(None),
+    risk_level: str | None = Query(None),
+    final_label: str | None = Query(None),
+    review_status: str | None = Query(None),
+    date_range: str | None = Query(None),
+    confidence_range: str | None = Query(None),
+    sort: str | None = Query(None),
+    limit: int = Query(50, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+) -> dict[str, Any]:
+    try:
+        return search_reports(
+            q=q,
+            risk_level=risk_level,
+            final_label=final_label,
+            review_status=review_status,
+            date_range=date_range,
+            confidence_range=confidence_range,
+            sort=sort,
+            limit=limit,
+            offset=offset,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
+@app.get("/api/v1/reports/queue")
+def reports_queue(limit: int = Query(20, ge=1, le=100)) -> dict[str, Any]:
+    return review_queue(limit=limit)
+
+
+@app.patch("/api/v1/reports/{record_id}/review")
+async def reports_review(record_id: str, request: Request) -> dict[str, Any]:
+    try:
+        payload = await request.json()
+    except Exception as exc:
+        raise HTTPException(status_code=400, detail="Request body must be JSON.") from exc
+    if not isinstance(payload, dict):
+        raise HTTPException(status_code=400, detail="Request body must be a JSON object.")
+    try:
+        record = update_review(record_id, payload)
+    except ReportRecordNotFound as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+    return {
+        "status": "ok",
+        "record": record,
+    }
+
+
+@app.get("/api/v1/reports/export", response_model=None)
+def reports_export(
+    format: str = Query("json"),
+    q: str | None = Query(None),
+    risk_level: str | None = Query(None),
+    final_label: str | None = Query(None),
+    review_status: str | None = Query(None),
+    date_range: str | None = Query(None),
+    confidence_range: str | None = Query(None),
+    sort: str | None = Query(None),
+    limit: int = Query(500, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+):
+    payload = search_reports(
+        q=q,
+        risk_level=risk_level,
+        final_label=final_label,
+        review_status=review_status,
+        date_range=date_range,
+        confidence_range=confidence_range,
+        sort=sort,
+        limit=limit,
+        offset=offset,
+    )
+    export_format = str(format or "json").lower()
+    if export_format == "json":
+        return JSONResponse(content=payload)
+    if export_format == "csv":
+        return PlainTextResponse(export_csv(payload["items"]), media_type="text/csv; charset=utf-8")
+    raise HTTPException(status_code=400, detail="format must be json or csv.")
 
 
 @app.get("/errors")

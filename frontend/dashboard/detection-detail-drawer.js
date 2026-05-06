@@ -1,5 +1,6 @@
 (function () {
   const DETAIL_ENDPOINT_PREFIX = "/history/";
+  const REVIEW_ENDPOINT_PREFIX = "/api/v1/reports/";
   const FALLBACK_TECHNICAL =
     "This result was produced by the current decision layer using available image-level signals, score distribution, and uncertainty rules.";
 
@@ -135,6 +136,10 @@
       user_facing_summary: textFromValue(summary, "No user-facing summary was stored for this record."),
       technical_explanation: textFromValue(technical, FALLBACK_TECHNICAL),
       debug_evidence: firstDefined(result.debug_evidence, result.evidence, result.signals, result.debug, raw.debug_evidence, raw.evidence, raw.signals, raw.debug),
+      review_status: firstDefined(result.review_status, raw.review_status, "pending_review"),
+      review_note: firstDefined(result.review_note, raw.review_note, ""),
+      reviewed_at: firstDefined(result.reviewed_at, raw.reviewed_at, ""),
+      reviewer: firstDefined(result.reviewer, raw.reviewer, ""),
       raw,
     };
   }
@@ -436,6 +441,29 @@
         <summary>Raw JSON</summary>
         <pre>${escapeHtml(jsonFor(normalized))}</pre>
       </details>
+      <section class="detail-section review-actions-section" data-review-actions>
+        <h3>Review Actions</h3>
+        <div class="review-status-line">
+          <span class="badge review-${slug(normalized.review_status)}">${escapeHtml(String(normalized.review_status || "pending_review").replaceAll("_", " "))}</span>
+          <em>${escapeHtml(normalized.reviewed_at ? `Saved ${normalized.reviewed_at}` : "Not reviewed yet")}</em>
+        </div>
+        <div class="review-action-grid" role="group" aria-label="Review status actions">
+          <button class="table-action" type="button" data-review-status="reviewed">Mark as Reviewed</button>
+          <button class="table-action" type="button" data-review-status="confirmed_ai">Confirm AI</button>
+          <button class="table-action" type="button" data-review-status="confirmed_real">Confirm Real</button>
+          <button class="table-action" type="button" data-review-status="false_positive">Mark False Positive</button>
+          <button class="table-action" type="button" data-review-status="false_negative">Mark False Negative</button>
+          <button class="table-action" type="button" data-review-status="needs_follow_up">Needs Follow-up</button>
+          <button class="table-action" type="button" data-review-status="ignored">Ignore</button>
+        </div>
+        <label class="review-note-field">
+          <span>Add Review Note</span>
+          <textarea rows="4" data-review-note placeholder="Add reviewer context, decision rationale, or follow-up needs.">${escapeHtml(normalized.review_note || "")}</textarea>
+        </label>
+        <div class="review-save-row">
+          <button class="button button-secondary" type="button" data-detail-action="save-review">Save Review Note</button>
+        </div>
+      </section>
       <section class="detail-actions" data-report-actions>
         <button class="button button-secondary" type="button" data-detail-action="copy-json">Copy JSON</button>
         <button class="button button-ghost" type="button" data-detail-action="preview-html">Preview HTML Report</button>
@@ -454,6 +482,9 @@
     });
     if (options.focusReport) {
       window.setTimeout(() => shell.querySelector("[data-report-actions]")?.scrollIntoView({ behavior: "smooth", block: "center" }), 180);
+    }
+    if (options.focusReview) {
+      window.setTimeout(() => shell.querySelector("[data-review-actions]")?.scrollIntoView({ behavior: "smooth", block: "center" }), 180);
     }
   }
 
@@ -488,6 +519,11 @@
       return;
     }
     const button = event.target.closest("[data-detail-action]");
+    const reviewButton = event.target.closest("[data-review-status]");
+    if (reviewButton && state.record) {
+      await saveReview(reviewButton.dataset.reviewStatus);
+      return;
+    }
     if (!button || !state.record) return;
     try {
       if (button.dataset.detailAction === "copy-json") {
@@ -508,9 +544,41 @@
         downloadHtml(state.record);
         setFeedback("HTML report downloaded.");
       }
+      if (button.dataset.detailAction === "save-review") {
+        await saveReview(state.record.review_status || "reviewed");
+      }
     } catch (error) {
       setFeedback(error?.message || "Report action failed.", true);
     }
+  }
+
+  async function saveReview(status) {
+    const recordId = state.record?.id;
+    if (!recordId) {
+      setFeedback("Missing record id; review cannot be saved.", true);
+      return;
+    }
+    const note = document.querySelector("[data-review-note]")?.value || "";
+    const response = await fetch(`${REVIEW_ENDPOINT_PREFIX}${encodeURIComponent(recordId)}/review`, {
+      method: "PATCH",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        review_status: status || "reviewed",
+        review_note: note,
+        reviewer: "local_user",
+      }),
+    });
+    const payload = await response.json().catch(() => null);
+    if (!response.ok) {
+      throw new Error(payload?.detail || `Review save failed: ${response.status}`);
+    }
+    state.record = normalizeDetectionRecord(payload?.record || { ...state.record, review_status: status, review_note: note });
+    setFeedback("Review saved.");
+    renderDrawer(payload?.record || state.record, { focusReview: true });
+    window.dispatchEvent(new CustomEvent("minerva:report-review-updated", { detail: payload?.record || state.record }));
   }
 
   function extractRecordFromHistory(summary, history) {
