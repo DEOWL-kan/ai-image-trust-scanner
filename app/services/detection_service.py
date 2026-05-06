@@ -5,6 +5,7 @@ from typing import Any
 
 from main import run_pipeline
 from src.api_adapter import build_frontend_response
+from app.services.report_store import make_report_record, save_report
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
@@ -43,7 +44,20 @@ def _api_risk_level(value: Any, final_label: str) -> str:
     return "medium"
 
 
-def detect_image_for_api(image_path: str, filename: str) -> dict[str, Any]:
+def _sha256(path: Path) -> str | None:
+    try:
+        import hashlib
+
+        digest = hashlib.sha256()
+        with path.open("rb") as handle:
+            for chunk in iter(lambda: handle.read(1024 * 1024), b""):
+                digest.update(chunk)
+        return digest.hexdigest()
+    except OSError:
+        return None
+
+
+def detect_image_for_api(image_path: str, filename: str, source_type: str = "single") -> dict[str, Any]:
     """Run the existing detector and return the Day19 API data payload.
 
     The detection path intentionally reuses the Day18 frontend adapter, then
@@ -77,7 +91,7 @@ def detect_image_for_api(image_path: str, filename: str) -> dict[str, Any]:
     final_label = _api_label(result.get("final_label"))
     risk_level = _api_risk_level(result.get("risk_level"), final_label)
 
-    return {
+    data = {
         "filename": str(image.get("filename") or filename),
         "final_label": final_label,
         "risk_level": risk_level,
@@ -88,3 +102,28 @@ def detect_image_for_api(image_path: str, filename: str) -> dict[str, Any]:
         "technical_explanation": result.get("technical_explanation") or {},
         "debug_evidence": result.get("debug_evidence") or {},
     }
+    record = make_report_record(
+        detection_data=data,
+        source_type=source_type,
+        image_path=str(path),
+        file_sha256=_sha256(path),
+        report_payload={
+            "frontend_response": frontend_response,
+            "api_data": data,
+            "raw_report": report,
+        },
+        export_payload=data,
+    )
+    saved = save_report(record)
+    data.update(
+        {
+            "report_id": saved["report_id"],
+            "id": saved["report_id"],
+            "review_status": saved["review_status"],
+            "report_schema_version": saved["report_schema_version"],
+            "detector_version": saved["detector_version"],
+            "model_version": saved["model_version"],
+            "html_report_available": saved["html_report_available"],
+        }
+    )
+    return data

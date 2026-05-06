@@ -17,6 +17,8 @@ class ErrorResponse(BaseModel):
 
 
 class DetectionData(BaseModel):
+    report_id: str | None = None
+    id: str | None = None
     filename: str
     final_label: Literal["ai", "real", "uncertain"]
     risk_level: Literal["low", "medium", "high"]
@@ -26,6 +28,11 @@ class DetectionData(BaseModel):
     user_facing_summary: str
     technical_explanation: Any
     debug_evidence: dict[str, Any]
+    review_status: str | None = None
+    report_schema_version: str | None = None
+    detector_version: str | None = None
+    model_version: str | None = None
+    html_report_available: bool | None = None
 
 
 class DetectionResponse(BaseModel):

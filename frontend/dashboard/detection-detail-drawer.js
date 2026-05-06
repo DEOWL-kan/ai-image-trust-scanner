@@ -106,15 +106,17 @@
     const image = getValue(raw, "data.image", getValue(raw, "response.data.image", {}));
     const id = firstDefined(
       result.id,
+      result.report_id,
       result.record_id,
       result.detection_id,
       raw.id,
+      raw.report_id,
       raw.record_id,
       raw.detection_id,
       raw.history_file,
       `${firstDefined(result.filename, raw.filename, "record")}-${firstDefined(result.timestamp, raw.timestamp, Date.now())}`,
     );
-    const filename = firstDefined(result.filename, raw.filename, raw.original_filename, raw.image_name, raw.file_name, image.filename, "unknown");
+    const filename = firstDefined(result.filename, result.image_name, raw.filename, raw.original_filename, raw.image_name, raw.file_name, image.filename, "unknown");
     const createdAt = firstDefined(result.created_at, result.timestamp, result.detected_at, raw.created_at, raw.timestamp, raw.detected_at);
     const finalLabel = firstDefined(result.final_label, result.label, result.decision, result.result, raw.final_label, raw.label, raw.decision, raw.result);
     const confidence = firstDefined(result.confidence, result.confidence_score, result.score, raw.confidence, raw.confidence_score, raw.score);
@@ -139,7 +141,7 @@
       review_status: firstDefined(result.review_status, raw.review_status, "pending_review"),
       review_note: firstDefined(result.review_note, raw.review_note, ""),
       reviewed_at: firstDefined(result.reviewed_at, raw.reviewed_at, ""),
-      reviewer: firstDefined(result.reviewer, raw.reviewer, ""),
+      reviewer: firstDefined(result.reviewed_by, result.reviewer, raw.reviewed_by, raw.reviewer, ""),
       raw,
     };
   }
@@ -568,6 +570,7 @@
       body: JSON.stringify({
         review_status: status || "reviewed",
         review_note: note,
+        reviewed_by: "local_user",
         reviewer: "local_user",
       }),
     });

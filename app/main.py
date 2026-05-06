@@ -54,10 +54,13 @@ from app.services.history_store import (
 from app.services.report_center import (
     ReportRecordNotFound,
     export_csv,
+    get_html_report_path,
+    get_report_detail,
     search_reports,
     review_queue,
     update_review,
 )
+from app.services.report_center import bootstrap_sqlite_from_history
 
 
 API_VERSION = "0.1.0"
@@ -89,6 +92,14 @@ if FRONTEND_DASHBOARD_DIR.exists():
 
 DASHBOARD_FINAL_LABEL_FILTERS = {"ai_generated", "real", "uncertain"}
 DASHBOARD_RISK_LEVEL_FILTERS = {"low", "medium", "high", "unknown"}
+
+
+@app.on_event("startup")
+def _startup_reports_store() -> None:
+    try:
+        bootstrap_sqlite_from_history()
+    except Exception as exc:
+        logger.warning("Report SQLite bootstrap skipped: %s", exc)
 
 
 def _error_payload(code: str, message: str) -> dict[str, object]:
@@ -455,13 +466,50 @@ def dashboard_chart_data() -> dict[str, Any]:
     return build_chart_data_payload()
 
 
+@app.get("/api/v1/reports")
+def reports_list(
+    q: str | None = Query(None),
+    risk_level: str | None = Query(None),
+    final_label: str | None = Query(None),
+    review_status: str | None = Query(None),
+    source_type: str | None = Query(None),
+    date_from: str | None = Query(None),
+    date_to: str | None = Query(None),
+    sort: str | None = Query(None),
+    sort_by: str = Query("created_at"),
+    sort_order: str = Query("desc"),
+    limit: int = Query(50, ge=1, le=500),
+    offset: int = Query(0, ge=0),
+) -> dict[str, Any]:
+    try:
+        return search_reports(
+            q=q,
+            risk_level=risk_level,
+            final_label=final_label,
+            review_status=review_status,
+            source_type=source_type,
+            date_from=date_from,
+            date_to=date_to,
+            sort=sort,
+            sort_by=None if sort else sort_by,
+            sort_order=sort_order,
+            limit=limit,
+            offset=offset,
+        )
+    except ValueError as exc:
+        raise HTTPException(status_code=400, detail=str(exc)) from exc
+
+
 @app.get("/api/v1/reports/search")
 def reports_search(
     q: str | None = Query(None),
     risk_level: str | None = Query(None),
     final_label: str | None = Query(None),
     review_status: str | None = Query(None),
+    source_type: str | None = Query(None),
     date_range: str | None = Query(None),
+    date_from: str | None = Query(None),
+    date_to: str | None = Query(None),
     confidence_range: str | None = Query(None),
     sort: str | None = Query(None),
     limit: int = Query(50, ge=1, le=500),
@@ -473,7 +521,10 @@ def reports_search(
             risk_level=risk_level,
             final_label=final_label,
             review_status=review_status,
+            source_type=source_type,
             date_range=date_range,
+            date_from=date_from,
+            date_to=date_to,
             confidence_range=confidence_range,
             sort=sort,
             limit=limit,
@@ -515,9 +566,14 @@ def reports_export(
     risk_level: str | None = Query(None),
     final_label: str | None = Query(None),
     review_status: str | None = Query(None),
+    source_type: str | None = Query(None),
     date_range: str | None = Query(None),
+    date_from: str | None = Query(None),
+    date_to: str | None = Query(None),
     confidence_range: str | None = Query(None),
     sort: str | None = Query(None),
+    sort_by: str | None = Query(None),
+    sort_order: str | None = Query(None),
     limit: int = Query(500, ge=1, le=500),
     offset: int = Query(0, ge=0),
 ):
@@ -526,9 +582,14 @@ def reports_export(
         risk_level=risk_level,
         final_label=final_label,
         review_status=review_status,
+        source_type=source_type,
         date_range=date_range,
+        date_from=date_from,
+        date_to=date_to,
         confidence_range=confidence_range,
         sort=sort,
+        sort_by=sort_by,
+        sort_order=sort_order,
         limit=limit,
         offset=offset,
     )
@@ -538,6 +599,22 @@ def reports_export(
     if export_format == "csv":
         return PlainTextResponse(export_csv(payload["items"]), media_type="text/csv; charset=utf-8")
     raise HTTPException(status_code=400, detail="format must be json or csv.")
+
+
+@app.get("/api/v1/reports/{report_id}")
+def reports_detail(report_id: str) -> dict[str, Any]:
+    try:
+        return get_report_detail(report_id)
+    except ReportRecordNotFound as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
+
+
+@app.get("/api/v1/reports/{report_id}/html")
+def reports_html(report_id: str) -> FileResponse:
+    try:
+        return FileResponse(get_html_report_path(report_id), media_type="text/html; charset=utf-8")
+    except ReportRecordNotFound as exc:
+        raise HTTPException(status_code=404, detail=str(exc)) from exc
 
 
 @app.get("/errors")

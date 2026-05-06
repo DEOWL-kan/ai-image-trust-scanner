@@ -8,23 +8,28 @@ from pathlib import Path
 from typing import Any
 
 from app.services.history_store import HISTORY_DIR, now_iso
+from app.services import report_store
 
 
 REPORT_SCHEMA_VERSION = "report_center_v1"
 REVIEW_STATUSES = {
+    "unreviewed",
     "pending_review",
     "reviewed",
     "confirmed_ai",
     "confirmed_real",
     "false_positive",
     "false_negative",
+    "needs_recheck",
     "needs_follow_up",
     "ignored",
 }
 RISK_PRIORITY = {"high": 3, "medium": 2, "low": 1, "unknown": 0}
 TEXT_FIELDS = (
     "filename",
+    "image_name",
     "id",
+    "report_id",
     "final_label",
     "risk_level",
     "decision_reason",
@@ -251,7 +256,40 @@ def _records_from_history(path: Path, history: dict[str, Any]) -> list[dict[str,
     ]
 
 
-def load_report_records(history_dir: Path | None = None) -> list[dict[str, Any]]:
+def _legacy_to_persistent_record(record: dict[str, Any]) -> dict[str, Any]:
+    data = {
+        "report_id": record.get("id"),
+        "filename": record.get("filename"),
+        "final_label": record.get("final_label"),
+        "risk_level": record.get("risk_level"),
+        "confidence": record.get("confidence"),
+        "decision_reason": record.get("decision_reason"),
+        "recommendation": record.get("recommendation"),
+        "user_facing_summary": record.get("user_facing_summary"),
+        "technical_explanation": record.get("technical_explanation"),
+        "debug_evidence": record.get("debug_evidence"),
+        "review_status": record.get("review_status"),
+        "review_note": record.get("review_note"),
+        "reviewed_at": record.get("reviewed_at"),
+        "reviewed_by": record.get("reviewer"),
+        "history_file": record.get("history_file"),
+        "history_type": record.get("history_type"),
+        "batch_id": record.get("batch_id"),
+    }
+    return report_store.make_report_record(
+        detection_data=data,
+        source_type=str(record.get("history_type") or "legacy"),
+        report_payload=record.get("raw") if isinstance(record.get("raw"), dict) else record,
+        export_payload=record,
+        report_id=str(record.get("id")),
+        created_at=record.get("created_at"),
+        history_file=record.get("history_file"),
+        history_type=record.get("history_type"),
+        batch_id=record.get("batch_id"),
+    )
+
+
+def load_report_records_from_history(history_dir: Path | None = None) -> list[dict[str, Any]]:
     source = Path(history_dir or HISTORY_DIR)
     if not source.exists():
         return []
@@ -262,6 +300,26 @@ def load_report_records(history_dir: Path | None = None) -> list[dict[str, Any]]
             continue
         records.extend(_records_from_history(path, history))
     return records
+
+
+def bootstrap_sqlite_from_history(history_dir: Path | None = None) -> int:
+    if report_store.count_reports() > 0:
+        return 0
+    imported = 0
+    for record in load_report_records_from_history(history_dir):
+        try:
+            report_store.save_report(_legacy_to_persistent_record(record))
+            imported += 1
+        except Exception:
+            continue
+    return imported
+
+
+def load_report_records(history_dir: Path | None = None) -> list[dict[str, Any]]:
+    if history_dir is not None:
+        return load_report_records_from_history(history_dir)
+    bootstrap_sqlite_from_history()
+    return report_store.list_reports()
 
 
 def _matches_search(record: dict[str, Any], query: str | None) -> bool:
@@ -288,6 +346,21 @@ def _matches_date(record: dict[str, Any], date_range: str | None) -> bool:
         return parsed >= now - timedelta(days=7)
     if value in {"last_30_days", "30d"}:
         return parsed >= now - timedelta(days=30)
+    return True
+
+
+def _matches_date_bounds(record: dict[str, Any], date_from: str | None, date_to: str | None) -> bool:
+    parsed = _parse_datetime(record.get("created_at"))
+    if parsed is None:
+        return not date_from and not date_to
+    if date_from:
+        start = _parse_datetime(date_from)
+        if start and parsed < start:
+            return False
+    if date_to:
+        end = _parse_datetime(date_to)
+        if end and parsed > end:
+            return False
     return True
 
 
@@ -338,6 +411,33 @@ def _sort_records(records: list[dict[str, Any]], sort: str | None) -> list[dict[
     return sorted(records, key=lambda item: _parse_datetime(item.get("created_at")) or datetime.min, reverse=True)
 
 
+def _sort_records_by(records: list[dict[str, Any]], sort_by: str | None, sort_order: str | None) -> list[dict[str, Any]]:
+    if not sort_by:
+        return records
+    key = str(sort_by or "created_at").lower()
+    reverse = str(sort_order or "desc").lower() != "asc"
+    allowed = {
+        "created_at",
+        "updated_at",
+        "image_name",
+        "filename",
+        "final_label",
+        "risk_level",
+        "confidence",
+        "review_status",
+        "source_type",
+    }
+    if key not in allowed:
+        raise ValueError(f"sort_by must be one of: {', '.join(sorted(allowed))}.")
+    if key in {"created_at", "updated_at"}:
+        return sorted(records, key=lambda item: _parse_datetime(item.get(key)) or datetime.min, reverse=reverse)
+    if key == "confidence":
+        return sorted(records, key=lambda item: item.get("confidence") if item.get("confidence") is not None else -1, reverse=reverse)
+    if key in {"image_name", "filename"}:
+        return sorted(records, key=lambda item: str(item.get("image_name") or item.get("filename") or ""), reverse=reverse)
+    return sorted(records, key=lambda item: str(item.get(key) or ""), reverse=reverse)
+
+
 def _summary(records: list[dict[str, Any]]) -> dict[str, int]:
     return {
         "total_records": len(records),
@@ -353,9 +453,14 @@ def search_reports(
     risk_level: str | None = None,
     final_label: str | None = None,
     review_status: str | None = None,
+    source_type: str | None = None,
     date_range: str | None = None,
+    date_from: str | None = None,
+    date_to: str | None = None,
     confidence_range: str | None = None,
     sort: str | None = None,
+    sort_by: str | None = None,
+    sort_order: str | None = None,
     limit: int = 50,
     offset: int = 0,
     history_dir: Path | None = None,
@@ -365,6 +470,8 @@ def search_reports(
     label = normalize_final_label(final_label) if final_label and final_label != "all" else None
     status = str(review_status or "").strip().lower()
     status = status if status and status != "all" else None
+    source = str(source_type or "").strip().lower()
+    source = source if source and source != "all" else None
 
     filtered = [
         record
@@ -373,10 +480,12 @@ def search_reports(
         and (risk is None or record.get("risk_level") == risk)
         and (label is None or record.get("final_label") == label)
         and (status is None or record.get("review_status") == status)
+        and (source is None or str(record.get("source_type") or record.get("history_type") or "").lower() == source)
         and _matches_date(record, date_range)
+        and _matches_date_bounds(record, date_from, date_to)
         and _matches_confidence(record, confidence_range)
     ]
-    sorted_records = _sort_records(filtered, sort)
+    sorted_records = _sort_records_by(filtered, sort_by, sort_order) if sort_by else _sort_records(filtered, sort)
     safe_offset = max(0, int(offset))
     safe_limit = max(1, min(int(limit), 500))
     items = sorted_records[safe_offset : safe_offset + safe_limit]
@@ -389,11 +498,21 @@ def search_reports(
             "risk_level": risk_level or "all",
             "final_label": final_label or "all",
             "review_status": review_status or "all",
+            "source_type": source_type or "all",
             "date_range": date_range or "all",
+            "date_from": date_from or "",
+            "date_to": date_to or "",
             "confidence_range": confidence_range or "all",
             "sort": sort or "newest",
             "limit": safe_limit,
             "offset": safe_offset,
+        },
+        "limit": safe_limit,
+        "offset": safe_offset,
+        "sort": {
+            "sort_by": sort_by or "created_at",
+            "sort_order": sort_order or ("desc" if str(sort or "newest").lower() != "oldest" else "asc"),
+            "legacy_sort": sort or "newest",
         },
         "summary": _summary(all_records),
         "schema_version": REPORT_SCHEMA_VERSION,
@@ -415,6 +534,30 @@ def review_queue(limit: int = 20, history_dir: Path | None = None) -> dict[str, 
     queued = sorted(queued, key=queue_priority, reverse=True)
     safe_limit = max(1, min(int(limit), 100))
     return {"items": queued[:safe_limit], "total": len(queued), "schema_version": REPORT_SCHEMA_VERSION}
+
+
+def get_report_detail(record_id: str, history_dir: Path | None = None) -> dict[str, Any]:
+    if history_dir is None:
+        bootstrap_sqlite_from_history()
+        record = report_store.get_report(record_id)
+        if record is None:
+            raise ReportRecordNotFound(f"Report record not found: {record_id}")
+        return record
+    for record in load_report_records_from_history(history_dir):
+        if record.get("id") == record_id or record.get("report_id") == record_id:
+            return record
+    raise ReportRecordNotFound(f"Report record not found: {record_id}")
+
+
+def get_html_report_path(record_id: str) -> Path:
+    bootstrap_sqlite_from_history()
+    record = report_store.get_report(record_id)
+    if record is None:
+        raise ReportRecordNotFound(f"Report record not found: {record_id}")
+    path = Path(str(record.get("html_report_path") or ""))
+    if not path.exists():
+        raise ReportRecordNotFound(f"HTML report not found: {record_id}")
+    return path
 
 
 def _find_record_target(history: dict[str, Any], path: Path, record_id: str) -> dict[str, Any] | None:
@@ -444,7 +587,20 @@ def update_review(record_id: str, payload: dict[str, Any], history_dir: Path | N
     if status not in REVIEW_STATUSES:
         raise ValueError(f"review_status must be one of: {', '.join(sorted(REVIEW_STATUSES))}.")
     note = str(payload.get("review_note") or "")
-    reviewer = str(payload.get("reviewer") or "local_user")
+    reviewer = str(payload.get("reviewed_by") or payload.get("reviewer") or "local_user")
+    if history_dir is None:
+        bootstrap_sqlite_from_history()
+        record = report_store.update_report_review(
+            record_id,
+            {
+                "review_status": status,
+                "review_note": note,
+                "reviewed_by": reviewer,
+            },
+        )
+        if record is None:
+            raise ReportRecordNotFound(f"Report record not found: {record_id}")
+        return record
     source = Path(history_dir or HISTORY_DIR)
     if not source.exists():
         raise ReportRecordNotFound(f"Report record not found: {record_id}")
@@ -481,6 +637,10 @@ def export_rows(records: list[dict[str, Any]]) -> list[dict[str, Any]]:
         "review_note",
         "reviewed_at",
         "reviewer",
+        "report_schema_version",
+        "detector_version",
+        "model_version",
+        "html_report_available",
         "decision_reason",
         "recommendation",
         "user_facing_summary",
@@ -502,6 +662,10 @@ def export_csv(records: list[dict[str, Any]]) -> str:
         "review_note",
         "reviewed_at",
         "reviewer",
+        "report_schema_version",
+        "detector_version",
+        "model_version",
+        "html_report_available",
         "decision_reason",
         "recommendation",
         "user_facing_summary",

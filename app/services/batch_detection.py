@@ -98,7 +98,7 @@ def run_batch_detection(inputs: list[BatchDetectionInput]) -> dict[str, Any]:
             continue
 
         try:
-            result = detect_image_for_api(str(item.image_path), filename=item.filename)
+            result = detect_image_for_api(str(item.image_path), filename=item.filename, source_type="batch")
             results.append(
                 {
                     "input": _input_payload(item),

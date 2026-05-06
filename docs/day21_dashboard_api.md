@@ -1,5 +1,35 @@
 # Day21 Frontend-ready Dashboard Data API
 
+## Day29 Update: Persistent Reports API
+
+Day29 keeps the dashboard summary endpoints compatible, but Report Center now reads persistent records from SQLite instead of relying on temporary/mock frontend data. The store is initialized automatically at startup and lives at:
+
+```text
+data/app/reports.sqlite3
+```
+
+Legacy Day20 history JSON files under `outputs/api_history/` are preserved. If SQLite is empty, the lightweight bootstrap imports compatible legacy history records without deleting the JSON files. A repeatable manual migration script is also available:
+
+```powershell
+python scripts\migrate_reports_to_sqlite.py
+```
+
+Reports endpoints:
+
+- `GET /api/v1/reports`
+- `GET /api/v1/reports/{report_id}`
+- `PATCH /api/v1/reports/{report_id}/review`
+- `GET /api/v1/reports/{report_id}/html`
+- `GET /api/v1/reports/export`
+
+`GET /api/v1/reports` supports `q`, `risk_level`, `final_label`, `review_status`, `source_type`, `date_from`, `date_to`, `sort_by`, `sort_order`, `limit`, and `offset`. The legacy `/api/v1/reports/search` route remains available for the existing dashboard code path.
+
+Each report contains `report_schema_version`, `detector_version`, and `model_version`. Current values are `v1`, `detector.day29`, and `lightweight-baseline.no-pretrained`.
+
+Supported review states are `unreviewed`, `pending_review`, `reviewed`, `confirmed_ai`, `confirmed_real`, `false_positive`, `false_negative`, `needs_recheck`, and `ignored`; `needs_follow_up` is accepted for Day28 UI compatibility. Review updates write to SQLite and survive page refreshes and backend restarts.
+
+Day29 does not add pretrained models, does not train a model, does not add PDF export, and does not redesign the dashboard UI.
+
 ## Goal
 
 Day21 adds dashboard data endpoints on top of the Day20 JSON history export.

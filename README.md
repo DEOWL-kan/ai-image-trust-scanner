@@ -18,6 +18,7 @@ The project combines multiple weak signals instead of making a single absolute c
 - Day24: error gallery and misclassification review UI
 - Day25: error taxonomy, root cause tagging, and fix priority ranking
 - Day25.1: calibrated root cause tagging with evidence strength scoring
+- Day29: SQLite-backed report persistence, reports API, and durable review status workflow
 
 ## Core Features
 
@@ -27,6 +28,8 @@ The project combines multiple weak signals instead of making a single absolute c
 - Dashboard summary and recent-results API
 - Error gallery for FP / FN / uncertain samples
 - Error taxonomy and root cause tagging
+- Report Center backed by persistent report records
+- Durable human review status for risk review queues
 - Calibrated evidence strength scoring
 - Fix priority ranking
 - Benchmark protocol v2 reports
@@ -43,6 +46,11 @@ The project combines multiple weak signals instead of making a single absolute c
 - `GET /dashboard/error-taxonomy?version=calibrated`
 - `GET /api/v1/error-taxonomy`
 - `GET /api/v1/error-taxonomy?version=calibrated`
+- `GET /api/v1/reports`
+- `GET /api/v1/reports/{report_id}`
+- `PATCH /api/v1/reports/{report_id}/review`
+- `GET /api/v1/reports/{report_id}/html`
+- `GET /api/v1/reports/export`
 
 ## Day25 / Day25.1 Reports
 
@@ -77,6 +85,59 @@ Regenerate Day25.1 calibrated taxonomy outputs:
 ```powershell
 python tools/day25_error_taxonomy.py --calibrated
 ```
+
+## Day29 Report Persistence
+
+Day29 moves Report Center data from history-only JSON normalization to a durable SQLite report store. New single-image and batch detections automatically create report records, and human review status updates are saved so they survive page refreshes and backend restarts.
+
+Persistent store:
+
+```text
+data/app/reports.sqlite3
+```
+
+Server-generated HTML reports are written to:
+
+```text
+outputs/html_reports/
+```
+
+The legacy Day20 JSON history directory is still kept for compatibility:
+
+```text
+outputs/api_history/
+```
+
+Reports API:
+
+- `GET /api/v1/reports`: list reports with `q`, `risk_level`, `final_label`, `review_status`, `source_type`, `date_from`, `date_to`, `sort_by`, `sort_order`, `limit`, and `offset`.
+- `GET /api/v1/reports/{report_id}`: return full report detail for the Day27 detail drawer.
+- `PATCH /api/v1/reports/{report_id}/review`: persist `review_status`, `review_note`, and `reviewed_by`.
+- `GET /api/v1/reports/{report_id}/html`: return the saved HTML report.
+- `GET /api/v1/reports/export`: export filtered Report Center data as JSON or CSV.
+
+Supported `review_status` values:
+
+```text
+unreviewed, pending_review, reviewed, confirmed_ai, confirmed_real,
+false_positive, false_negative, needs_recheck, ignored
+```
+
+`needs_follow_up` is also accepted for compatibility with the existing Day28 UI.
+
+Version fields on every report:
+
+- `report_schema_version`: report persistence schema version, currently `v1`.
+- `detector_version`: current detector pipeline marker, currently `detector.day29`.
+- `model_version`: current lightweight baseline marker, currently `lightweight-baseline.no-pretrained`.
+
+Manual migration from legacy history JSON can be rerun safely:
+
+```powershell
+python scripts\migrate_reports_to_sqlite.py
+```
+
+Day29 does not connect pretrained models, does not train models, does not add PDF export, and does not redesign the UI.
 
 ## Run Tests
 

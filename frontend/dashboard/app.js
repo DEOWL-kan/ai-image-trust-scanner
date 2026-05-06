@@ -1,6 +1,6 @@
 const API_ENDPOINTS = {
   summary: "/dashboard/summary",
-  recentResults: "/api/v1/reports/search?limit=100",
+  recentResults: "/api/v1/reports?limit=100",
   reportQueue: "/api/v1/reports/queue?limit=20",
   reportReview: (id) => `/api/v1/reports/${encodeURIComponent(id)}/review`,
   reportExport: "/api/v1/reports/export",
@@ -469,12 +469,14 @@ const translations = {
       unknown: "Unknown",
     },
     review: {
+      unreviewed: "Unreviewed",
       pending_review: "Pending Review",
       reviewed: "Reviewed",
       confirmed_ai: "Confirmed AI",
       confirmed_real: "Confirmed Real",
       false_positive: "False Positive",
       false_negative: "False Negative",
+      needs_recheck: "Needs Recheck",
       needs_follow_up: "Needs Follow-up",
       ignored: "Ignored",
     },
@@ -803,12 +805,14 @@ mergeTranslations(translations.zh, {
       unknown: "未知",
     },
     review: {
+      unreviewed: "未复核",
       pending_review: "待复核",
       reviewed: "已复核",
       confirmed_ai: "确认为 AI",
       confirmed_real: "确认为真实",
       false_positive: "误判为 AI",
       false_negative: "漏判 AI",
+      needs_recheck: "需重检",
       needs_follow_up: "需要跟进",
       ignored: "已忽略",
     },
@@ -1483,7 +1487,7 @@ function normalizeVerdictKey(value) {
 
 function normalizeReviewStatusKey(value) {
   const status = String(value || "pending_review").trim().toLowerCase().replaceAll("-", "_").replaceAll(" ", "_");
-  const allowed = ["pending_review", "reviewed", "confirmed_ai", "confirmed_real", "false_positive", "false_negative", "needs_follow_up", "ignored"];
+  const allowed = ["unreviewed", "pending_review", "reviewed", "confirmed_ai", "confirmed_real", "false_positive", "false_negative", "needs_recheck", "needs_follow_up", "ignored"];
   return allowed.includes(status) ? status : "pending_review";
 }
 
@@ -1545,7 +1549,7 @@ function reportFilterParams(extra = {}) {
 
 function reportSearchUrl(extra = {}) {
   const params = reportFilterParams({ limit: 100, offset: 0, ...extra });
-  return `/api/v1/reports/search?${params.toString()}`;
+  return `/api/v1/reports?${params.toString()}`;
 }
 
 function reportExportUrl(format) {
@@ -1812,11 +1816,11 @@ function renderRecentRows(results, countValue = results.length) {
 
   elements.recentBody.innerHTML = results
     .map((item, index) => {
-      const id = String(firstDefined(item.id, item.history_file, `recent-${index}`));
+      const id = String(firstDefined(item.report_id, item.id, item.history_file, `recent-${index}`));
       state.recentResults.set(id, item);
       const label = firstDefined(item.final_label, item.label, "uncertain");
       const risk = firstDefined(item.risk_level, item.risk, "unknown");
-      const filename = firstDefined(item.filename, "unknown");
+      const filename = firstDefined(item.filename, item.image_name, "unknown");
       const reviewStatus = firstDefined(item.review_status, "pending_review");
       const summary = resultSummaryText(item);
       const labelTone = normalizeVerdictKey(label) === "ai" ? "ai-generated" : normalizeVerdictKey(label);
@@ -1867,7 +1871,7 @@ function renderReviewQueue(payload) {
   }
   elements.reviewQueueList.innerHTML = items
     .map((item, index) => {
-      const id = String(firstDefined(item.id, item.history_file, `queue-${index}`));
+      const id = String(firstDefined(item.report_id, item.id, item.history_file, `queue-${index}`));
       state.recentResults.set(id, item);
       const reason = resultSummaryText(item);
       const labelTone = normalizeVerdictKey(item.final_label) === "ai" ? "ai-generated" : normalizeVerdictKey(item.final_label);
@@ -1875,7 +1879,7 @@ function renderReviewQueue(payload) {
       const reviewTone = normalizeReviewStatusKey(item.review_status);
       return `
         <button class="review-queue-item" type="button" data-action="review-queue-detail" data-id="${escapeHtml(id)}">
-          <span class="queue-title" title="${escapeHtml(firstDefined(item.filename, id))}">${escapeHtml(firstDefined(item.filename, id))}</span>
+          <span class="queue-title" title="${escapeHtml(firstDefined(item.filename, item.image_name, id))}">${escapeHtml(firstDefined(item.filename, item.image_name, id))}</span>
           <span class="queue-badges">
             <em class="badge ${slug(labelTone)}">${escapeHtml(getVerdictLabel(item.final_label))}</em>
             <em class="badge ${slug(riskTone)}">${escapeHtml(getRiskLabel(item.risk_level))}</em>

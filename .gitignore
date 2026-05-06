@@ -35,8 +35,11 @@ outputs/reports/*
 outputs/reports/*.json
 outputs/reports/*.md
 outputs/api_history/*
+outputs/html_reports/*
 !outputs/reports/.gitkeep
 data/outputs/
+data/app/*.sqlite3
+data/app/*.sqlite3-*
 data/day10_format_control/
 reports/day10_format_eval_image_reports/
 
@@ -60,6 +63,11 @@ Thumbs.db
 
 # IDE settings
 .vscode/
+
+# Frontend dependencies and build outputs
+node_modules/
+dist/
+build/
 
 # Logs
 *.log
