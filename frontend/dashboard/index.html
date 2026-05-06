@@ -1,179 +1,376 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>AI Image Trust Scanner Dashboard</title>
+    <title>Minerva AI Content Trust Scanner</title>
+    <link rel="icon" href="./assets/minerva-mark.png" type="image/png" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
   <body>
-    <main class="page-shell">
-      <header class="top-header">
-        <div class="brand-block">
-          <p class="eyebrow">Trust Console</p>
-          <h1>AI Image Trust Scanner</h1>
-          <p class="subtitle">Lightweight image authenticity dashboard</p>
-        </div>
+    <canvas class="global-particles" id="global-particles" aria-hidden="true"></canvas>
+
+    <div class="intro-overlay" id="intro-overlay" aria-label="Minerva loading animation">
+      <img class="intro-lockup" src="./assets/minerva-full-lockup.png" onerror="this.onerror=null;this.src='./assets/minerva-mark.svg'" alt="Minerva" />
+      <p data-i18n="intro.text">AI Content Trust Scanner</p>
+    </div>
+
+    <header class="brand-header">
+      <div class="brand-header-inner">
+        <a class="brand-lockup" href="/dashboard-ui/" aria-label="Minerva home">
+          <img class="logo-mark brand-mark" src="./assets/minerva-mark.png" onerror="this.onerror=null;this.src='./assets/minerva-mark.svg'" alt="Minerva" />
+          <span class="brand-text">
+            <span class="brand-name">MINERVA</span>
+            <span class="product-name">AI Content Trust Scanner</span>
+          </span>
+        </a>
+
+        <nav class="product-nav" aria-label="Primary navigation">
+          <a href="#product" data-i18n="nav.product">Product</a>
+          <a href="#use-cases" data-i18n="nav.useCases">Scenarios</a>
+          <a href="#trust-console" data-i18n="nav.trustConsole">Trust Console</a>
+          <a href="#api-preview" data-i18n="nav.api">API</a>
+          <a href="#api-preview" data-i18n="nav.reports">Report</a>
+          <a href="#architecture" data-i18n="nav.architecture">Architecture</a>
+          <a href="/dashboard/errors" id="error-gallery-link" data-i18n="nav.errorGallery">Error Gallery</a>
+        </nav>
+
         <div class="header-actions">
-          <a class="button button-secondary" href="/dashboard/errors">
-            Error Gallery
-          </a>
+          <div class="language-toggle" aria-label="Language">
+            <button class="language-button" type="button" data-lang="zh">中文</button>
+            <button class="language-button" type="button" data-lang="en">English</button>
+          </div>
           <div class="status-pill" id="service-status" data-status="loading">
             <span class="status-dot" aria-hidden="true"></span>
             <span id="service-status-text">Checking</span>
           </div>
-          <button class="button button-primary" id="refresh-button" type="button">
-            Refresh
-          </button>
+          <a class="button button-primary nav-demo-button" href="#trust-console" data-i18n="nav.tryDemo">Start Scan</a>
+          <button class="utility-refresh" id="refresh-button" type="button" data-i18n="nav.refresh">Refresh</button>
         </div>
-      </header>
+      </div>
+    </header>
 
-      <section class="action-panel" aria-labelledby="upload-title">
-        <div class="action-copy">
-          <p class="eyebrow">Analyze</p>
-          <h2 id="upload-title">Image Detection</h2>
-          <p>Upload one or multiple images to analyze authenticity risk.</p>
-        </div>
-
-        <div class="upload-grid">
-          <article class="upload-card">
-            <div class="upload-card-header">
-              <div>
-                <h3>Single Image</h3>
-                <p>Run one image through the existing detector.</p>
-              </div>
-              <span class="mini-badge">POST /api/v1/detect</span>
-            </div>
-            <label class="file-drop" for="single-file-input">
-              <span class="file-drop-title" id="single-file-label">Choose an image</span>
-              <span class="file-drop-meta">JPG, JPEG, PNG, or WEBP</span>
-            </label>
-            <input id="single-file-input" type="file" accept="image/jpeg,image/png,image/webp" />
-            <button class="button button-primary button-full" id="single-detect-button" type="button">
-              Detect Image
-            </button>
-          </article>
-
-          <article class="upload-card">
-            <div class="upload-card-header">
-              <div>
-                <h3>Batch Images</h3>
-                <p>Analyze a small group with the batch endpoint.</p>
-              </div>
-              <span class="mini-badge">POST /detect/batch</span>
-            </div>
-            <label class="file-drop" for="batch-file-input">
-              <span class="file-drop-title" id="batch-file-label">Choose multiple images</span>
-              <span class="file-drop-meta" id="batch-file-meta">No images selected</span>
-            </label>
-            <input id="batch-file-input" type="file" accept="image/jpeg,image/png,image/webp" multiple />
-            <button class="button button-secondary button-full" id="batch-detect-button" type="button">
-              Batch Detect
-            </button>
-          </article>
+    <main class="page-shell minerva-console">
+      <section class="hero-section website-hero motion-reveal" id="product" aria-labelledby="hero-title" data-motion="hero">
+        <div class="hero-brand-orb" aria-hidden="true">
+          <span class="hero-m-watermark">M</span>
+          <span class="hero-sunrise"></span>
+          <span class="hero-scan-beam"></span>
         </div>
 
-        <div class="upload-result" id="upload-result" aria-live="polite">
-          <div class="empty-state compact">Detection results will appear here.</div>
+        <div class="hero-copy">
+          <div class="hero-brand-kicker hero-layer-one">
+            <img class="badge-mark" src="./assets/minerva-mark.png" onerror="this.onerror=null;this.src='./assets/minerva-mark.svg'" alt="" />
+            <span>Minerva AI Content Trust Scanner</span>
+          </div>
+          <h1 id="hero-title" class="hero-layer-two">
+            <span data-i18n="hero.title">Make the world for real</span>
+            <span data-i18n="hero.titleZh">Evidence-first AI content trust infrastructure</span>
+          </h1>
+          <p class="hero-lead hero-layer-three" data-i18n="hero.lead">
+            Minerva turns image detection, metadata, provenance signals, and forensic traces into reviewable trust evidence.
+          </p>
+          <div class="hero-actions hero-layer-four">
+            <a class="button button-primary hero-cta" href="#trust-console" data-i18n="hero.startScan">Start Trust Scan</a>
+            <a class="button button-secondary hero-cta" href="#dashboard-metrics" data-i18n="hero.exploreConsole">View Console</a>
+          </div>
+          <div class="tag-row hero-layer-five" aria-label="Product capability tags">
+            <span>Image-first MVP</span>
+            <span>Evidence-based</span>
+            <span>SaaS / API Ready</span>
+            <span>Human Review Friendly</span>
+          </div>
+        </div>
+
+        <div class="hero-telemetry-rail" aria-label="Trust telemetry" data-trust-telemetry data-motion="telemetry">
+          <div class="telemetry-rail-line" aria-hidden="true"><span data-trust-line style="width: 0%"></span></div>
+          <div class="telemetry-rail-grid">
+            <div><span data-i18n="hero.previewTitle">Trust telemetry</span><strong><span data-trust-number data-target="86">0%</span></strong></div>
+            <div><span data-i18n="result.evidenceLayers">Evidence layers</span><strong>4</strong></div>
+            <div><span data-i18n="hero.previewQueue">Review queue</span><strong>12</strong></div>
+            <div><span data-i18n="hero.previewApi">API ready</span><strong>JSON</strong></div>
+          </div>
         </div>
       </section>
 
-      <section class="summary-grid" aria-label="Summary statistics">
-        <article class="stat-card">
-          <p>Total Scans</p>
-          <strong data-summary-key="totalScans">--</strong>
-          <span>Detection jobs</span>
-        </article>
-        <article class="stat-card">
-          <p>AI Detected</p>
-          <strong data-summary-key="aiDetected">--</strong>
-          <span>AI generated</span>
-        </article>
-        <article class="stat-card">
-          <p>Real Detected</p>
-          <strong data-summary-key="realDetected">--</strong>
-          <span>Likely authentic</span>
-        </article>
-        <article class="stat-card">
-          <p>Uncertain</p>
-          <strong data-summary-key="uncertain">--</strong>
-          <span>Needs review</span>
-        </article>
-        <article class="stat-card">
-          <p>High Risk</p>
-          <strong data-summary-key="highRisk">--</strong>
-          <span>Risk flagged</span>
-        </article>
-        <article class="stat-card">
-          <p>Average Confidence</p>
-          <strong data-summary-key="averageConfidence">--</strong>
-          <span>Loaded results</span>
-        </article>
+      <section class="philosophy-section reveal-section motion-reveal" id="philosophy" aria-labelledby="philosophy-title" data-motion="philosophy">
+        <div class="philosophy-copy">
+          <p class="section-eyebrow" data-i18n="philosophy.eyebrow">Dusk Intelligence</p>
+          <h2 id="philosophy-title" data-i18n="philosophy.title">The owl of Minerva begins its flight only at dusk</h2>
+          <p data-i18n="philosophy.body">
+            When generative AI blurs images, text, video, and voice, trust must move from intuition to evidence.
+            Minerva turns provenance, metadata, model signals, and forensic traces into reviewable content trust intelligence.
+          </p>
+        </div>
+        <div class="twilight-arc" aria-hidden="true">
+          <span class="arc-line"></span>
+          <span class="arc-dot dot-one"></span>
+          <span class="arc-dot dot-two"></span>
+          <span class="arc-dot dot-three"></span>
+          <span class="arc-dot dot-four"></span>
+        </div>
       </section>
 
-      <section class="dashboard-card">
+      <section class="scan-workflow-section demo-section reveal-section motion-reveal" id="trust-console" aria-labelledby="workspace-title" data-motion="scanner">
+        <div class="section-heading full">
+          <div>
+            <p class="eyebrow" data-i18n="demo.eyebrow">Live Trust Detection Demo</p>
+            <h2 id="workspace-title" data-i18n="demo.title">Live Trust Detection Demo</h2>
+            <p data-i18n="demo.description">Upload image content, apply detection signals, build evidence, and inspect a Simple or JSON result view.</p>
+          </div>
+        </div>
+
+        <ol class="workflow-steps" aria-label="Trust scan workflow">
+          <li><span>01</span><strong data-i18n="workflowStep.upload">Upload</strong></li>
+          <li><span>02</span><strong data-i18n="workflowStep.analyze">Analyze</strong></li>
+          <li><span>03</span><strong data-i18n="workflowStep.evidence">Evidence</strong></li>
+          <li><span>04</span><strong data-i18n="workflowStep.review">Review</strong></li>
+        </ol>
+
+        <div class="workspace-grid product-console-section detection-demo">
+          <div class="workspace-copy reveal-left">
+            <p class="eyebrow" data-i18n="workspace.liveEyebrow">Live Detection Demo</p>
+            <h3 data-i18n="workspace.liveTitle">Image trust risk assessment</h3>
+            <p data-i18n="workspace.liveBody">
+              The local MVP keeps real upload, batch detection, dashboard refresh, JSON export, and audit history connected to the backend.
+            </p>
+            <ul class="capability-list">
+              <li data-i18n="workspace.capabilityOne">Single image and batch scan</li>
+              <li data-i18n="workspace.capabilityTwo">Risk, confidence, evidence context</li>
+              <li data-i18n="workspace.capabilityThree">Human review recommendation</li>
+            </ul>
+          </div>
+
+          <div class="upload-stack demo-stage reveal-left" aria-label="Upload panels">
+            <div class="upload-tabs" id="demo-tabs" aria-label="Detection mode tabs">
+              <button class="demo-tab active" type="button" data-demo-tab="upload" data-i18n="demo.uploadTab">Upload</button>
+              <button class="demo-tab" type="button" data-demo-tab="batch" data-i18n="demo.batchTab">Batch</button>
+              <button class="demo-tab" type="button" data-demo-tab="sample" data-i18n="demo.sampleTab">Sample</button>
+            </div>
+
+            <article class="upload-card demo-pane active" id="single-upload-card" data-demo-panel="upload">
+              <div class="upload-card-header">
+                <div>
+                  <h3 data-i18n="single.title">Single image</h3>
+                  <p data-i18n="single.description">Run one image through the current detector.</p>
+                </div>
+                <span class="mini-badge">POST /api/v1/detect</span>
+              </div>
+              <label class="file-drop" for="single-file-input" id="single-drop-zone" tabindex="0" role="button" aria-label="Upload one image">
+                <img class="drop-mark dropzone-mark" src="./assets/minerva-mark.png" onerror="this.onerror=null;this.src='./assets/minerva-mark.svg'" alt="" />
+                <span class="file-drop-title" id="single-file-label" data-i18n="single.choose">Choose an image</span>
+                <span class="file-drop-meta" id="single-file-meta" data-i18n="single.formats">JPG, JPEG, PNG, or WEBP</span>
+              </label>
+              <input id="single-file-input" type="file" accept="image/jpeg,image/png,image/webp" />
+              <div class="file-preview" id="single-file-preview" hidden></div>
+              <button class="button button-primary button-full" id="single-detect-button" type="button" data-i18n="single.detect">Detect Image</button>
+            </article>
+
+            <article class="upload-card demo-pane" id="batch-upload-card" data-demo-panel="batch">
+              <div class="upload-card-header">
+                <div>
+                  <h3 data-i18n="batch.title">Batch images</h3>
+                  <p data-i18n="batch.description">Analyze multiple images with the batch endpoint.</p>
+                </div>
+                <span class="mini-badge">POST /detect/batch</span>
+              </div>
+              <label class="file-drop" for="batch-file-input" id="batch-drop-zone" tabindex="0" role="button" aria-label="Upload multiple images">
+                <img class="drop-mark dropzone-mark" src="./assets/minerva-mark.png" onerror="this.onerror=null;this.src='./assets/minerva-mark.svg'" alt="" />
+                <span class="file-drop-title" id="batch-file-label" data-i18n="batch.choose">Choose multiple images</span>
+                <span class="file-drop-meta" id="batch-file-meta" data-i18n="batch.empty">No images selected</span>
+              </label>
+              <input id="batch-file-input" type="file" accept="image/jpeg,image/png,image/webp" multiple />
+              <div class="batch-preview" id="batch-file-preview" hidden></div>
+              <button class="button button-secondary button-full" id="batch-detect-button" type="button" data-i18n="batch.detect">Batch Detect</button>
+            </article>
+
+            <article class="upload-card demo-pane sample-pane" data-demo-panel="sample">
+              <div class="upload-card-header">
+                <div>
+                  <h3 data-i18n="demo.sampleTitle">Sample preview</h3>
+                  <p data-i18n="demo.sampleBody">Use these local placeholders to explain review scenarios without changing backend data.</p>
+                </div>
+                <span class="mini-badge">Preview</span>
+              </div>
+              <div class="sample-grid" aria-label="Sample placeholders">
+                <button type="button" class="sample-tile" data-sample="creator"><span></span><strong data-i18n="demo.sampleCreator">Creator upload</strong><em>Medium risk</em></button>
+                <button type="button" class="sample-tile" data-sample="media"><span></span><strong data-i18n="demo.sampleMedia">Media archive</strong><em>Low risk</em></button>
+                <button type="button" class="sample-tile" data-sample="ad"><span></span><strong data-i18n="demo.sampleAd">Campaign asset</strong><em>Review</em></button>
+              </div>
+              <p class="sample-note" data-i18n="demo.sampleNote">Samples are interface placeholders only. Upload a file to run the real detector.</p>
+            </article>
+          </div>
+
+          <section class="verdict-panel results-panel reveal-right" aria-live="polite">
+            <div class="results-panel-header">
+              <div>
+                <p class="eyebrow" data-i18n="demo.resultsEyebrow">Model output</p>
+                <h3 data-i18n="demo.resultsTitle">Results</h3>
+              </div>
+              <div class="result-view-toggle" id="result-view-toggle" aria-label="Result view">
+                <button class="result-view-button active" type="button" data-result-view="simple" data-i18n="demo.simpleView">Simple</button>
+                <button class="result-view-button" type="button" data-result-view="json" data-i18n="demo.jsonView">JSON</button>
+              </div>
+            </div>
+            <div id="upload-result" class="results-panel-body">
+              <div class="result-empty">
+                <img class="empty-mark result-mark" src="./assets/minerva-mark.png" onerror="this.onerror=null;this.src='./assets/minerva-mark.svg'" alt="" />
+                <h3 data-i18n="result.emptyTitle">Live Trust Verdict</h3>
+                <p data-i18n="result.emptyBody">Upload an image to generate a trust assessment.</p>
+                <pre class="json-placeholder" hidden>{}</pre>
+                <div class="signal-dots" aria-hidden="true">
+                  <span></span><span></span><span></span><span></span>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <section class="summary-grid stats-strip reveal-section" id="dashboard-metrics" aria-label="Summary statistics" data-motion="metrics">
+        <article class="stat-card"><p data-i18n="metrics.total">Total Scans</p><strong data-summary-key="totalScans">--</strong><span data-i18n="metrics.totalHint">Detection jobs</span></article>
+        <article class="stat-card"><p data-i18n="metrics.ai">AI Detected</p><strong data-summary-key="aiDetected">--</strong><span data-i18n="metrics.aiHint">AI generated</span></article>
+        <article class="stat-card"><p data-i18n="metrics.real">Real Detected</p><strong data-summary-key="realDetected">--</strong><span data-i18n="metrics.realHint">Likely authentic</span></article>
+        <article class="stat-card"><p data-i18n="metrics.uncertain">Uncertain</p><strong data-summary-key="uncertain">--</strong><span data-i18n="metrics.uncertainHint">Needs review</span></article>
+        <article class="stat-card"><p data-i18n="metrics.highRisk">High Risk</p><strong data-summary-key="highRisk">--</strong><span data-i18n="metrics.highRiskHint">Risk flagged</span></article>
+        <article class="stat-card"><p data-i18n="metrics.avgConfidence">Average Confidence</p><strong data-summary-key="averageConfidence">--</strong><span data-i18n="metrics.avgConfidenceHint">Loaded results</span></article>
+      </section>
+
+      <section class="signal-section reveal-section" aria-labelledby="signal-title" data-motion="signals">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">Signals</p>
-            <h2>Distribution Charts</h2>
-            <p>Compact views of label, risk, and confidence distribution.</p>
+            <p class="eyebrow" data-i18n="charts.eyebrow">Signal Intelligence</p>
+            <h2 id="signal-title" data-i18n="charts.title">Signals &amp; Evidence Distribution</h2>
+            <p data-i18n="charts.description">Compact product view of model labels, risk levels, and confidence bands.</p>
           </div>
           <span class="timestamp" id="chart-updated-at">--</span>
         </div>
         <div class="chart-grid">
-          <article class="chart-panel">
-            <div class="panel-heading">
-              <h3>Label Distribution</h3>
-              <span>AI / Real / Uncertain</span>
-            </div>
-            <div class="bar-chart" id="label-chart"></div>
-          </article>
-          <article class="chart-panel">
-            <div class="panel-heading">
-              <h3>Risk Distribution</h3>
-              <span>Low / Medium / High</span>
-            </div>
-            <div class="bar-chart" id="risk-chart"></div>
-          </article>
-          <article class="chart-panel">
-            <div class="panel-heading">
-              <h3>Confidence Distribution</h3>
-              <span>High / Medium / Low</span>
-            </div>
-            <div class="bar-chart" id="confidence-chart"></div>
-          </article>
+          <article class="chart-panel"><div class="panel-heading"><h3 data-i18n="charts.labelTitle">Label Distribution</h3><span data-i18n="charts.labelHint">AI / Real / Uncertain</span></div><div class="bar-chart" id="label-chart"></div></article>
+          <article class="chart-panel"><div class="panel-heading"><h3 data-i18n="charts.riskTitle">Risk Distribution</h3><span data-i18n="charts.riskHint">Low / Medium / High</span></div><div class="bar-chart" id="risk-chart"></div></article>
+          <article class="chart-panel"><div class="panel-heading"><h3 data-i18n="charts.confidenceTitle">Confidence Distribution</h3><span data-i18n="charts.confidenceHint">High / Medium / Low</span></div><div class="bar-chart" id="confidence-chart"></div></article>
         </div>
       </section>
 
-      <section class="dashboard-card">
+      <section class="audit-section reveal-section" id="audit-log" data-motion="audit">
         <div class="section-heading">
           <div>
-            <p class="eyebrow">History</p>
-            <h2>Recent Results</h2>
-            <p>Latest compact detection records saved by the API.</p>
+            <p class="eyebrow" data-i18n="recent.eyebrow">Audit Log Preview</p>
+            <h2 data-i18n="recent.title">Recent Results</h2>
+            <p data-i18n="recent.description">Every scan becomes a reviewable record with risk level, confidence, summary, and exportable JSON.</p>
           </div>
           <span class="timestamp" id="recent-count">--</span>
+        </div>
+        <div class="audit-filters" id="audit-filters" aria-label="Audit log filters">
+          <button class="filter-chip active" type="button" data-filter="all" data-i18n="recent.filterAll">All</button>
+          <button class="filter-chip" type="button" data-filter="ai" data-i18n="recent.filterAi">AI Generated</button>
+          <button class="filter-chip" type="button" data-filter="uncertain" data-i18n="recent.filterUncertain">Uncertain</button>
+          <button class="filter-chip" type="button" data-filter="high" data-i18n="recent.filterHigh">High Risk</button>
         </div>
         <div class="table-shell">
           <table>
             <thead>
               <tr>
-                <th>Time</th>
-                <th>Filename</th>
-                <th>Label</th>
-                <th>Risk</th>
-                <th>Confidence</th>
-                <th>Summary</th>
+                <th data-i18n="recent.time">Time</th>
+                <th data-i18n="recent.file">File</th>
+                <th data-i18n="recent.verdict">Verdict</th>
+                <th data-i18n="recent.risk">Risk</th>
+                <th data-i18n="recent.confidence">Confidence</th>
+                <th data-i18n="recent.summary">Summary</th>
+                <th data-i18n="recent.action">Action</th>
               </tr>
             </thead>
             <tbody id="recent-results-body"></tbody>
           </table>
-          <div class="empty-state" id="recent-empty-state" hidden>
-            No recent detection results yet.
-          </div>
+          <div class="empty-state" id="recent-empty-state" hidden data-i18n="recent.empty">No recent detection results yet.</div>
         </div>
       </section>
+
+      <section class="story-grid feature-row reveal-section" id="use-cases" aria-labelledby="why-title" data-motion="story">
+        <div class="section-heading full">
+          <div>
+            <p class="eyebrow" data-i18n="story.eyebrow">Product Story</p>
+            <h2 id="why-title" data-i18n="story.title">Why Minerva</h2>
+          </div>
+        </div>
+        <article><span>01</span><h3 data-i18n="story.evidenceTitle">Evidence-first detection</h3><p data-i18n="story.evidenceBody">Not just a binary truth label, but an evidence chain.</p></article>
+        <article><span>02</span><h3 data-i18n="story.apiTitle">SaaS &amp; API ready</h3><p data-i18n="story.apiBody">Supports web detection, batch detection and developer APIs.</p></article>
+        <article><span>03</span><h3 data-i18n="story.complianceTitle">Compliance-aware</h3><p data-i18n="story.complianceBody">Designed for provenance, synthetic content labeling, and audit review.</p></article>
+        <article><span>04</span><h3 data-i18n="story.reviewTitle">Human review friendly</h3><p data-i18n="story.reviewBody">Outputs review guidance so model results are not the only enforcement basis.</p></article>
+      </section>
+
+      <section class="workflow-section operations-section reveal-section" aria-labelledby="workflow-title" data-motion="workflow">
+        <div class="section-heading full">
+          <div>
+            <p class="eyebrow" data-i18n="workflow.eyebrow">Trust &amp; Safety Workflows</p>
+            <h2 id="workflow-title" data-i18n="workflow.title">Built for Trust &amp; Safety Operations</h2>
+            <p data-i18n="workflow.description">A product preview for policy review, evidence reporting, API integration, and feedback loops.</p>
+          </div>
+        </div>
+        <article><span class="capability-status">MVP</span><h3 data-i18n="workflow.submitTitle">Submit</h3><p data-i18n="workflow.submitBody">Upload, batch import, and structured JSON scan results.</p></article>
+        <article><span class="capability-status">MVP</span><h3 data-i18n="workflow.detectTitle">Detect</h3><p data-i18n="workflow.detectBody">Apply metadata, model, consistency, and forensic signals.</p></article>
+        <article><span class="capability-status">Preview</span><h3 data-i18n="workflow.routeTitle">Route</h3><p data-i18n="workflow.routeBody">Route high-risk or uncertain samples to human review.</p></article>
+        <article><span class="capability-status">Planned</span><h3 data-i18n="workflow.exportTitle">Export</h3><p data-i18n="workflow.exportBody">Export JSON now, with report workflows planned next.</p></article>
+      </section>
+
+      <section class="architecture-card evidence-section reveal-section motion-reveal" id="architecture" aria-labelledby="architecture-title" data-motion="chain">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow" data-i18n="architecture.eyebrow">Hybrid Detection Architecture</p>
+            <h2 id="architecture-title" data-i18n="architecture.title">Four Evidence Layers</h2>
+            <p data-i18n="architecture.description">Minerva does not treat a model score as the final answer. It combines provenance, metadata, model signals, and forensic traces into an auditable evidence chain.</p>
+          </div>
+        </div>
+        <div class="architecture-flow">
+          <article><span>01</span><h3>Source Provenance</h3><p>C2PA / Content Credentials / signature / edit history</p></article>
+          <article><span>02</span><h3>Metadata &amp; AI Labeling</h3><p>EXIF / XMP / software traces / implicit labels</p></article>
+          <article><span>03</span><h3>AI Detection Model</h3><p>model score / confidence / generator risk</p></article>
+          <article><span>04</span><h3>Traditional Forensics</h3><p>JPEG / DCT / noise residual / compression traces</p></article>
+          <article class="architecture-output"><span data-i18n="architecture.output">Output</span><h3>Risk Level + Confidence</h3><p>Evidence Chain + Recommendation</p></article>
+        </div>
+      </section>
+
+      <section class="roadmap-section reveal-section motion-reveal" id="roadmap" aria-labelledby="roadmap-title" data-motion="roadmap">
+        <div class="section-heading full">
+          <div>
+            <p class="eyebrow" data-i18n="roadmap.eyebrow">Multimodal Trust Roadmap</p>
+            <h2 id="roadmap-title" data-i18n="roadmap.title">Multimodal Trust Roadmap</h2>
+            <p data-i18n="roadmap.description">Minerva starts image-first, then extends the same evidence-chain product language across video, text, audio, and multimodal reports.</p>
+          </div>
+        </div>
+        <ol class="roadmap-line" aria-label="Multimodal trust roadmap">
+          <li class="active"><span>01</span><strong data-i18n="roadmap.image">Image</strong><em>MVP</em></li>
+          <li><span>02</span><strong data-i18n="roadmap.video">Video</strong><em>Planned</em></li>
+          <li><span>03</span><strong data-i18n="roadmap.text">Text</strong><em>Planned</em></li>
+          <li><span>04</span><strong data-i18n="roadmap.audio">Audio</strong><em>Planned</em></li>
+          <li><span>05</span><strong data-i18n="roadmap.report">Multimodal Report</strong><em>Planned</em></li>
+        </ol>
+      </section>
+
+      <section class="api-preview-section infrastructure-strip reveal-section" id="api-preview" aria-labelledby="api-preview-title" data-motion="infrastructure">
+        <div class="section-heading full">
+          <div>
+            <p class="eyebrow" data-i18n="apiPreview.eyebrow">SaaS / API Infrastructure</p>
+            <h2 id="api-preview-title" data-i18n="apiPreview.title">From Local MVP to SaaS / API Infrastructure</h2>
+            <p data-i18n="apiPreview.description">The current demo keeps the local workflow real while making room for API, reporting, and enterprise deployment paths.</p>
+          </div>
+        </div>
+        <article><h3 data-i18n="apiPreview.webTitle">Web SaaS</h3><p data-i18n="apiPreview.webBody">Upload, batch detection, history, dashboard, and audit log workflow.</p><button class="button button-ghost" type="button" disabled><span data-i18n="apiPreview.webAction">SaaS Preview Soon</span><span class="soon-badge">Soon</span></button></article>
+        <article><h3 data-i18n="apiPreview.apiTitle">Developer API</h3><p data-i18n="apiPreview.apiBody">/api/v1/detect, /detect/batch, and structured JSON trust output.</p><button class="button button-ghost" type="button" disabled><span data-i18n="apiPreview.apiAction">View API Docs Soon</span><span class="soon-badge">Soon</span></button></article>
+        <article><h3 data-i18n="apiPreview.enterpriseTitle">Enterprise / Private Deployment</h3><p data-i18n="apiPreview.enterpriseBody">Audit logs, private thresholds, data minimization, and review workflow controls.</p><button class="button button-ghost" type="button" disabled><span data-i18n="apiPreview.enterpriseAction">Enterprise Preview Soon</span><span class="soon-badge">Soon</span></button></article>
+      </section>
+
+      <footer class="site-footer">
+        <strong>Minerva</strong>
+        <span>AI Content Trust Scanner</span>
+        <span>Local MVP Demo</span>
+        <span data-i18n="footer.disclaimerEn">Not a forensic or legal final judgment.</span>
+        <span data-i18n="footer.disclaimerZh">Detection results are risk-assessment and human-review support only; they do not replace forensic appraisal, legal advice or final platform action.</span>
+      </footer>
     </main>
+
     <script src="./app.js" defer></script>
+    <script src="./brand-motion.js" defer></script>
   </body>
 </html>
+
