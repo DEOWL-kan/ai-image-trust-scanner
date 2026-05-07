@@ -1,8 +1,10 @@
 const API_ENDPOINTS = {
+  health: "/api/health",
   summary: "/dashboard/summary",
   recentResults: "/api/v1/reports?limit=100",
   reportQueue: "/api/v1/reports/queue?limit=20",
   reportReview: (id) => `/api/v1/reports/${encodeURIComponent(id)}/review`,
+  reportHtml: (id) => `/api/v1/reports/${encodeURIComponent(id)}/html`,
   reportExport: "/api/v1/reports/export",
   chartData: "/dashboard/chart-data",
   detectSingle: "/api/v1/detect",
@@ -1191,6 +1193,524 @@ mergeTranslations(translations.zh, {
   },
 });
 
+mergeTranslations(translations.zh, {
+  nav: {
+    online: "后端连接正常",
+    apiError: "后端连接异常",
+  },
+  result: {
+    reportCreated: "已生成报告，可在报告中心查看。report_id 可用于后续追踪：{id}",
+    viewDetail: "查看详情",
+    viewHtmlReport: "查看 HTML 报告",
+    goReportCenter: "去报告中心",
+    htmlOpenFailed: "HTML 报告打开失败，请稍后重试。",
+    detectFailedFriendly: "检测失败，请确认后端已启动并重试。",
+    reportCenterHint: "报告已写入 SQLite，刷新或重启后端后仍可在报告中心查看。",
+  },
+  reportCenter: {
+    empty: "暂无报告，请先完成一次图片检测。可点击“开始检测”进入单图检测。",
+    loadFailed: "报告记录加载失败，请确认后端服务已启动。",
+    exportReady: "导出已开始。",
+    exportFailed: "导出失败，请稍后重试。",
+    exporting: "导出中...",
+  },
+  systemStatus: {
+    eyebrow: "运行状态",
+    title: "系统状态",
+    description: "演示前检查后端、Reports API、SQLite 持久化和版本字段。",
+    backend: "后端连接",
+    reportsApi: "Reports API",
+    database: "报告数据库",
+    reportCount: "报告数量",
+    schemaVersion: "报告结构版本",
+    detectorVersion: "检测器版本",
+    modelVersion: "模型版本",
+    persistence: "SQLite 持久化",
+    htmlReport: "HTML 报告",
+    export: "导出能力",
+    ok: "正常",
+    error: "异常",
+    enabled: "已启用",
+    disabled: "未启用",
+    loading: "检查中",
+    unavailable: "不可用",
+  },
+});
+
+mergeTranslations(translations.en, {
+  result: {
+    reportCreated: "Report generated. You can find it in Report Center. report_id for tracking: {id}",
+    viewDetail: "View Detail",
+    viewHtmlReport: "View HTML Report",
+    goReportCenter: "Go to Report Center",
+    htmlOpenFailed: "HTML report failed to open. Please try again.",
+    detectFailedFriendly: "Detection failed. Check that the backend is running and try again.",
+    reportCenterHint: "The report is stored in SQLite and remains available after refresh or backend restart.",
+  },
+  reportCenter: {
+    empty: "No reports yet. Complete an image detection first.",
+    exportReady: "Export started.",
+    exportFailed: "Export failed. Please try again.",
+    exporting: "Exporting...",
+  },
+  systemStatus: {
+    eyebrow: "Runtime",
+    title: "System Status",
+    description: "Pre-demo check for backend, Reports API, SQLite persistence, and version fields.",
+    backend: "Backend",
+    reportsApi: "Reports API",
+    database: "Report database",
+    reportCount: "Report count",
+    schemaVersion: "Report schema version",
+    detectorVersion: "Detector version",
+    modelVersion: "Model version",
+    persistence: "SQLite persistence",
+    htmlReport: "HTML report",
+    export: "Export",
+    ok: "OK",
+    error: "Error",
+    enabled: "Enabled",
+    disabled: "Disabled",
+    loading: "Checking",
+    unavailable: "Unavailable",
+  },
+});
+
+mergeTranslations(translations.zh, {
+  nav: {
+    product: "产品",
+    useCases: "应用场景",
+    trustConsole: "可信控制台",
+    api: "API",
+    reports: "报告",
+    architecture: "架构",
+    errorGallery: "错误图",
+    tryDemo: "开始检测",
+    refresh: "刷新",
+    online: "后端连接正常",
+    apiError: "后端连接异常",
+  },
+  hero: {
+    previewTitle: "MVP 运行概览",
+    previewPersistence: "SQLite 持久化",
+    previewQueue: "待复核记录",
+    previewApi: "Reports API",
+    lead: "从图像信号到可复核证据。Minerva 将元数据、来源线索和取证信号转化为结构化可信判断。",
+    runtimeReady: "就绪",
+    runtimeOffline: "异常",
+    exportReady: "可用",
+  },
+  demo: {
+    eyebrow: "取证控制台",
+    title: "上传图像并生成可信报告",
+    description: "上传图片后，系统将生成检测结论、风险等级、证据摘要和可复核报告。",
+    resultsEyebrow: "检测结果",
+    resultsTitle: "可信风险评估",
+    emptyJson: "完成检测后可查看结构化 JSON。",
+  },
+  workspace: {
+    liveEyebrow: "取证工作区",
+    liveTitle: "图像信号接入",
+    liveBody: "上传图片后，系统将生成检测结论、风险等级、证据摘要和可复核报告。",
+  },
+  single: {
+    detect: "检测图片",
+    redetect: "重新检测",
+    analyzing: "检测中...",
+    scanning: "正在分析来源、元数据与图像取证特征...",
+  },
+  batch: {
+    detect: "批量检测",
+    redetect: "重新检测",
+    analyzing: "批量检测中...",
+  },
+  result: {
+    emptyTitle: "等待图像检测",
+    emptyBody: "检测完成后将显示结论、置信度、风险等级和报告入口。",
+    topVerdict: "检测结论",
+    sourceEvidence: "来源证据",
+    metadataAi: "元数据与 AI 标识",
+    forensicFeatures: "图像取证特征",
+    detectionOutput: "检测输出",
+    reviewAdvice: "复核建议",
+    evidenceSummary: "证据摘要",
+    recommendation: "复核建议",
+    reason: "判断依据",
+    evidenceChain: "证据链",
+    saved: "已生成报告",
+    aiModelLayer: "检测输出",
+    modelSignal: "检测输出",
+    sourceProvenance: "来源证据",
+    metadataLayer: "元数据与 AI 标识",
+    forensicLayer: "图像取证特征",
+    available: "可用",
+    partial: "部分可用",
+    notAvailableStatus: "当前不可用",
+    exportPdf: "PDF 暂不支持",
+    comingSoon: "MVP 暂不支持",
+  },
+  metrics: {
+    aiBadge: "检测输出",
+    avgConfidence: "历史平均置信度",
+    avgConfidenceHint: "基于已保存报告统计",
+    avgConfidenceBadge: "历史统计",
+  },
+  charts: {
+    riskHint: "低 / 中 / 高",
+    confidenceHint: "高 / 中 / 低",
+  },
+  architecture: {
+    description: "Minerva 综合来源凭证、元数据、检测输出与传统取证特征，输出可审计结论。",
+  },
+  workflow: {
+    detectBody: "结合元数据、取证特征、一致性检查和检测输出形成可复核结论。",
+    reportBody: "围绕元数据、检测输出、取证特征和文件级证据形成报告上下文。",
+    reviewBody: "面向误判反馈、复核备注和样本闭环，避免把单一检测结果作为唯一依据。",
+  },
+  philosophy: {
+    body: "当生成式 AI 让图像、文本、视频和声音都变得难以分辨，可信判断必须从直觉转向证据。Minerva 将来源、元数据、检测输出和取证特征组织成可复核的内容可信链。",
+  },
+  reportCenter: {
+    title: "报告中心",
+    subtitle: "检索、筛选、排序、导出和复核已保存的检测报告。",
+  },
+});
+
+mergeTranslations(translations.en, {
+  hero: {
+    previewTitle: "MVP runtime",
+    previewPersistence: "SQLite persistence",
+    previewQueue: "Pending review",
+    previewApi: "Reports API",
+    runtimeReady: "Ready",
+    runtimeOffline: "Offline",
+    exportReady: "Available",
+  },
+  demo: {
+    eyebrow: "Forensic Console",
+    title: "Upload an image and generate a trust report",
+    description: "After upload, the system produces a verdict, risk level, evidence summary, and reviewable report.",
+    resultsEyebrow: "Detection result",
+    resultsTitle: "Trust risk assessment",
+    emptyJson: "Run a detection to view structured JSON.",
+  },
+  workspace: {
+    liveEyebrow: "Forensic workspace",
+    liveTitle: "Image signal intake",
+    liveBody: "Upload an image to generate a verdict, risk level, evidence summary, and reviewable report.",
+  },
+  single: {
+    redetect: "Run Again",
+  },
+  batch: {
+    redetect: "Run Again",
+  },
+  result: {
+    emptyTitle: "Waiting for image detection",
+    emptyBody: "After detection, verdict, confidence, risk level, and report actions will appear here.",
+    sourceEvidence: "Source evidence",
+    metadataAi: "Metadata and AI markers",
+    forensicFeatures: "Image forensic features",
+    detectionOutput: "Detection output",
+    reviewAdvice: "Review recommendation",
+  },
+});
+
+mergeTranslations(translations.zh, {
+  nav: {
+    product: "产品",
+    useCases: "场景",
+    trustConsole: "取证控制台",
+    api: "API",
+    reports: "报告",
+    architecture: "架构",
+    errorGallery: "错误图库",
+    tryDemo: "开始检测",
+    refresh: "刷新",
+    refreshing: "刷新中",
+    syncing: "同步中",
+    checking: "检查中",
+    online: "后端连接正常",
+    apiError: "后端连接异常",
+  },
+  hero: {
+    title: "Make the world for real",
+    titleZh: "让 AI 时代的内容重新可信",
+    lead: "从图像信号到可复核证据。Minerva 将模型输出、元数据、来源线索和取证信号转化为结构化可信判断。",
+    startScan: "开始可信检测",
+    exploreConsole: "查看控制台",
+    previewTitle: "可信度预览",
+    previewPersistence: "证据层",
+    previewQueue: "复核队列",
+    previewApi: "API 就绪",
+    runtimeReady: "86%",
+    runtimeOffline: "--",
+    exportReady: "JSON",
+  },
+  demo: {
+    eyebrow: "取证扫描工作台",
+    title: "Minerva 图像可信取证控制台",
+    description: "接入图像信号，提取取证线索，生成证据摘要，并输出适合人工复核的可信性判定。",
+    uploadTab: "单图",
+    batchTab: "批量",
+    sampleTab: "样例",
+    resultsEyebrow: "可信性判定",
+    resultsTitle: "Verdict Dossier",
+    simpleView: "摘要",
+    jsonView: "JSON",
+    emptyJson: "完成检测后可查看结构化 JSON。",
+  },
+  workspace: {
+    liveEyebrow: "取证工作区",
+    liveTitle: "Evidence Map",
+    liveBody: "围绕上传图像建立可复核的取证路径：分析图像信号、提取取证线索、生成证据摘要、输出复核建议。",
+    capabilityOne: "分析图像信号",
+    capabilityTwo: "提取取证线索",
+    capabilityThree: "输出复核建议",
+  },
+  single: {
+    title: "图像信号接入",
+    description: "将单张图像送入当前检测链路。",
+    choose: "选择图像",
+    formats: "支持 JPG / JPEG / PNG / WEBP",
+    detect: "开始取证扫描",
+    redetect: "重新检测",
+    analyzing: "分析中",
+    analyzingImage: "正在分析图像",
+    release: "松开以上传图像",
+    remove: "移除图像",
+    invalidType: "请上传 JPG、JPEG、PNG 或 WEBP 图像。",
+    scanning: "正在分析图像信号、来源线索与取证特征。",
+  },
+  batch: {
+    title: "批量图像接入",
+    description: "使用批量接口分析多张图像。",
+    choose: "选择多张图像",
+    empty: "尚未选择图像",
+    selected: "已选择 {count} 张图像",
+    detect: "批量取证扫描",
+    redetect: "重新检测",
+    analyzing: "批量分析中",
+    analyzingImages: "正在分析 {count} 张图像",
+    complete: "批量检测完成",
+    succeeded: "{succeeded} 成功，{failed} 失败",
+    release: "松开以上传批量图像",
+    clear: "清空全部",
+    more: "+{count}",
+    invalidType: "已忽略不支持的文件，请只上传图像。",
+    summaryTitle: "批量检测摘要",
+    total: "Total",
+    ai: "AI",
+    uncertain: "Uncertain",
+    highRisk: "High Risk",
+    avgConfidence: "Average Confidence",
+  },
+  result: {
+    emptyTitle: "等待图像检测",
+    emptyBody: "检测完成后将显示结论、置信度、风险等级和报告入口。",
+    loading: "Minerva 正在生成证据摘要",
+    failed: "检测失败",
+    singleComplete: "单图检测完成",
+    batchComplete: "批量检测完成",
+    topVerdict: "检测结论",
+    verdict: "结论",
+    riskLevel: "风险等级",
+    confidence: "置信度",
+    status: "状态",
+    saved: "已生成报告",
+    evidenceSummary: "证据摘要",
+    sourceProvenance: "来源证据",
+    metadataLayer: "元数据与 AI 标识",
+    aiModelLayer: "检测输出",
+    modelSignal: "检测输出",
+    forensicLayer: "图像取证特征",
+    recommendation: "复核建议",
+    reason: "判断依据",
+    evidenceChain: "证据链",
+    exportJson: "导出 JSON",
+    copyJson: "复制 JSON",
+    exportPdf: "PDF 暂不支持",
+    comingSoon: "暂不支持",
+    notAvailable: "当前暂无可用证据",
+    available: "可用",
+    partial: "部分可用",
+    notAvailableStatus: "当前不可用",
+    reportCreated: "已生成报告，可在报告中心查看。report_id：{id}",
+    viewDetail: "查看详情",
+    viewHtmlReport: "查看 HTML 报告",
+    goReportCenter: "去报告中心",
+    htmlOpenFailed: "HTML 报告打开失败，请稍后重试。",
+    detectFailedFriendly: "检测失败，请确认后端已启动后重试。",
+    reportCenterHint: "报告已写入 SQLite，刷新或重启后端后仍可在报告中心查看。",
+  },
+  reportCenter: {
+    eyebrow: "Case Repository",
+    title: "报告中心",
+    description: "集中管理检测记录、证据摘要和人工复核状态。",
+    empty: "暂无报告记录，请先完成一次图像检测。",
+    loadFailed: "报告记录加载失败，请确认后端服务已启动。",
+    exportReady: "导出已开始。",
+    exportFailed: "导出失败，请稍后重试。",
+    exporting: "导出中",
+    queueEmpty: "暂无需要复核的记录。",
+    summary: {
+      total: "总数",
+      filtered: "筛选",
+      pending: "待复核",
+      highRisk: "高风险",
+      uncertain: "不确定",
+    },
+    queue: {
+      title: "风险复核队列",
+      subtitle: "高风险 / 不确定 / 待复核记录",
+    },
+  },
+  systemStatus: {
+    eyebrow: "运行状态",
+    title: "系统状态",
+    description: "后端、Reports API、报告数据库和导出能力的轻量状态矩阵。",
+    backend: "后端连接",
+    reportsApi: "Reports API",
+    database: "报告数据库",
+    reportCount: "报告数量",
+    schemaVersion: "报告结构版本",
+    detectorVersion: "检测器版本",
+    modelVersion: "模型版本",
+    persistence: "SQLite 持久化",
+    htmlReport: "HTML 报告",
+    export: "导出能力",
+    ok: "正常",
+    error: "异常",
+    enabled: "已启用",
+    disabled: "未启用",
+    loading: "检查中",
+    unavailable: "不可用",
+  },
+  roadmap: {
+    eyebrow: "产品路线图",
+    title: "从图像取证到多模态可信检测",
+    description: "当前 MVP 聚焦图像检测，后续扩展到视频、文本、语音和多模态报告。",
+    image: "图像",
+    video: "视频",
+    text: "文本",
+    audio: "语音",
+    report: "多模态报告",
+  },
+  story: {
+    eyebrow: "Why Minerva",
+    title: "为什么选择 Minerva",
+    evidenceTitle: "Evidence-first detection",
+    evidenceBody: "不只判断真假，而是形成可复核的证据链。",
+    apiTitle: "SaaS & API ready",
+    apiBody: "支持网页检测、批量检测和开发者接口。",
+    complianceTitle: "Compliance-aware",
+    complianceBody: "面向生成式内容标识、来源凭证和企业审计场景。",
+    reviewTitle: "Human review friendly",
+    reviewBody: "输出复核建议，避免把模型结果作为唯一处置依据。",
+  },
+});
+
+mergeTranslations(translations.en, {
+  nav: {
+    product: "Product",
+    useCases: "Scenarios",
+    trustConsole: "Trust Console",
+    api: "API",
+    reports: "Reports",
+    architecture: "Architecture",
+    errorGallery: "Error Gallery",
+    tryDemo: "Start Scan",
+    refresh: "Refresh",
+    online: "Live System",
+  },
+  hero: {
+    title: "Make the world for real",
+    titleZh: "Evidence-first AI content trust infrastructure",
+    lead: "From image signals to reviewable evidence. Minerva turns model output, metadata, source traces, and forensic signals into structured trust decisions.",
+    startScan: "Start Trusted Scan",
+    exploreConsole: "View Console",
+    previewTitle: "Trust Preview",
+    previewPersistence: "Evidence Layers",
+    previewQueue: "Review Queue",
+    previewApi: "API Ready",
+    runtimeReady: "86%",
+    exportReady: "JSON",
+  },
+  demo: {
+    eyebrow: "Forensic Scanner Workbench",
+    title: "Minerva Image Trust Console",
+    description: "Intake image signals, extract forensic traces, generate evidence summaries, and produce human-review friendly verdicts.",
+    uploadTab: "Single",
+    batchTab: "Batch",
+    sampleTab: "Sample",
+    resultsEyebrow: "Trust Verdict",
+    resultsTitle: "Verdict Dossier",
+    simpleView: "Summary",
+    jsonView: "JSON",
+  },
+  workspace: {
+    liveEyebrow: "Evidence Map",
+    liveTitle: "Forensic workspace",
+    liveBody: "Build a reviewable evidence path around each image: analyze image signals, extract forensic traces, generate evidence summaries, and output review guidance.",
+    capabilityOne: "Analyze image signals",
+    capabilityTwo: "Extract forensic traces",
+    capabilityThree: "Output review guidance",
+  },
+  single: {
+    title: "Image Signal Intake",
+    description: "Run one image through the current detection chain.",
+    detect: "Start Forensic Scan",
+    redetect: "Run Again",
+    scanning: "Analyzing image signals, source traces, and forensic features.",
+  },
+  batch: {
+    title: "Batch Image Intake",
+    description: "Analyze multiple images with the batch endpoint.",
+    detect: "Batch Forensic Scan",
+    redetect: "Run Again",
+    summaryTitle: "Batch Scan Summary",
+    total: "Total",
+    ai: "AI",
+    uncertain: "Uncertain",
+    highRisk: "High Risk",
+    avgConfidence: "Average Confidence",
+  },
+  reportCenter: {
+    eyebrow: "Case Repository",
+    title: "Case Repository",
+    description: "Search, review, and export structured detection records.",
+    queue: {
+      title: "Risk Review Queue",
+      subtitle: "High risk / uncertain / pending review records",
+    },
+  },
+  systemStatus: {
+    description: "Lightweight status matrix for backend, Reports API, database, and export capability.",
+  },
+  roadmap: {
+    eyebrow: "Product Roadmap",
+    title: "From Image Forensics to Multimodal Trust Detection",
+    description: "The current MVP starts with image-first evidence, then expands toward video, text, voice, and multimodal reports.",
+    image: "Image",
+    video: "Video",
+    text: "Text",
+    audio: "Voice",
+    report: "Multimodal Report",
+  },
+  story: {
+    eyebrow: "Why Minerva",
+    title: "Why Minerva",
+    evidenceTitle: "Evidence-first detection",
+    evidenceBody: "Not just a binary truth label, but a reviewable evidence chain.",
+    apiTitle: "SaaS & API ready",
+    apiBody: "Supports web detection, batch detection, and developer APIs.",
+    complianceTitle: "Compliance-aware",
+    complianceBody: "Built for synthetic content labeling, provenance credentials, and enterprise audit workflows.",
+    reviewTitle: "Human review friendly",
+    reviewBody: "Outputs review guidance so model results are not treated as the only enforcement basis.",
+  },
+});
+
 const state = {
   dashboardLoading: false,
   singleLoading: false,
@@ -1217,6 +1737,8 @@ const state = {
   },
   reportQueue: [],
   reportSearchTimer: 0,
+  systemHealth: null,
+  exportLoading: false,
   demoTab: "upload",
   resultView: "simple",
   prefersReducedMotion: window.matchMedia("(prefers-reduced-motion: reduce)").matches,
@@ -1232,6 +1754,11 @@ const elements = {
   recentEmptyState: document.querySelector("#recent-empty-state"),
   auditFilters: document.querySelector("#audit-filters"),
   reportSummaryStrip: document.querySelector("#report-summary-strip"),
+  systemStatusGrid: document.querySelector("#system-status-grid"),
+  heroBackendMetric: document.querySelector('[data-hero-metric="backend"]'),
+  heroReportsMetric: document.querySelector('[data-hero-metric="reports"]'),
+  heroReviewMetric: document.querySelector('[data-hero-metric="review"]'),
+  heroExportMetric: document.querySelector('[data-hero-metric="export"]'),
   reportSearchInput: document.querySelector("#report-search-input"),
   reportRiskFilter: document.querySelector("#report-risk-filter"),
   reportLabelFilter: document.querySelector("#report-label-filter"),
@@ -1603,8 +2130,10 @@ function setSummaryValue(key, value) {
 function setUploadButtons() {
   elements.singleButton.disabled = state.singleLoading || !state.selectedSingleFile;
   elements.batchButton.disabled = state.batchLoading || state.selectedBatchFiles.length === 0;
-  elements.singleButton.textContent = state.singleLoading ? t("single.analyzing") : t("single.detect");
-  elements.batchButton.textContent = state.batchLoading ? t("batch.analyzing") : t("batch.detect");
+  const singleComplete = state.currentResult?.kind === "single" && Boolean(state.selectedSingleFile);
+  const batchComplete = state.currentResult?.kind === "batch" && state.selectedBatchFiles.length > 0;
+  elements.singleButton.textContent = state.singleLoading ? t("single.analyzing") : singleComplete ? t("single.redetect") : t("single.detect");
+  elements.batchButton.textContent = state.batchLoading ? t("batch.analyzing") : batchComplete ? t("batch.redetect") : t("batch.detect");
   elements.singleUploadCard?.classList.toggle("is-analyzing", state.singleLoading);
   elements.batchUploadCard?.classList.toggle("is-analyzing", state.batchLoading);
   elements.singleUploadCard?.classList.toggle("has-file", Boolean(state.selectedSingleFile));
@@ -1788,6 +2317,75 @@ function renderReportSummary(payload, shownCount) {
     const node = document.querySelector(`[data-report-summary="${key}"]`);
     if (node) node.textContent = formatInteger(value);
   });
+  updateHeroReportMetrics(values);
+}
+
+function updateHeroReportMetrics(values = {}) {
+  if (elements.heroReportsMetric) {
+    elements.heroReportsMetric.textContent = "4";
+  }
+  if (elements.heroReviewMetric) {
+    elements.heroReviewMetric.textContent = formatInteger(firstDefined(values.pending_review, 12));
+  }
+}
+
+function updateHeroHealthMetrics(health = {}, isError = false) {
+  if (elements.heroBackendMetric) {
+    elements.heroBackendMetric.textContent = isError || health.api_status !== "ok" ? t("hero.runtimeOffline") : t("hero.runtimeReady");
+  }
+  if (elements.heroExportMetric) {
+    elements.heroExportMetric.textContent = !isError && health.export_enabled ? t("hero.exportReady") : "--";
+  }
+}
+
+function statusText(value) {
+  if (value === true) return t("systemStatus.enabled");
+  if (value === false) return t("systemStatus.disabled");
+  const normalized = String(value || "").toLowerCase();
+  if (normalized === "ok") return t("systemStatus.ok");
+  if (normalized === "error") return t("systemStatus.error");
+  return value === undefined || value === null || value === "" ? "--" : String(value);
+}
+
+function renderSystemStatus(payload, isError = false) {
+  if (!elements.systemStatusGrid) return;
+  const health = payload || {};
+  updateHeroHealthMetrics(health, isError);
+  const rows = isError
+    ? [
+        ["backend", t("systemStatus.error"), "error"],
+        ["reportsApi", t("systemStatus.unavailable"), "error"],
+        ["database", t("systemStatus.unavailable"), "error"],
+        ["reportCount", "--", "muted"],
+        ["schemaVersion", "--", "muted"],
+        ["detectorVersion", "--", "muted"],
+        ["modelVersion", "--", "muted"],
+        ["persistence", t("systemStatus.disabled"), "error"],
+        ["htmlReport", t("systemStatus.unavailable"), "error"],
+        ["export", t("systemStatus.unavailable"), "error"],
+      ]
+    : [
+        ["backend", statusText(health.api_status), health.api_status === "ok" ? "ok" : "error"],
+        ["reportsApi", statusText(health.reports_api_status), health.reports_api_status === "ok" ? "ok" : "error"],
+        ["database", statusText(health.database_status), health.database_status === "ok" ? "ok" : "error"],
+        ["reportCount", formatInteger(health.report_count || 0), "muted"],
+        ["schemaVersion", health.report_schema_version || "--", "muted"],
+        ["detectorVersion", health.detector_version || "--", "muted"],
+        ["modelVersion", health.model_version || "--", "muted"],
+        ["persistence", statusText(Boolean(health.persistence_enabled)), health.persistence_enabled ? "ok" : "error"],
+        ["htmlReport", statusText(Boolean(health.html_report_enabled)), health.html_report_enabled ? "ok" : "error"],
+        ["export", statusText(Boolean(health.export_enabled)), health.export_enabled ? "ok" : "error"],
+      ];
+  elements.systemStatusGrid.innerHTML = rows
+    .map(
+      ([key, value, tone]) => `
+        <span class="system-status-item" data-status-tone="${escapeHtml(tone)}">
+          <em>${escapeHtml(t(`systemStatus.${key}`))}</em>
+          <strong>${escapeHtml(value)}</strong>
+        </span>
+      `,
+    )
+    .join("");
 }
 
 function filteredRecentResults() {
@@ -1934,10 +2532,11 @@ function evidenceTags(data) {
   const hasForensics = Boolean(getValue(debug, "feature_summary.raw_debug_evidence.raw_result.forensic_result"));
   const hasConsistency = Boolean(getValue(debug, "consistency_checks") || getValue(debug, "feature_summary.raw_debug_evidence.multi_resolution"));
   const tags = [
-    [t("result.sourceProvenance"), hasMetadata],
-    [t("result.metadataLayer"), hasMetadata],
-    [t("result.aiModelLayer"), hasModel],
-    [t("result.forensicLayer"), hasForensics || hasConsistency],
+    [t("result.sourceEvidence"), hasMetadata],
+    [t("result.metadataAi"), hasMetadata || hasModel],
+    [t("result.forensicFeatures"), hasForensics || hasConsistency],
+    [t("result.detectionOutput"), true],
+    [t("result.reviewAdvice"), true],
   ];
   return tags
     .map(([label, active], index) => `<span class="evidence-tag ${active ? "active" : "muted"}" style="--delay:${index * 90}ms">${escapeHtml(label)}</span>`)
@@ -1958,11 +2557,11 @@ function evidenceMiniMap(data) {
     forensics: Boolean(getValue(raw, "raw_result.forensic_result") || getValue(raw, "forensic_result")),
   };
   const nodes = [
-    ["Source", states.source, t("result.sourceProvenance")],
-    ["Metadata", states.metadata, t("result.metadataLayer")],
-    ["Model", states.model, t("result.aiModelLayer")],
-    ["Forensics", states.forensics, t("result.forensicLayer")],
-    ["Output", true, `${t("result.riskLevel")} + ${t("result.confidence")}`],
+    [t("result.sourceEvidence"), states.source, t("result.sourceEvidence")],
+    [t("result.metadataAi"), states.metadata || states.model, t("result.metadataAi")],
+    [t("result.forensicFeatures"), states.forensics, t("result.forensicFeatures")],
+    [t("result.detectionOutput"), true, `${t("result.riskLevel")} + ${t("result.confidence")}`],
+    [t("result.reviewAdvice"), true, t("result.reviewAdvice")],
   ];
   return `
     <div class="evidence-mini-map" aria-label="${escapeHtml(t("result.evidenceChain"))}">
@@ -2127,6 +2726,8 @@ function renderSingleResult(payload) {
   const reason = textFromValue(data.decision_reason);
   const recommendation = textFromValue(data.recommendation);
   const confidencePercent = Math.round(Math.max(0, Math.min(1, toNumber(data.confidence))) * 100);
+  const reportId = firstDefined(data.report_id, data.id);
+  const reportNotice = reportId ? t("result.reportCreated", { id: reportId }) : t("result.reportCenterHint");
 
   elements.uploadResult.innerHTML = `
     <article class="trust-result demo-result ${slug(risk)}">
@@ -2161,11 +2762,18 @@ function renderSingleResult(payload) {
           <h4>${escapeHtml(t("result.recommendation"))}</h4>
           <p>${escapeHtml(recommendation || summary)}</p>
         </div>
+        <div class="result-section report-created-block">
+          <h4>${escapeHtml(t("reportCenter.title"))}</h4>
+          <p>${escapeHtml(reportNotice)}</p>
+        </div>
         <div class="result-section">
           <h4>${escapeHtml(t("result.reason"))}</h4>
           <p>${escapeHtml(reason)}</p>
         </div>
         <div class="result-actions">
+          <button class="button button-primary" type="button" data-action="view-current-detail">${escapeHtml(t("result.viewDetail"))}</button>
+          <button class="button button-ghost" type="button" data-action="open-current-html" ${reportId ? "" : "disabled"}>${escapeHtml(t("result.viewHtmlReport"))}</button>
+          <button class="button button-ghost" type="button" data-action="goto-report-center">${escapeHtml(t("result.goReportCenter"))}</button>
           <button class="button button-secondary" type="button" data-action="copy-current-json">${escapeHtml(t("result.copyJson"))}</button>
           <button class="button button-ghost" type="button" data-action="download-current-json">${escapeHtml(t("result.exportJson"))}</button>
           <button class="button button-ghost" type="button" data-action="switch-result-json">${escapeHtml(t("recent.viewJson"))}</button>
@@ -2176,6 +2784,7 @@ function renderSingleResult(payload) {
     </article>
   `;
   applyResultRevealClasses(confidencePercent);
+  setUploadButtons();
 }
 
 function renderBatchResult(payload) {
@@ -2211,11 +2820,11 @@ function renderBatchResult(payload) {
           </div>
         </div>
         <div class="result-metrics">
-          <div><span>Total</span><strong>${escapeHtml(formatInteger(firstDefined(payload.total, results.length)))}</strong></div>
-          <div><span>AI</span><strong>${escapeHtml(formatInteger(counts.ai))}</strong></div>
-          <div><span>Uncertain</span><strong>${escapeHtml(formatInteger(counts.uncertain))}</strong></div>
-          <div><span>High risk</span><strong>${escapeHtml(formatInteger(counts.highRisk))}</strong></div>
-          <div><span>Average confidence</span><strong>${escapeHtml(formatConfidence(averageConfidence))}</strong></div>
+          <div><span>${escapeHtml(t("batch.total"))}</span><strong>${escapeHtml(formatInteger(firstDefined(payload.total, results.length)))}</strong></div>
+          <div><span>${escapeHtml(t("batch.ai"))}</span><strong>${escapeHtml(formatInteger(counts.ai))}</strong></div>
+          <div><span>${escapeHtml(t("batch.uncertain"))}</span><strong>${escapeHtml(formatInteger(counts.uncertain))}</strong></div>
+          <div><span>${escapeHtml(t("batch.highRisk"))}</span><strong>${escapeHtml(formatInteger(counts.highRisk))}</strong></div>
+          <div><span>${escapeHtml(t("batch.avgConfidence"))}</span><strong>${escapeHtml(formatConfidence(averageConfidence))}</strong></div>
         </div>
         <div class="result-list">
           ${results
@@ -2269,18 +2878,27 @@ async function loadDashboardData({ silent = false } = {}) {
   elements.refreshButton.textContent = silent ? t("nav.syncing") : t("nav.refreshing");
   setServiceStatus("loading", t("nav.checking"));
 
-  const [summaryResult, recentResult, chartResult, queueResult] = await Promise.allSettled([
+  const [healthResult, summaryResult, recentResult, chartResult, queueResult] = await Promise.allSettled([
+    fetchJson(API_ENDPOINTS.health),
     fetchJson(API_ENDPOINTS.summary),
     fetchJson(reportSearchUrl()),
     fetchJson(API_ENDPOINTS.chartData),
     fetchJson(API_ENDPOINTS.reportQueue),
   ]);
 
-  if (summaryResult.status === "fulfilled") {
+  if (healthResult.status === "fulfilled") {
+    state.systemHealth = healthResult.value;
     setServiceStatus("online", t("nav.online"));
+    renderSystemStatus(healthResult.value);
+  } else {
+    state.systemHealth = null;
+    setServiceStatus("offline", t("nav.apiError"));
+    renderSystemStatus(null, true);
+  }
+
+  if (summaryResult.status === "fulfilled") {
     renderSummary(summaryResult.value);
   } else {
-    setServiceStatus("offline", t("nav.apiError"));
     renderSummary({});
   }
 
@@ -2363,18 +2981,36 @@ function downloadBlob(text, filename, type) {
 }
 
 async function exportReportCenter(format) {
+  if (state.exportLoading) return;
+  state.exportLoading = true;
+  document.querySelectorAll(".report-export-button").forEach((button) => {
+    button.disabled = true;
+    button.dataset.originalText = button.textContent || "";
+    button.textContent = t("reportCenter.exporting");
+  });
   syncReportFiltersFromControls();
-  const response = await fetch(reportExportUrl(format), { cache: "no-store" });
-  if (!response.ok) {
-    throw new Error(`Export failed: ${response.status}`);
+  try {
+    const response = await fetch(reportExportUrl(format), { cache: "no-store" });
+    if (!response.ok) {
+      throw new Error(`${t("reportCenter.exportFailed")} ${response.status}`);
+    }
+    const suffix = timestampForFilename();
+    if (format === "csv") {
+      downloadBlob(await response.text(), `report_center_export_${suffix}.csv`, "text/csv;charset=utf-8");
+      return;
+    }
+    const payload = await response.json();
+    downloadJson(payload, `report_center_export_${suffix}.json`);
+  } finally {
+    state.exportLoading = false;
+    document.querySelectorAll(".report-export-button").forEach((button) => {
+      button.disabled = false;
+      if (button.dataset.originalText) {
+        button.textContent = button.dataset.originalText;
+        delete button.dataset.originalText;
+      }
+    });
   }
-  const suffix = timestampForFilename();
-  if (format === "csv") {
-    downloadBlob(await response.text(), `report_center_export_${suffix}.csv`, "text/csv;charset=utf-8");
-    return;
-  }
-  const payload = await response.json();
-  downloadJson(payload, `report_center_export_${suffix}.json`);
 }
 
 async function detectSingleImage() {
@@ -2398,7 +3034,7 @@ async function detectSingleImage() {
     renderSingleResult(payload);
     await loadDashboardData({ silent: true });
   } catch (error) {
-    renderErrorResult(`Single detection failed: ${error.message || "Unknown error"}`);
+    renderErrorResult(`${t("result.detectFailedFriendly")} ${error.message || ""}`.trim());
   } finally {
     state.singleLoading = false;
     document.body.classList.remove("is-scanning");
@@ -2444,7 +3080,7 @@ async function detectBatchImages() {
     renderBatchResult(payload);
     await loadDashboardData({ silent: true });
   } catch (error) {
-    renderErrorResult(`Batch detection failed: ${error.message || "Unknown error"}`);
+    renderErrorResult(`${t("result.detectFailedFriendly")} ${error.message || ""}`.trim());
   } finally {
     state.batchLoading = false;
     document.body.classList.remove("is-scanning");
@@ -2710,6 +3346,24 @@ document.addEventListener("click", async (event) => {
       setResultView("json");
       return;
     }
+    if (action === "view-current-detail" && currentPayload()) {
+      const data = getValue(currentPayload(), "data", currentPayload()) || {};
+      window.DetectionDetails?.open?.(data, { trigger: target });
+      return;
+    }
+    if (action === "open-current-html" && currentPayload()) {
+      const data = getValue(currentPayload(), "data", currentPayload()) || {};
+      const reportId = firstDefined(data.report_id, data.id);
+      if (!reportId) throw new Error(t("result.htmlOpenFailed"));
+      const opened = window.open(API_ENDPOINTS.reportHtml(reportId), "_blank", "noopener");
+      if (!opened) throw new Error(t("result.htmlOpenFailed"));
+      return;
+    }
+    if (action === "goto-report-center") {
+      document.querySelector("#audit-log")?.scrollIntoView({ behavior: state.prefersReducedMotion ? "auto" : "smooth", block: "start" });
+      refreshReportCenter({ silent: true });
+      return;
+    }
     if (action === "copy-current-json" && currentPayload()) {
       await copyJson(currentPayload());
       target.textContent = t("result.copied");
@@ -2755,8 +3409,15 @@ document.addEventListener("click", async (event) => {
       await exportReportCenter("csv");
       return;
     }
-  } catch {
-    target.textContent = t("result.copyFailed");
+  } catch (error) {
+    if (action?.startsWith("export-report-center")) {
+      target.textContent = t("reportCenter.exportFailed");
+    } else if (action === "open-current-html") {
+      target.textContent = t("result.htmlOpenFailed");
+    } else {
+      target.textContent = t("result.copyFailed");
+    }
+    console.warn("[Day30] UI action failed", error);
   }
 });
 

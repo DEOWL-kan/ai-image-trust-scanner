@@ -203,6 +203,11 @@ def _html_report(record: dict[str, Any]) -> str:
     <section><h2>判断依据</h2><p>{html.escape(_text(record.get("decision_reason"), ""))}</p></section>
     <section><h2>建议</h2><p>{html.escape(str(record.get("recommendation") or ""))}</p></section>
     <section><h2>技术解释</h2><p>{html.escape(str(record.get("technical_explanation") or ""))}</p></section>
+    <section><h2>版本信息</h2><div class="grid">
+      <div class="cell"><span>report_schema_version</span><strong>{html.escape(str(record.get("report_schema_version") or ""))}</strong></div>
+      <div class="cell"><span>detector_version</span><strong>{html.escape(str(record.get("detector_version") or ""))}</strong></div>
+      <div class="cell"><span>model_version</span><strong>{html.escape(str(record.get("model_version") or ""))}</strong></div>
+    </div></section>
     <section><h2>完整 JSON</h2><pre>{html.escape(raw_json)}</pre></section>
   </main>
 </body>
@@ -388,4 +393,3 @@ def update_report_review(report_id: str, payload: dict[str, Any], db_path: Path 
         if result.rowcount == 0:
             return None
     return get_report(report_id, db_path=db_path)
-

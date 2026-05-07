@@ -85,10 +85,10 @@
         <div class="hero-telemetry-rail" aria-label="Trust telemetry" data-trust-telemetry data-motion="telemetry">
           <div class="telemetry-rail-line" aria-hidden="true"><span data-trust-line style="width: 0%"></span></div>
           <div class="telemetry-rail-grid">
-            <div><span data-i18n="hero.previewTitle">Trust telemetry</span><strong><span data-trust-number data-target="86">0%</span></strong></div>
-            <div><span data-i18n="result.evidenceLayers">Evidence layers</span><strong>4</strong></div>
-            <div><span data-i18n="hero.previewQueue">Review queue</span><strong>12</strong></div>
-            <div><span data-i18n="hero.previewApi">API ready</span><strong>JSON</strong></div>
+            <div><span data-i18n="hero.previewTitle">MVP runtime</span><strong data-hero-metric="backend">--</strong></div>
+            <div><span data-i18n="hero.previewPersistence">SQLite persistence</span><strong data-hero-metric="reports">--</strong></div>
+            <div><span data-i18n="hero.previewQueue">Review queue</span><strong data-hero-metric="review">--</strong></div>
+            <div><span data-i18n="hero.previewApi">Reports API</span><strong data-hero-metric="export">--</strong></div>
           </div>
         </div>
       </section>
@@ -204,8 +204,8 @@
           <section class="verdict-panel results-panel reveal-right" aria-live="polite">
             <div class="results-panel-header">
               <div>
-                <p class="eyebrow" data-i18n="demo.resultsEyebrow">Model output</p>
-                <h3 data-i18n="demo.resultsTitle">Results</h3>
+                <p class="eyebrow" data-i18n="demo.resultsEyebrow">Detection result</p>
+                <h3 data-i18n="demo.resultsTitle">Trust risk assessment</h3>
               </div>
               <div class="result-view-toggle" id="result-view-toggle" aria-label="Result view">
                 <button class="result-view-button active" type="button" data-result-view="simple" data-i18n="demo.simpleView">Simple</button>
@@ -267,6 +267,18 @@
           <span><em data-i18n="reportCenter.summary.pending">Pending Review</em><strong data-report-summary="pending_review">--</strong></span>
           <span data-summary-tone="high"><em data-i18n="reportCenter.summary.highRisk">High Risk</em><strong data-report-summary="high_risk">--</strong></span>
           <span><em data-i18n="reportCenter.summary.uncertain">Uncertain</em><strong data-report-summary="uncertain">--</strong></span>
+        </div>
+        <div class="system-status-card" aria-label="System status">
+          <div>
+            <p class="eyebrow" data-i18n="systemStatus.eyebrow">Runtime</p>
+            <h3 data-i18n="systemStatus.title">System Status</h3>
+            <p data-i18n="systemStatus.description">Pre-demo check for backend, Reports API, SQLite persistence, and version fields.</p>
+          </div>
+          <div class="system-status-grid" id="system-status-grid">
+            <span class="system-status-item" data-status-tone="muted"><em data-i18n="systemStatus.backend">Backend</em><strong data-i18n="systemStatus.loading">Checking</strong></span>
+            <span class="system-status-item" data-status-tone="muted"><em data-i18n="systemStatus.database">Report database</em><strong data-i18n="systemStatus.loading">Checking</strong></span>
+            <span class="system-status-item" data-status-tone="muted"><em data-i18n="systemStatus.reportCount">Report count</em><strong>--</strong></span>
+          </div>
         </div>
         <div class="audit-filters report-toolbar" id="audit-filters" aria-label="Report Center filters">
           <div class="report-toolbar-row primary">

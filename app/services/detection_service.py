@@ -5,6 +5,7 @@ from typing import Any
 
 from main import run_pipeline
 from src.api_adapter import build_frontend_response
+from app.services.audit_log import write_audit_event
 from app.services.report_store import make_report_record, save_report
 
 
@@ -115,6 +116,7 @@ def detect_image_for_api(image_path: str, filename: str, source_type: str = "sin
         export_payload=data,
     )
     saved = save_report(record)
+    write_audit_event("create_report", report_id=saved.get("report_id"), action_status="ok")
     data.update(
         {
             "report_id": saved["report_id"],

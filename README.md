@@ -19,6 +19,7 @@ The project combines multiple weak signals instead of making a single absolute c
 - Day25: error taxonomy, root cause tagging, and fix priority ranking
 - Day25.1: calibrated root cause tagging with evidence strength scoring
 - Day29: SQLite-backed report persistence, reports API, and durable review status workflow
+- Day30: MVP product closure, demo readiness, runtime status, smoke test, and local release hardening
 
 ## Core Features
 
@@ -51,6 +52,7 @@ The project combines multiple weak signals instead of making a single absolute c
 - `PATCH /api/v1/reports/{report_id}/review`
 - `GET /api/v1/reports/{report_id}/html`
 - `GET /api/v1/reports/export`
+- `GET /api/health`
 
 ## Day25 / Day25.1 Reports
 
@@ -138,6 +140,31 @@ python scripts\migrate_reports_to_sqlite.py
 ```
 
 Day29 does not connect pretrained models, does not train models, does not add PDF export, and does not redesign the UI.
+
+## Day30 MVP Release / Demo Readiness
+
+Day30 closes the local MVP product loop without expanding scope. The project is still in the rules, feature signals, persistence, and product workflow phase: no pretrained model is connected, no model is trained, no PDF export is added, and no login or user permission system is introduced.
+
+Local demo path:
+
+1. Start the backend with `python -m uvicorn app.main:app --host 127.0.0.1 --port 8000`.
+2. Open `http://127.0.0.1:8000/dashboard-ui/index.html`.
+3. Upload one image in the Trust Console and run detection.
+4. Confirm the generated `report_id`, open the detail drawer, and open the HTML report.
+5. Use Report Center search, filters, sorting, risk review queue, review status save, and JSON/CSV export.
+6. Refresh the page or restart the backend and confirm reports remain available from SQLite.
+
+Day30 runtime status:
+
+- `GET /api/health`: backend, Reports API, SQLite persistence, report count, version fields, HTML report support, and export support.
+
+Day30 smoke test:
+
+```powershell
+python scripts\day30_smoke_test.py
+```
+
+Full Day30 notes are in `docs/day30_mvp_release.md`.
 
 ## Run Tests
 

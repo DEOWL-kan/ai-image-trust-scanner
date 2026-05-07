@@ -51,6 +51,7 @@ from app.services.history_store import (
     save_history as write_history,
     started_timer,
 )
+from app.services.audit_log import write_audit_event
 from app.services.report_center import (
     ReportRecordNotFound,
     export_csv,
@@ -60,6 +61,7 @@ from app.services.report_center import (
     review_queue,
     update_review,
 )
+from app.services import report_store
 from app.services.report_center import bootstrap_sqlite_from_history
 
 
@@ -202,6 +204,33 @@ def health() -> dict[str, str]:
     }
 
 
+@app.get("/api/health")
+def api_health() -> dict[str, Any]:
+    database_status = "ok"
+    reports_api_status = "ok"
+    report_count = 0
+    try:
+        report_store.init_db()
+        report_count = report_store.count_reports()
+    except Exception as exc:
+        database_status = "error"
+        reports_api_status = "error"
+        logger.exception("Health check failed for reports database: %s", exc)
+    return {
+        "api_status": "ok",
+        "reports_api_status": reports_api_status,
+        "database_status": database_status,
+        "persistence_enabled": database_status == "ok",
+        "report_count": report_count,
+        "report_schema_version": report_store.REPORT_SCHEMA_VERSION,
+        "detector_version": report_store.DETECTOR_VERSION,
+        "model_version": report_store.MODEL_VERSION,
+        "storage_backend": "sqlite",
+        "html_report_enabled": True,
+        "export_enabled": True,
+    }
+
+
 @app.post("/api/v1/detect", response_model=DetectionResponse)
 async def detect(
     file: UploadFile = File(...),
@@ -260,6 +289,7 @@ async def detect(
             )
         return payload
     except DetectionServiceError as exc:
+        logger.exception("Detection service failed for uploaded image %s", filename)
         payload = _error_payload("DETECTION_FAILED", str(exc))
         if save_history:
             _save_history_safely(
@@ -272,6 +302,7 @@ async def detect(
             )
         return JSONResponse(status_code=500, content=payload)
     except Exception:
+        logger.exception("Unexpected detection failure for uploaded image %s", filename)
         payload = _error_payload(
             "INTERNAL_ERROR",
             "An unexpected error occurred while processing the image.",
@@ -497,7 +528,11 @@ def reports_list(
             offset=offset,
         )
     except ValueError as exc:
+        logger.exception("Reports list failed: %s", exc)
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        logger.exception("Reports list failed unexpectedly: %s", exc)
+        raise HTTPException(status_code=500, detail="Reports API failed.") from exc
 
 
 @app.get("/api/v1/reports/search")
@@ -531,12 +566,20 @@ def reports_search(
             offset=offset,
         )
     except ValueError as exc:
+        logger.exception("Reports search failed: %s", exc)
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        logger.exception("Reports search failed unexpectedly: %s", exc)
+        raise HTTPException(status_code=500, detail="Reports API failed.") from exc
 
 
 @app.get("/api/v1/reports/queue")
 def reports_queue(limit: int = Query(20, ge=1, le=100)) -> dict[str, Any]:
-    return review_queue(limit=limit)
+    try:
+        return review_queue(limit=limit)
+    except Exception as exc:
+        logger.exception("Review queue failed: %s", exc)
+        raise HTTPException(status_code=500, detail="Review queue failed.") from exc
 
 
 @app.patch("/api/v1/reports/{record_id}/review")
@@ -547,12 +590,26 @@ async def reports_review(record_id: str, request: Request) -> dict[str, Any]:
         raise HTTPException(status_code=400, detail="Request body must be JSON.") from exc
     if not isinstance(payload, dict):
         raise HTTPException(status_code=400, detail="Request body must be a JSON object.")
+    old_status = None
+    try:
+        old_status = get_report_detail(record_id).get("review_status")
+    except ReportRecordNotFound:
+        old_status = None
     try:
         record = update_review(record_id, payload)
     except ReportRecordNotFound as exc:
+        logger.exception("Review status update failed; report not found: %s", record_id)
+        write_audit_event("update_review_status", report_id=record_id, action_status="error", error_message=str(exc), old_review_status=old_status, new_review_status=payload.get("review_status"))
         raise HTTPException(status_code=404, detail=str(exc)) from exc
     except ValueError as exc:
+        logger.exception("Review status update rejected for %s: %s", record_id, exc)
+        write_audit_event("update_review_status", report_id=record_id, action_status="error", error_message=str(exc), old_review_status=old_status, new_review_status=payload.get("review_status"))
         raise HTTPException(status_code=400, detail=str(exc)) from exc
+    except Exception as exc:
+        logger.exception("Review status update failed unexpectedly for %s: %s", record_id, exc)
+        write_audit_event("update_review_status", report_id=record_id, action_status="error", error_message=str(exc), old_review_status=old_status, new_review_status=payload.get("review_status"))
+        raise HTTPException(status_code=500, detail="Review status save failed.") from exc
+    write_audit_event("update_review_status", report_id=record_id, action_status="ok", old_review_status=old_status, new_review_status=record.get("review_status"))
     return {
         "status": "ok",
         "record": record,
@@ -577,28 +634,37 @@ def reports_export(
     limit: int = Query(500, ge=1, le=500),
     offset: int = Query(0, ge=0),
 ):
-    payload = search_reports(
-        q=q,
-        risk_level=risk_level,
-        final_label=final_label,
-        review_status=review_status,
-        source_type=source_type,
-        date_range=date_range,
-        date_from=date_from,
-        date_to=date_to,
-        confidence_range=confidence_range,
-        sort=sort,
-        sort_by=sort_by,
-        sort_order=sort_order,
-        limit=limit,
-        offset=offset,
-    )
     export_format = str(format or "json").lower()
-    if export_format == "json":
-        return JSONResponse(content=payload)
-    if export_format == "csv":
-        return PlainTextResponse(export_csv(payload["items"]), media_type="text/csv; charset=utf-8")
-    raise HTTPException(status_code=400, detail="format must be json or csv.")
+    try:
+        payload = search_reports(
+            q=q,
+            risk_level=risk_level,
+            final_label=final_label,
+            review_status=review_status,
+            source_type=source_type,
+            date_range=date_range,
+            date_from=date_from,
+            date_to=date_to,
+            confidence_range=confidence_range,
+            sort=sort,
+            sort_by=sort_by,
+            sort_order=sort_order,
+            limit=limit,
+            offset=offset,
+        )
+        if export_format == "json":
+            write_audit_event("export_reports", action_status="ok", extra={"format": "json", "count": len(payload.get("items", []))})
+            return JSONResponse(content=payload)
+        if export_format == "csv":
+            write_audit_event("export_reports", action_status="ok", extra={"format": "csv", "count": len(payload.get("items", []))})
+            return PlainTextResponse(export_csv(payload["items"]), media_type="text/csv; charset=utf-8")
+        raise HTTPException(status_code=400, detail="format must be json or csv.")
+    except HTTPException:
+        raise
+    except Exception as exc:
+        logger.exception("Report export failed: %s", exc)
+        write_audit_event("export_reports", action_status="error", error_message=str(exc), extra={"format": export_format})
+        raise HTTPException(status_code=500, detail="Report export failed.") from exc
 
 
 @app.get("/api/v1/reports/{report_id}")
@@ -606,15 +672,27 @@ def reports_detail(report_id: str) -> dict[str, Any]:
     try:
         return get_report_detail(report_id)
     except ReportRecordNotFound as exc:
+        logger.exception("Report detail not found: %s", report_id)
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except Exception as exc:
+        logger.exception("Report detail failed for %s: %s", report_id, exc)
+        raise HTTPException(status_code=500, detail="Report detail failed.") from exc
 
 
 @app.get("/api/v1/reports/{report_id}/html")
 def reports_html(report_id: str) -> FileResponse:
     try:
-        return FileResponse(get_html_report_path(report_id), media_type="text/html; charset=utf-8")
+        response = FileResponse(get_html_report_path(report_id), media_type="text/html; charset=utf-8")
+        write_audit_event("view_html_report", report_id=report_id, action_status="ok")
+        return response
     except ReportRecordNotFound as exc:
+        logger.exception("HTML report not found: %s", report_id)
+        write_audit_event("view_html_report", report_id=report_id, action_status="error", error_message=str(exc))
         raise HTTPException(status_code=404, detail=str(exc)) from exc
+    except Exception as exc:
+        logger.exception("HTML report failed for %s: %s", report_id, exc)
+        write_audit_event("view_html_report", report_id=report_id, action_status="error", error_message=str(exc))
+        raise HTTPException(status_code=500, detail="HTML report failed.") from exc
 
 
 @app.get("/errors")

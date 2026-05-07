@@ -1,6 +1,7 @@
 (function () {
   const DETAIL_ENDPOINT_PREFIX = "/history/";
   const REVIEW_ENDPOINT_PREFIX = "/api/v1/reports/";
+  const REPORT_ENDPOINT_PREFIX = "/api/v1/reports/";
   const FALLBACK_TECHNICAL =
     "This result was produced by the current decision layer using available image-level signals, score distribution, and uncertainty rules.";
 
@@ -16,6 +17,274 @@
     real: "Likely Real",
     uncertain: "Uncertain",
   };
+
+  const ui = {
+    zh: {
+      title: "检测详情",
+      eyebrow: "审计记录 / 检测结果",
+      close: "关闭详情",
+      finalLabel: "检测结论",
+      confidence: "置信度",
+      filename: "文件名",
+      detectionTime: "检测时间",
+      recordId: "记录 ID",
+      userSummary: "用户摘要",
+      decisionReason: "判断依据",
+      recommendation: "复核建议",
+      evidenceChain: "证据链",
+      technical: "技术解释",
+      rawJson: "原始 JSON",
+      reviewActions: "复核操作",
+      notReviewed: "尚未复核",
+      savedAt: "已保存 {time}",
+      reviewed: "标记已复核",
+      confirmedAi: "确认为 AI",
+      confirmedReal: "确认为真实",
+      falsePositive: "标记误判为 AI",
+      falseNegative: "标记漏判 AI",
+      needsFollowUp: "需要跟进",
+      ignored: "忽略",
+      addNote: "添加复核备注",
+      notePlaceholder: "补充复核背景、判断理由或后续处理事项。",
+      saveNote: "保存复核备注",
+      copyJson: "复制 JSON",
+      previewHtml: "查看 HTML 报告",
+      downloadHtml: "下载 HTML",
+      pdfSoon: "PDF 暂不支持",
+      copied: "JSON 已复制。",
+      htmlOpened: "HTML 报告已打开。",
+      htmlBlocked: "浏览器阻止了报告预览，请检查弹窗设置。",
+      htmlDownloaded: "HTML 报告已下载。",
+      reviewSaved: "复核状态已保存。",
+      reviewFailed: "复核状态保存失败。",
+      noEvidence: "暂无可用的详细证据。",
+      imageUnavailable: "图片预览不可用",
+      fallbackNotice: "没有可用检测记录，正在显示安全兜底信息。",
+      missingRecord: "缺少记录 ID，无法保存复核状态。",
+      detailLoadFailed: "无法加载报告详情。",
+    },
+    en: {
+      title: "Detection Detail",
+      eyebrow: "Audit record / Detection result",
+      close: "Close detail",
+      finalLabel: "Final Label",
+      confidence: "Confidence",
+      filename: "Filename",
+      detectionTime: "Detection Time",
+      recordId: "Record ID",
+      userSummary: "User Summary",
+      decisionReason: "Decision Reason",
+      recommendation: "Recommendation",
+      evidenceChain: "Evidence Chain",
+      technical: "Technical Explanation",
+      rawJson: "Raw JSON",
+      reviewActions: "Review Actions",
+      notReviewed: "Not reviewed yet",
+      savedAt: "Saved {time}",
+      reviewed: "Mark as Reviewed",
+      confirmedAi: "Confirm AI",
+      confirmedReal: "Confirm Real",
+      falsePositive: "Mark False Positive",
+      falseNegative: "Mark False Negative",
+      needsFollowUp: "Needs Follow-up",
+      ignored: "Ignore",
+      addNote: "Add Review Note",
+      notePlaceholder: "Add reviewer context, decision rationale, or follow-up needs.",
+      saveNote: "Save Review Note",
+      copyJson: "Copy JSON",
+      previewHtml: "Preview HTML Report",
+      downloadHtml: "Download HTML",
+      pdfSoon: "PDF unavailable",
+      copied: "JSON copied.",
+      htmlOpened: "HTML report opened.",
+      htmlBlocked: "The browser blocked the report preview.",
+      htmlDownloaded: "HTML report downloaded.",
+      reviewSaved: "Review saved.",
+      reviewFailed: "Review save failed.",
+      noEvidence: "No detailed evidence available for this record.",
+      imageUnavailable: "Image preview unavailable",
+      fallbackNotice: "No detection record was provided. Showing safe fallback values.",
+      missingRecord: "Missing record id; review cannot be saved.",
+      detailLoadFailed: "Could not load report detail.",
+    },
+  };
+
+  function tr(key, params = {}) {
+    const lang = document.documentElement.lang?.toLowerCase().startsWith("zh") ? "zh" : "en";
+    const value = ui[lang]?.[key] || ui.en[key] || key;
+    return Object.entries(params).reduce((text, [name, replacement]) => text.replaceAll(`{${name}}`, replacement), value);
+  }
+
+  Object.assign(ui.zh, {
+    title: "检测详情",
+    eyebrow: "审计记录 / 检测结果",
+    close: "关闭详情",
+    finalLabel: "检测结论",
+    confidence: "置信度",
+    filename: "文件名",
+    detectionTime: "检测时间",
+    recordId: "记录 ID",
+    userSummary: "检测摘要",
+    reportInfo: "报告信息",
+    decisionReason: "判断依据",
+    recommendation: "复核建议",
+    evidenceChain: "证据链",
+    technical: "技术解释",
+    rawJson: "原始 JSON",
+    reviewActions: "复核操作",
+    notReviewed: "尚未复核",
+    reviewed: "标记已复核",
+    confirmedAi: "确认是 AI",
+    confirmedReal: "确认为真实",
+    falsePositive: "标记误判",
+    falseNegative: "标记漏判",
+    needsFollowUp: "需要跟进",
+    ignored: "忽略",
+    addNote: "复核备注",
+    notePlaceholder: "补充复核背景、判断理由或后续处理事项。",
+    saveNote: "保存复核备注",
+    copyJson: "复制 JSON",
+    previewHtml: "查看 HTML 报告",
+    downloadHtml: "下载 HTML",
+    pdfSoon: "PDF 暂不支持",
+    noEvidence: "暂无可用的详细证据。",
+    imageUnavailable: "图片预览不可用",
+    likelyAi: "可能 AI",
+    likelyReal: "可能真实",
+    uncertain: "不确定",
+    lowRisk: "低",
+    mediumRisk: "中",
+    highRisk: "高",
+    criticalRisk: "高",
+    pendingReview: "未复核",
+    reviewedStatus: "已复核",
+    confirmedAiStatus: "已确认 AI",
+    confirmedRealStatus: "已确认真实",
+    falsePositiveStatus: "标记误判",
+    falseNegativeStatus: "标记漏判",
+    needsFollowUpStatus: "需要跟进",
+    ignoredStatus: "已忽略",
+    enabled: "证据链已启用",
+    raw_score: "原始分数",
+    feature_summary: "特征摘要",
+    consistency_checks: "一致性检查",
+    format_evidence: "格式证据",
+    resolution_evidence: "分辨率证据",
+    available: "可用",
+    schemaVersion: "报告结构版本",
+    detectorVersion: "检测器版本",
+    modelVersion: "模型版本",
+  });
+
+  Object.assign(ui.en, {
+    likelyAi: "Likely AI",
+    likelyReal: "Likely Real",
+    uncertain: "Uncertain",
+    lowRisk: "Low",
+    mediumRisk: "Medium",
+    highRisk: "High",
+    criticalRisk: "High",
+    pendingReview: "Unreviewed",
+    reviewedStatus: "Reviewed",
+    confirmedAiStatus: "Confirmed AI",
+    confirmedRealStatus: "Confirmed Real",
+    falsePositiveStatus: "False Positive",
+    falseNegativeStatus: "False Negative",
+    needsFollowUpStatus: "Needs Follow-up",
+    ignoredStatus: "Ignored",
+    enabled: "Evidence chain enabled",
+    raw_score: "Raw score",
+    feature_summary: "Feature summary",
+    consistency_checks: "Consistency checks",
+    format_evidence: "Format evidence",
+    resolution_evidence: "Resolution evidence",
+    available: "Available",
+    reportInfo: "Report Info",
+    schemaVersion: "Report schema version",
+    detectorVersion: "Detector version",
+    modelVersion: "Model version",
+  });
+
+  Object.assign(ui.zh, {
+    title: "检测详情",
+    eyebrow: "取证卷宗 / 检测记录",
+    close: "关闭详情",
+    finalLabel: "检测结论",
+    riskLevel: "风险等级",
+    confidence: "置信度",
+    reviewStatus: "复核状态",
+    filename: "文件名",
+    detectionTime: "检测时间",
+    recordId: "report_id",
+    userSummary: "证据摘要",
+    reportInfo: "报告信息",
+    decisionReason: "判断依据",
+    recommendation: "复核建议",
+    evidenceChain: "证据摘要",
+    technical: "技术解释",
+    rawJson: "原始 JSON",
+    reviewActions: "复核操作",
+    notReviewed: "尚未复核",
+    savedAt: "已保存 {time}",
+    reviewed: "标记已复核",
+    confirmedAi: "确认 AI",
+    confirmedReal: "确认真实",
+    falsePositive: "标记误判",
+    falseNegative: "标记漏判",
+    needsFollowUp: "需要跟进",
+    ignored: "忽略",
+    addNote: "复核备注",
+    notePlaceholder: "补充复核背景、判断理由或后续处理事项。",
+    saveNote: "保存复核备注",
+    copyJson: "复制 JSON",
+    previewHtml: "查看 HTML 报告",
+    downloadHtml: "下载 HTML",
+    pdfSoon: "PDF 暂不支持",
+    copied: "JSON 已复制。",
+    htmlOpened: "HTML 报告已打开。",
+    htmlBlocked: "浏览器阻止了报告预览，请检查弹窗设置。",
+    htmlDownloaded: "HTML 报告已下载。",
+    reviewSaved: "复核状态已保存。",
+    reviewFailed: "复核状态保存失败。",
+    noEvidence: "暂无可用的详细证据。",
+    imageUnavailable: "图像预览不可用",
+    fallbackNotice: "没有可用检测记录，正在显示安全兜底信息。",
+    missingRecord: "缺少记录 ID，无法保存复核状态。",
+    detailLoadFailed: "无法加载报告详情。",
+    likelyAi: "可能 AI",
+    likelyReal: "可能真实",
+    uncertain: "不确定",
+    lowRisk: "低",
+    mediumRisk: "中",
+    highRisk: "高",
+    criticalRisk: "高",
+    pendingReview: "未复核",
+    reviewedStatus: "已复核",
+    confirmedAiStatus: "已确认 AI",
+    confirmedRealStatus: "已确认真实",
+    falsePositiveStatus: "标记误判",
+    falseNegativeStatus: "标记漏判",
+    needsFollowUpStatus: "需要跟进",
+    ignoredStatus: "已忽略",
+    enabled: "证据链已启用",
+    raw_score: "原始分数",
+    feature_summary: "特征摘要",
+    consistency_checks: "一致性检查",
+    format_evidence: "格式证据",
+    resolution_evidence: "分辨率证据",
+    available: "可用",
+    schemaVersion: "报告结构版本",
+    detectorVersion: "检测器版本",
+    modelVersion: "模型版本",
+  });
+
+  Object.assign(ui.en, {
+    riskLevel: "Risk Level",
+    reviewStatus: "Review Status",
+    recordId: "report_id",
+    userSummary: "Evidence Summary",
+    evidenceChain: "Evidence Summary",
+  });
 
   function firstDefined(...values) {
     return values.find((value) => value !== undefined && value !== null && value !== "");
@@ -71,7 +340,39 @@
 
   function displayFinalLabel(value) {
     const key = normalizeLabelKey(value);
-    return labels[key] || key.replaceAll("_", " ").replace(/\b\w/g, (char) => char.toUpperCase());
+    if (key === "ai") return tr("likelyAi");
+    if (key === "real") return tr("likelyReal");
+    if (key === "uncertain") return tr("uncertain");
+    return key.replaceAll("_", " ").replace(/\b\w/g, (char) => char.toUpperCase());
+  }
+
+  function displayRiskLabel(value) {
+    const key = String(value || "").trim().toLowerCase();
+    if (key === "low") return tr("lowRisk");
+    if (key === "medium") return tr("mediumRisk");
+    if (key === "high") return tr("highRisk");
+    if (key === "critical") return tr("criticalRisk");
+    return value || "N/A";
+  }
+
+  function displayReviewStatus(value) {
+    const key = String(value || "pending_review").trim().toLowerCase();
+    const map = {
+      pending_review: "pendingReview",
+      reviewed: "reviewedStatus",
+      confirmed_ai: "confirmedAiStatus",
+      confirmed_real: "confirmedRealStatus",
+      false_positive: "falsePositiveStatus",
+      false_negative: "falseNegativeStatus",
+      needs_follow_up: "needsFollowUpStatus",
+      ignored: "ignoredStatus",
+    };
+    return tr(map[key] || "pendingReview");
+  }
+
+  function friendlyEvidenceTitle(key) {
+    const normalized = String(key || "").trim();
+    return tr(normalized) !== normalized ? tr(normalized) : normalized.replaceAll("_", " ");
   }
 
   function normalizeConfidence(value) {
@@ -148,31 +449,31 @@
 
   function evidenceItems(value) {
     if (!value) return [];
-    if (typeof value === "string") return [{ title: "Evidence", value }];
+    if (typeof value === "string") return [{ title: tr("evidenceChain"), value }];
     if (Array.isArray(value)) {
       return value.map((item, index) => {
         if (item && typeof item === "object") {
           return {
-            title: firstDefined(item.title, item.name, item.key, `Evidence ${index + 1}`),
+            title: friendlyEvidenceTitle(firstDefined(item.title, item.name, item.key, `${tr("evidenceChain")} ${index + 1}`)),
             value: firstDefined(item.value, item.score, item.status, item.result, ""),
             weight: firstDefined(item.weight, item.contribution, item.confidence, ""),
             explanation: firstDefined(item.explanation, item.reason, item.summary, ""),
           };
         }
-        return { title: `Evidence ${index + 1}`, value: item };
+        return { title: `${tr("evidenceChain")} ${index + 1}`, value: item };
       });
     }
     if (typeof value === "object") {
       return Object.entries(value).map(([key, item]) => {
         if (item && typeof item === "object" && !Array.isArray(item)) {
           return {
-            title: firstDefined(item.title, item.name, key),
+            title: friendlyEvidenceTitle(firstDefined(item.title, item.name, key)),
             value: firstDefined(item.value, item.score, item.status, item.result, JSON.stringify(item)),
             weight: firstDefined(item.weight, item.contribution, item.confidence, ""),
             explanation: firstDefined(item.explanation, item.reason, item.summary, ""),
           };
         }
-        return { title: key, value: item };
+        return { title: friendlyEvidenceTitle(key), value: item };
       });
     }
     return [];
@@ -181,7 +482,7 @@
   function renderEvidence(value) {
     const items = evidenceItems(value);
     if (!items.length) {
-      return `<p class="detail-muted">No detailed evidence available for this record.</p>`;
+      return `<p class="detail-muted">${escapeHtml(tr("noEvidence"))}</p>`;
     }
     return `
       <div class="detail-evidence-list">
@@ -191,7 +492,7 @@
               <div class="detail-evidence-item">
                 <div>
                   <strong>${escapeHtml(item.title)}</strong>
-                  <span>${escapeHtml(textFromValue(item.value, "Available"))}</span>
+                  <span>${escapeHtml(textFromValue(item.value, tr("available")))}</span>
                 </div>
                 ${item.weight ? `<em>${escapeHtml(textFromValue(item.weight, ""))}</em>` : ""}
                 ${item.explanation ? `<p>${escapeHtml(textFromValue(item.explanation, ""))}</p>` : ""}
@@ -249,7 +550,7 @@
 
   function renderReportEvidence(record) {
     const items = evidenceItems(record.debug_evidence);
-    if (!items.length) return `<p>No detailed evidence available for this record.</p>`;
+    if (!items.length) return `<p>${escapeHtml(tr("noEvidence"))}</p>`;
     return `
       <ul class="evidence">
         ${items
@@ -257,7 +558,7 @@
             (item) => `
               <li>
                 <strong>${escapeHtml(item.title)}</strong>
-                <span>${escapeHtml(textFromValue(item.value, "Available"))}</span>
+                <span>${escapeHtml(textFromValue(item.value, tr("available")))}</span>
                 ${item.weight ? `<em>${escapeHtml(textFromValue(item.weight, ""))}</em>` : ""}
                 ${item.explanation ? `<p>${escapeHtml(textFromValue(item.explanation, ""))}</p>` : ""}
               </li>
@@ -312,7 +613,7 @@
       <h2>Conclusion</h2>
       <div class="verdict">
         <div class="cell"><span>Final Label</span><strong>${escapeHtml(label)}</strong></div>
-        <div class="cell"><span>Risk Level</span><strong><span class="badge">${escapeHtml(record.risk_level)}</span></strong></div>
+        <div class="cell"><span>Risk Level</span><strong><span class="badge">${escapeHtml(displayRiskLabel(record.risk_level))}</span></strong></div>
         <div class="cell"><span>Confidence</span><strong>${escapeHtml(confidence)}</strong></div>
       </div>
     </section>
@@ -323,15 +624,20 @@
     <section><h2>Evidence Chain</h2>${renderReportEvidence(record)}</section>
     <section><h2>Technical Explanation</h2><p>${escapeHtml(record.technical_explanation)}</p></section>
     <section><h2>Raw JSON</h2><pre>${escapeHtml(json)}</pre></section>
-    <footer>Generated by AI Image Trust Scanner - PDF export coming soon</footer>
+    <footer>Generated by AI Image Trust Scanner - PDF export is not supported in this MVP</footer>
   </main>
 </body>
 </html>`;
   }
 
   function openHtmlPreview(record) {
+    const normalized = normalizeDetectionRecord(record);
+    if (normalized.id) {
+      const opened = window.open(`${REPORT_ENDPOINT_PREFIX}${encodeURIComponent(normalized.id)}/html`, "_blank", "noopener");
+      if (opened) return true;
+    }
     const html = generateDetectionReportHtml(record);
-    const filename = safeReportFilename(normalizeDetectionRecord(record));
+    const filename = safeReportFilename(normalized);
     console.log("[Day27] html report generated", filename);
     const blob = new Blob([html], { type: "text/html;charset=utf-8" });
     const url = URL.createObjectURL(blob);
@@ -388,89 +694,108 @@
     const confidenceText = formatConfidence(normalized.confidence);
     const image = normalized.image_url
       ? `<img class="detail-image" src="${escapeHtml(normalized.image_url)}" alt="${escapeHtml(normalized.filename)}">`
-      : `<div class="detail-image-placeholder">Image preview unavailable</div>`;
+      : `<div class="detail-image-placeholder">${escapeHtml(tr("imageUnavailable"))}</div>`;
+    const schemaVersion = firstDefined(getValue(normalized.raw, "report_schema_version"), getValue(normalized.raw, "data.report_schema_version"), getValue(normalized.raw, "data.result.report_schema_version"), "N/A");
+    const detectorVersion = firstDefined(getValue(normalized.raw, "detector_version"), getValue(normalized.raw, "data.detector_version"), getValue(normalized.raw, "data.result.detector_version"), "N/A");
+    const modelVersion = firstDefined(getValue(normalized.raw, "model_version"), getValue(normalized.raw, "data.model_version"), getValue(normalized.raw, "data.result.model_version"), "N/A");
     const emptyNotice = !record || (typeof record === "object" && !Object.keys(record).length)
-      ? `<section class="detail-section detail-warning"><p>No detection record was provided. Showing safe fallback values.</p></section>`
+      ? `<section class="detail-section detail-warning"><p>${escapeHtml(tr("fallbackNotice"))}</p></section>`
       : "";
     drawer.innerHTML = `
       <header class="detail-header">
         <div>
-          <p class="eyebrow">Audit record / Detection result</p>
-          <h2 id="detail-title">Detection Detail</h2>
+          <p class="eyebrow">${escapeHtml(tr("eyebrow"))}</p>
+          <h2 id="detail-title">${escapeHtml(tr("title"))}</h2>
         </div>
-        <button class="detail-close" type="button" data-detail-close aria-label="Close detail">x</button>
+        <button class="detail-close" type="button" data-detail-close aria-label="${escapeHtml(tr("close"))}">x</button>
       </header>
       ${emptyNotice}
-      <section class="detail-verdict">
+      <section class="detail-verdict dossier-summary">
         <div>
-          <span>Final Label</span>
+          <span>${escapeHtml(tr("finalLabel"))}</span>
           <strong>${escapeHtml(displayFinalLabel(normalized.final_label))}</strong>
         </div>
-        <span class="badge ${slug(normalized.risk_level)}">${escapeHtml(normalized.risk_level)}</span>
+        <div>
+          <span>${escapeHtml(tr("riskLevel"))}</span>
+          <strong><span class="badge ${slug(normalized.risk_level)}">${escapeHtml(displayRiskLabel(normalized.risk_level))}</span></strong>
+        </div>
+        <div class="detail-confidence compact-confidence">
+          <span>${escapeHtml(tr("confidence"))}</span>
+          <strong>${escapeHtml(confidenceText)}</strong>
+          <i style="--confidence:${confidence === null ? 0 : confidence}"></i>
+        </div>
+        <div>
+          <span>${escapeHtml(tr("reviewStatus"))}</span>
+          <strong><span class="badge review-${slug(normalized.review_status)}">${escapeHtml(displayReviewStatus(normalized.review_status))}</span></strong>
+        </div>
+        <div class="report-id-cell">
+          <span>${escapeHtml(tr("recordId"))}</span>
+          <strong>${escapeHtml(normalized.id)}</strong>
+        </div>
       </section>
-      <div class="detail-confidence">
-        <span>Confidence</span>
-        <strong>${escapeHtml(confidenceText)}</strong>
-        <i style="--confidence:${confidence === null ? 0 : confidence}"></i>
-      </div>
       <section class="detail-image-frame">${image}</section>
       <section class="detail-meta-grid">
-        <div><span>Filename</span><strong>${escapeHtml(normalized.filename)}</strong></div>
-        <div><span>Detection Time</span><strong>${escapeHtml(normalized.created_at || "N/A")}</strong></div>
-        <div><span>Record ID</span><strong>${escapeHtml(normalized.id)}</strong></div>
+        <div><span>${escapeHtml(tr("filename"))}</span><strong>${escapeHtml(normalized.filename)}</strong></div>
+        <div><span>${escapeHtml(tr("detectionTime"))}</span><strong>${escapeHtml(normalized.created_at || "N/A")}</strong></div>
+        <div><span>${escapeHtml(tr("reviewStatus"))}</span><strong>${escapeHtml(displayReviewStatus(normalized.review_status))}</strong></div>
+      </section>
+      <section class="detail-meta-grid detail-report-info" aria-label="${escapeHtml(tr("reportInfo"))}">
+        <div><span>${escapeHtml(tr("schemaVersion"))}</span><strong>${escapeHtml(schemaVersion)}</strong></div>
+        <div><span>${escapeHtml(tr("detectorVersion"))}</span><strong>${escapeHtml(detectorVersion)}</strong></div>
+        <div><span>${escapeHtml(tr("modelVersion"))}</span><strong>${escapeHtml(modelVersion)}</strong></div>
       </section>
       <section class="detail-section">
-        <h3>User Summary</h3>
+        <h3>${escapeHtml(tr("userSummary"))}</h3>
         <p>${escapeHtml(normalized.user_facing_summary)}</p>
       </section>
       <section class="detail-section">
-        <h3>Decision Reason</h3>
+        <h3>${escapeHtml(tr("decisionReason"))}</h3>
         <p>${escapeHtml(normalized.decision_reason)}</p>
       </section>
       <section class="detail-section">
-        <h3>Recommendation</h3>
+        <h3>${escapeHtml(tr("recommendation"))}</h3>
         <p>${escapeHtml(normalized.recommendation)}</p>
       </section>
       <section class="detail-section">
-        <h3>Evidence Chain</h3>
+        <h3>${escapeHtml(tr("evidenceChain"))}</h3>
         ${renderEvidence(normalized.debug_evidence)}
       </section>
-      <section class="detail-section">
-        <h3>Technical Explanation</h3>
+      <details class="detail-json detail-technical">
+        <summary>${escapeHtml(tr("technical"))}</summary>
         <p>${escapeHtml(normalized.technical_explanation)}</p>
-      </section>
+      </details>
       <details class="detail-json">
-        <summary>Raw JSON</summary>
+        <summary>${escapeHtml(tr("rawJson"))}</summary>
         <pre>${escapeHtml(jsonFor(normalized))}</pre>
       </details>
       <section class="detail-section review-actions-section" data-review-actions>
-        <h3>Review Actions</h3>
+        <h3>${escapeHtml(tr("reviewActions"))}</h3>
         <div class="review-status-line">
-          <span class="badge review-${slug(normalized.review_status)}">${escapeHtml(String(normalized.review_status || "pending_review").replaceAll("_", " "))}</span>
-          <em>${escapeHtml(normalized.reviewed_at ? `Saved ${normalized.reviewed_at}` : "Not reviewed yet")}</em>
+          <span class="badge review-${slug(normalized.review_status)}">${escapeHtml(displayReviewStatus(normalized.review_status))}</span>
+          <em>${escapeHtml(normalized.reviewed_at ? tr("savedAt", { time: normalized.reviewed_at }) : tr("notReviewed"))}</em>
         </div>
         <div class="review-action-grid" role="group" aria-label="Review status actions">
-          <button class="table-action" type="button" data-review-status="reviewed">Mark as Reviewed</button>
-          <button class="table-action" type="button" data-review-status="confirmed_ai">Confirm AI</button>
-          <button class="table-action" type="button" data-review-status="confirmed_real">Confirm Real</button>
-          <button class="table-action" type="button" data-review-status="false_positive">Mark False Positive</button>
-          <button class="table-action" type="button" data-review-status="false_negative">Mark False Negative</button>
-          <button class="table-action" type="button" data-review-status="needs_follow_up">Needs Follow-up</button>
-          <button class="table-action" type="button" data-review-status="ignored">Ignore</button>
+          <button class="table-action" type="button" data-review-status="reviewed">${escapeHtml(tr("reviewed"))}</button>
+          <button class="table-action" type="button" data-review-status="confirmed_ai">${escapeHtml(tr("confirmedAi"))}</button>
+          <button class="table-action" type="button" data-review-status="confirmed_real">${escapeHtml(tr("confirmedReal"))}</button>
+          <button class="table-action" type="button" data-review-status="false_positive">${escapeHtml(tr("falsePositive"))}</button>
+          <button class="table-action" type="button" data-review-status="false_negative">${escapeHtml(tr("falseNegative"))}</button>
+          <button class="table-action" type="button" data-review-status="needs_follow_up">${escapeHtml(tr("needsFollowUp"))}</button>
+          <button class="table-action" type="button" data-review-status="ignored">${escapeHtml(tr("ignored"))}</button>
         </div>
         <label class="review-note-field">
-          <span>Add Review Note</span>
-          <textarea rows="4" data-review-note placeholder="Add reviewer context, decision rationale, or follow-up needs.">${escapeHtml(normalized.review_note || "")}</textarea>
+          <span>${escapeHtml(tr("addNote"))}</span>
+          <textarea rows="4" data-review-note placeholder="${escapeHtml(tr("notePlaceholder"))}">${escapeHtml(normalized.review_note || "")}</textarea>
         </label>
         <div class="review-save-row">
-          <button class="button button-secondary" type="button" data-detail-action="save-review">Save Review Note</button>
+          <button class="button button-secondary" type="button" data-detail-action="save-review">${escapeHtml(tr("saveNote"))}</button>
         </div>
       </section>
       <section class="detail-actions" data-report-actions>
-        <button class="button button-secondary" type="button" data-detail-action="copy-json">Copy JSON</button>
-        <button class="button button-ghost" type="button" data-detail-action="preview-html">Preview HTML Report</button>
-        <button class="button button-ghost" type="button" data-detail-action="download-html">Download HTML</button>
-        <button class="button button-ghost" type="button" disabled>PDF Coming Soon</button>
+        <button class="button button-secondary" type="button" data-detail-action="copy-json">${escapeHtml(tr("copyJson"))}</button>
+        <button class="button button-ghost" type="button" data-detail-action="preview-html">${escapeHtml(tr("previewHtml"))}</button>
+        <button class="button button-ghost" type="button" data-detail-action="download-html">${escapeHtml(tr("downloadHtml"))}</button>
+        <button class="button button-ghost" type="button" disabled>${escapeHtml(tr("pdfSoon"))}</button>
         <p class="detail-feedback" aria-live="polite"></p>
       </section>
     `;
@@ -480,7 +805,7 @@
     document.body.classList.add("detail-drawer-open");
     shell.querySelector(".detail-close")?.focus({ preventScroll: true });
     shell.querySelector(".detail-image")?.addEventListener("error", (event) => {
-      event.currentTarget.replaceWith(Object.assign(document.createElement("div"), { className: "detail-image-placeholder", textContent: "Image preview unavailable" }));
+      event.currentTarget.replaceWith(Object.assign(document.createElement("div"), { className: "detail-image-placeholder", textContent: tr("imageUnavailable") }));
     });
     if (options.focusReport) {
       window.setTimeout(() => shell.querySelector("[data-report-actions]")?.scrollIntoView({ behavior: "smooth", block: "center" }), 180);
@@ -531,33 +856,33 @@
       if (button.dataset.detailAction === "copy-json") {
         await copyText(jsonFor(state.record));
         const original = button.textContent;
-        button.textContent = "Copied";
+        button.textContent = tr("copied");
         window.clearTimeout(state.copyTimer);
         state.copyTimer = window.setTimeout(() => {
-          button.textContent = original || "Copy JSON";
+          button.textContent = original || tr("copyJson");
         }, 1500);
-        setFeedback("JSON copied.");
+        setFeedback(tr("copied"));
       }
       if (button.dataset.detailAction === "preview-html") {
         const opened = openHtmlPreview(state.record);
-        setFeedback(opened ? "HTML report opened." : "浏览器阻止了报告预览，请使用 Download HTML。", !opened);
+        setFeedback(opened ? tr("htmlOpened") : tr("htmlBlocked"), !opened);
       }
       if (button.dataset.detailAction === "download-html") {
         downloadHtml(state.record);
-        setFeedback("HTML report downloaded.");
+        setFeedback(tr("htmlDownloaded"));
       }
       if (button.dataset.detailAction === "save-review") {
         await saveReview(state.record.review_status || "reviewed");
       }
     } catch (error) {
-      setFeedback(error?.message || "Report action failed.", true);
+      setFeedback(error?.message || tr("reviewFailed"), true);
     }
   }
 
   async function saveReview(status) {
     const recordId = state.record?.id;
     if (!recordId) {
-      setFeedback("Missing record id; review cannot be saved.", true);
+      setFeedback(tr("missingRecord"), true);
       return;
     }
     const note = document.querySelector("[data-review-note]")?.value || "";
@@ -576,10 +901,10 @@
     });
     const payload = await response.json().catch(() => null);
     if (!response.ok) {
-      throw new Error(payload?.detail || `Review save failed: ${response.status}`);
+      throw new Error(payload?.detail || `${tr("reviewFailed")} ${response.status}`);
     }
     state.record = normalizeDetectionRecord(payload?.record || { ...state.record, review_status: status, review_note: note });
-    setFeedback("Review saved.");
+    setFeedback(tr("reviewSaved"));
     renderDrawer(payload?.record || state.record, { focusReview: true });
     window.dispatchEvent(new CustomEvent("minerva:report-review-updated", { detail: payload?.record || state.record }));
   }
@@ -621,7 +946,31 @@
       const detailed = extractRecordFromHistory(summary, history);
       renderDrawer({ ...summary, ...detailed, raw: detailed.raw || history }, options);
     } catch (error) {
-      setFeedback(error?.message || "Could not load full history detail.", true);
+      setFeedback(error?.message || tr("detailLoadFailed"), true);
+    }
+  }
+
+  async function hydrateReportDetail(summary, options) {
+    const recordId = firstDefined(summary?.report_id, summary?.id);
+    if (!recordId) {
+      hydrateHistory(summary, options);
+      return;
+    }
+    try {
+      const detail = await fetch(`${REPORT_ENDPOINT_PREFIX}${encodeURIComponent(recordId)}`, {
+        cache: "no-store",
+        headers: { Accept: "application/json" },
+      }).then((response) => {
+        if (!response.ok) throw new Error(`Detail fetch failed: ${response.status}`);
+        return response.json();
+      });
+      renderDrawer({ ...summary, ...detail, raw: detail }, options);
+    } catch (error) {
+      if (summary?.history_file) {
+        hydrateHistory(summary, options);
+        return;
+      }
+      setFeedback(error?.message || tr("detailLoadFailed"), true);
     }
   }
 
@@ -630,7 +979,7 @@
     const normalized = normalizeDetectionRecord(summary || {});
     console.log("[Day27] open detail drawer:", normalized.id, normalized.filename);
     renderDrawer(summary || {}, options);
-    hydrateHistory(summary, options);
+    hydrateReportDetail(summary, options);
   }
 
   document.addEventListener("keydown", (event) => {

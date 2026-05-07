@@ -44,6 +44,42 @@ class ReportRecordNotFound(Exception):
     """Raised when a report record id cannot be found in history JSON."""
 
 
+PRIVATE_RESPONSE_FIELDS = {"image_path", "html_report_path"}
+PRIVATE_NESTED_KEYS = {"image_path", "html_report_path", "absolute_path", "local_path", "source_path"}
+
+
+def _looks_like_local_path(value: str) -> bool:
+    text = value.strip()
+    return bool(text.startswith(("/", "\\")) or (len(text) > 2 and text[1:3] in {":\\", ":/"}))
+
+
+def _redact_private(value: Any, key: str | None = None) -> Any:
+    lowered = (key or "").lower()
+    if lowered in PRIVATE_NESTED_KEYS:
+        return "[redacted]"
+    if isinstance(value, dict):
+        return {item_key: _redact_private(item_value, item_key) for item_key, item_value in value.items()}
+    if isinstance(value, list):
+        return [_redact_private(item) for item in value]
+    if isinstance(value, str) and ("path" in lowered or lowered.endswith("_file")) and _looks_like_local_path(value):
+        return "[redacted]"
+    return value
+
+
+def public_report_record(record: dict[str, Any]) -> dict[str, Any]:
+    public = {key: _redact_private(value, key) for key, value in record.items() if key not in PRIVATE_RESPONSE_FIELDS}
+    if record.get("html_report_available") and record.get("report_id"):
+        public["html_report_url"] = f"/api/v1/reports/{record['report_id']}/html"
+    return public
+
+
+def public_report_payload(payload: dict[str, Any]) -> dict[str, Any]:
+    safe = dict(payload)
+    if isinstance(safe.get("items"), list):
+        safe["items"] = [public_report_record(item) if isinstance(item, dict) else item for item in safe["items"]]
+    return safe
+
+
 def _read_json(path: Path) -> dict[str, Any] | None:
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -489,7 +525,7 @@ def search_reports(
     safe_offset = max(0, int(offset))
     safe_limit = max(1, min(int(limit), 500))
     items = sorted_records[safe_offset : safe_offset + safe_limit]
-    return {
+    return public_report_payload({
         "items": items,
         "total": len(all_records),
         "filtered_total": len(filtered),
@@ -516,7 +552,7 @@ def search_reports(
         },
         "summary": _summary(all_records),
         "schema_version": REPORT_SCHEMA_VERSION,
-    }
+    })
 
 
 def review_queue(limit: int = 20, history_dir: Path | None = None) -> dict[str, Any]:
@@ -533,7 +569,7 @@ def review_queue(limit: int = 20, history_dir: Path | None = None) -> dict[str, 
     ]
     queued = sorted(queued, key=queue_priority, reverse=True)
     safe_limit = max(1, min(int(limit), 100))
-    return {"items": queued[:safe_limit], "total": len(queued), "schema_version": REPORT_SCHEMA_VERSION}
+    return public_report_payload({"items": queued[:safe_limit], "total": len(queued), "schema_version": REPORT_SCHEMA_VERSION})
 
 
 def get_report_detail(record_id: str, history_dir: Path | None = None) -> dict[str, Any]:
@@ -542,10 +578,10 @@ def get_report_detail(record_id: str, history_dir: Path | None = None) -> dict[s
         record = report_store.get_report(record_id)
         if record is None:
             raise ReportRecordNotFound(f"Report record not found: {record_id}")
-        return record
+        return public_report_record(record)
     for record in load_report_records_from_history(history_dir):
         if record.get("id") == record_id or record.get("report_id") == record_id:
-            return record
+            return public_report_record(record)
     raise ReportRecordNotFound(f"Report record not found: {record_id}")
 
 
@@ -600,7 +636,7 @@ def update_review(record_id: str, payload: dict[str, Any], history_dir: Path | N
         )
         if record is None:
             raise ReportRecordNotFound(f"Report record not found: {record_id}")
-        return record
+        return public_report_record(record)
     source = Path(history_dir or HISTORY_DIR)
     if not source.exists():
         raise ReportRecordNotFound(f"Report record not found: {record_id}")

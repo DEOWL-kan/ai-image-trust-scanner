@@ -40,6 +40,7 @@ outputs/html_reports/*
 data/outputs/
 data/app/*.sqlite3
 data/app/*.sqlite3-*
+data/app/*.jsonl
 data/day10_format_control/
 reports/day10_format_eval_image_reports/
 
