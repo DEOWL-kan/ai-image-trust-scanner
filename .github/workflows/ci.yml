@@ -1,0 +1,32 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  default-tests:
+    name: Default lightweight tests
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Install default dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run default test suite
+        env:
+          DETECTOR_RUNTIME_MODE: stub
+          DETECTOR_WARMUP_ON_STARTUP: "false"
+          DETECTOR_ALLOW_COLD_MODEL_LOAD: "false"
+          OPEN_SOURCE_DETECTOR_ENABLED: "false"
+        run: pytest tests -q -m "not hf and not torch and not local_data and not legacy"
