@@ -1,0 +1,151 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "DetectorResult v2",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "detector_id",
+    "detector_name",
+    "detector_version",
+    "model_version",
+    "role",
+    "status",
+    "ai_score",
+    "real_score",
+    "raw_score",
+    "threshold",
+    "threshold_profile",
+    "predicted_label",
+    "confidence",
+    "latency_ms",
+    "device",
+    "input",
+    "error",
+    "debug"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "detector_result_v2"
+    },
+    "detector_id": {
+      "type": "string",
+      "enum": ["smogy", "ateeqq", "legacy", "dima806", "capcheck"]
+    },
+    "detector_name": {
+      "type": "string"
+    },
+    "detector_version": {
+      "type": "string"
+    },
+    "model_version": {
+      "type": "string"
+    },
+    "role": {
+      "type": "string",
+      "enum": ["primary", "secondary", "baseline", "disabled", "diagnostic"]
+    },
+    "status": {
+      "type": "string",
+      "enum": ["ok", "skipped", "error", "disabled"]
+    },
+    "ai_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "real_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "raw_score": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "threshold": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "threshold_profile": {
+      "type": "string",
+      "enum": ["default", "conservative", "review", "experimental"]
+    },
+    "predicted_label": {
+      "type": "string",
+      "enum": ["ai", "real", "uncertain", "error", "skipped"]
+    },
+    "confidence": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1
+    },
+    "latency_ms": {
+      "type": "number",
+      "minimum": 0
+    },
+    "device": {
+      "type": "string",
+      "enum": ["cpu", "cuda", "mps", "unknown"]
+    },
+    "input": {
+      "type": "object",
+      "required": ["image_hash", "width", "height", "format", "mode"],
+      "additionalProperties": false,
+      "properties": {
+        "image_hash": {
+          "type": ["string", "null"]
+        },
+        "width": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "height": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "format": {
+          "type": "string"
+        },
+        "mode": {
+          "type": "string"
+        }
+      }
+    },
+    "error": {
+      "type": "object",
+      "required": ["type", "message", "recoverable"],
+      "additionalProperties": false,
+      "properties": {
+        "type": {
+          "type": ["string", "null"]
+        },
+        "message": {
+          "type": ["string", "null"]
+        },
+        "recoverable": {
+          "type": "boolean"
+        }
+      }
+    },
+    "debug": {
+      "type": "object",
+      "required": ["raw_output", "notes"],
+      "additionalProperties": false,
+      "properties": {
+        "raw_output": {
+          "type": "object"
+        },
+        "notes": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

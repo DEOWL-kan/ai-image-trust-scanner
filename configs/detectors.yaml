@@ -1,0 +1,64 @@
+registry_version: day38_detector_registry_v1
+model_adapter_version: model_adapter_v2
+threshold_profile: default
+detectors:
+  - detector_id: smogy
+    source_detector_id: SMOGY-Ai-images-detector
+    detector_name: SMOGY AI Images Detector
+    model_id: Smogy/SMOGY-Ai-images-detector
+    role: primary
+    enabled: true
+    threshold: 0.5
+    threshold_profile: default
+    default_runtime: skipped
+    reason_skipped: local_api_default_does_not_load_hf_weights
+    day36_status: candidate_usable_for_review
+    # Optional LoRA/PEFT adapter. The public v1 repository does not ship
+    # adapter weights by default. Set SMOGY_PEFT_ADAPTER or add
+    # peft_adapter_path locally after verifying model and data licenses.
+
+  - detector_id: ateeqq
+    source_detector_id: Ateeqq-ai-vs-human-image-detector
+    detector_name: Ateeqq AI vs Human Image Detector
+    model_id: Ateeqq/ai-vs-human-image-detector
+    role: secondary
+    enabled: true
+    threshold: 0.5
+    threshold_profile: default
+    default_runtime: skipped
+    reason_skipped: local_api_default_does_not_load_hf_weights
+    day36_status: recall_auxiliary_only
+
+  - detector_id: legacy
+    source_detector_id: legacy_baseline
+    detector_name: Legacy Baseline Detector
+    model_id: lightweight-baseline.no-pretrained
+    role: baseline
+    enabled: true
+    threshold: 0.5
+    threshold_profile: default
+    default_runtime: api_pipeline
+    day36_status: baseline_only
+
+  - detector_id: dima806
+    source_detector_id: dima806-ai-vs-real-image-detection
+    detector_name: dima806 AI vs Real Image Detection
+    model_id: dima806/ai_vs_real_image_detection
+    role: diagnostic
+    enabled: true
+    threshold: 0.5
+    threshold_profile: default
+    default_runtime: open_source_adapter
+    day36_status: diagnostic_baseline
+
+  - detector_id: capcheck
+    source_detector_id: capcheck-ai-image-detection
+    detector_name: capcheck AI Image Detection
+    model_id: capcheck/ai-image-detection
+    role: disabled
+    enabled: false
+    threshold: 0.5
+    threshold_profile: default
+    duplicate_of: dima806-ai-vs-real-image-detection
+    reason_disabled: "duplicate_disabled: 500/500 raw outputs matched dima806-ai-vs-real-image-detection in Day36.1."
+    day36_status: duplicate_disabled

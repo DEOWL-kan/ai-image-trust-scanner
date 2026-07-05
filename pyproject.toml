@@ -1,0 +1,20 @@
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+addopts = "-q"
+norecursedirs = [
+  ".git",
+  ".venv",
+  "archive",
+  "data",
+  "outputs",
+  "reports",
+  ".tmp",
+]
+markers = [
+  "slow: tests that are too slow for default CI",
+  "hf: tests that require Hugging Face model downloads or cache",
+  "torch: tests that require PyTorch",
+  "local_data: tests that require local datasets or generated report history",
+  "legacy: tests that cover archived or research-only paths",
+]

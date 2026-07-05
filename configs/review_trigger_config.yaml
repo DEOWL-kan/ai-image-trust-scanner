@@ -1,0 +1,116 @@
+config_version: day41_9_safe_review_routing_v1
+default_enabled: true
+default_profile: strict_safe_plus
+description: Safe review-routing triggers. They may route low-risk real outputs to review_needed, but never hard-label AI.
+profiles:
+  strict_safe_plus:
+    enabled: true
+    target_real_review_burden: 0.22
+    require_original_final_label: real
+    max_original_confidence: 0.62
+    allow_non_low_risk: true
+    disagreement_threshold: 0.85
+    max_crop_score_threshold: 0.95
+    crop_label_disagree: false
+    use_max_score: true
+    small_resolution_trigger: false
+    small_resolution_threshold: 0.90
+    scenario_sensitive_trigger: false
+    weak_scenario_threshold: 0.90
+    format_sensitive_trigger: false
+    format_threshold: 0.90
+    format_max_score_threshold: 0.95
+    # Safety/cost lever: only skip crop review when global primary evidence is
+    # extremely low and policy has no voting-AI/conflict rails raised.
+    min_primary_score_for_crop_review: 0.02
+    run_mode: gated_real_low_confidence
+  strict_safe:
+    enabled: true
+    target_real_review_burden: 0.20
+    require_original_final_label: real
+    max_original_confidence: 0.70
+    allow_non_low_risk: true
+    disagreement_threshold: 0.90
+    max_crop_score_threshold: 0.05
+    crop_label_disagree: false
+    run_mode: gated_real_low_confidence
+  balanced_review:
+    enabled: true
+    target_real_review_burden: 0.35
+    require_original_final_label: real
+    max_original_confidence: 1.00
+    allow_non_low_risk: true
+    disagreement_threshold: 0.10
+    max_crop_score_threshold: 0.05
+    crop_label_disagree: true
+    run_mode: all_real_outputs
+  high_recall_review:
+    enabled: true
+    target_real_review_burden: 0.35
+    require_original_final_label: real
+    max_original_confidence: 0.70
+    allow_non_low_risk: true
+    disagreement_threshold: 0.80
+    max_crop_score_threshold: 0.95
+    crop_label_disagree: false
+    use_max_score: true
+    warning: high_review_burden
+    run_mode: gated_real_low_confidence
+  strict_safe_plus_lora_v2:
+    enabled: true
+    target_real_review_burden: 0.22
+    require_original_final_label: real
+    max_original_confidence: 0.62
+    allow_non_low_risk: true
+    disagreement_threshold: 0.85
+    max_crop_score_threshold: 0.95
+    crop_label_disagree: false
+    use_max_score: true
+    small_resolution_trigger: false
+    small_resolution_threshold: 0.90
+    scenario_sensitive_trigger: false
+    weak_scenario_threshold: 0.90
+    format_sensitive_trigger: false
+    format_threshold: 0.90
+    format_max_score_threshold: 0.95
+    # Keep the v2 profile aligned with the default strict_safe_plus guard.
+    min_primary_score_for_crop_review: 0.02
+    run_mode: gated_real_low_confidence
+triggers:
+  - trigger_id: smogy_crop_disagreement_review
+    role: review_trigger_candidate
+    default_enabled: true
+    input: SMOGY crop scores from offline multiscale evaluation
+    trigger_condition:
+      disagreement_threshold: profile
+      crop_label_disagree: true
+    output:
+      review_required: true
+      review_reason: SMOGY crop-level detector disagreement
+      final_label_change: review_needed
+    notes: Safe review route only; does not classify AI.
+
+  - trigger_id: smogy_multiscale_high_score_review
+    role: review_trigger_candidate
+    default_enabled: false
+    input: Maximum SMOGY crop score from offline multiscale evaluation
+    trigger_condition:
+      max_crop_score_threshold: 0.05
+    output:
+      review_required: true
+      review_reason: SMOGY multiscale high score in at least one crop
+      final_label_change: none
+    notes: Candidate review trigger only; direct AI classification is explicitly prohibited.
+
+  - trigger_id: forensic_bias_risk_review
+    role: review_trigger_candidate
+    default_enabled: false
+    input: Classical forensic diagnostic score and feature anomaly
+    trigger_condition:
+      forensic_probability_threshold: 0.50
+    output:
+      review_required: true
+      review_reason: Forensic diagnostic anomaly; dataset-bias risk warning applies
+      final_label_change: none
+    warning: dataset_bias_risk
+    notes: Candidate review prioritization signal only; missing EXIF is never AI evidence.

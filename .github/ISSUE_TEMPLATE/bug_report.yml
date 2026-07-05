@@ -1,0 +1,55 @@
+name: Bug report
+description: Report a reproducible problem in the local scanner or dashboard.
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug. Please do not attach private images, secrets, or sensitive report data.
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Reproduction steps
+      description: List exact commands or dashboard actions.
+      placeholder: |
+        1. python scripts/run_local_dashboard.py
+        2. Open http://127.0.0.1:8000/dashboard-ui/index.html
+        3. Upload ...
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+    validations:
+      required: true
+  - type: input
+    id: runtime_mode
+    attributes:
+      label: Runtime mode
+      placeholder: stub, local_hf, or disabled
+  - type: textarea
+    id: doctor
+    attributes:
+      label: Doctor output
+      description: Paste `python scripts/doctor.py` output.
+      render: text
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant logs
+      render: text

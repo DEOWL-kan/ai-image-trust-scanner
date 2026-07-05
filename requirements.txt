@@ -1,0 +1,11 @@
+Pillow
+numpy
+opencv-python
+pytest
+fastapi
+httpx
+uvicorn
+python-multipart
+pandas
+PyYAML
+requests

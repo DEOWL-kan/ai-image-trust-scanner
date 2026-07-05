@@ -1,0 +1,158 @@
+policy_version: evidence_policy_v1
+
+detectors:
+  smogy:
+    role: primary_candidate
+    policy_note: Current usable candidate detector, but not strong enough alone for high risk.
+    weight_hint: 1.0
+  ateeqq:
+    role: supporting_only
+    policy_note: May support another signal but must never classify an image as AI alone.
+    weight_hint: 0.4
+  legacy:
+    role: baseline
+    policy_note: Legacy heuristic baseline; useful for conflicts and compatibility only.
+    weight_hint: 0.3
+  dima806:
+    role: diagnostic
+    policy_note: Diagnostic open-source adapter output; use only when label mapping is safe.
+    weight_hint: 0.3
+  capcheck:
+    role: duplicate_disabled
+    policy_note: Disabled because Day36.1 found duplicate outputs with dima806.
+    weight_hint: 0.0
+
+thresholds:
+  smogy_high_ai_score: 0.85
+  smogy_medium_ai_score: 0.65
+  smogy_low_ai_score: 0.35
+  ateeqq_high_ai_score: 0.85
+  agreement_min_detectors: 2
+  conflict_margin: 0.35
+  uncertainty_band: 0.08
+
+default_policy_profile: balanced
+
+policy_profiles:
+  strict_safe_plus:
+    threshold_profile: strict_safe_plus
+    real_threshold: 0.2
+    gray_threshold: 0.35
+    ai_threshold: 0.85
+    ai_risk_level: medium
+    ai_review_required: true
+    review_band_risk_level: medium
+  strict_safe:
+    threshold_profile: strict_safe
+    real_threshold: 0.2
+    gray_threshold: 0.35
+    ai_threshold: 0.85
+    ai_risk_level: medium
+    ai_review_required: true
+    review_band_risk_level: medium
+  strict:
+    threshold_profile: strict
+    real_threshold: 0.20
+    gray_threshold: 0.20
+    ai_threshold: 0.85
+    ai_risk_level: high
+    ai_review_required: true
+    review_band_risk_level: medium
+  balanced:
+    threshold_profile: balanced
+    real_threshold: 0.2
+    gray_threshold: 0.35
+    ai_threshold: 0.85
+    ai_risk_level: medium
+    ai_review_required: true
+    review_band_risk_level: medium
+  balanced_review:
+    threshold_profile: balanced_review
+    real_threshold: 0.2
+    gray_threshold: 0.35
+    ai_threshold: 0.85
+    ai_risk_level: medium
+    ai_review_required: true
+    review_band_risk_level: medium
+  high_recall_review:
+    threshold_profile: high_recall_review
+    real_threshold: 0.01
+    gray_threshold: 0.35
+    ai_threshold: 0.80
+    ai_risk_level: medium
+    ai_review_required: true
+    review_band_risk_level: medium
+  strict_safe_plus_lora_v2:
+    threshold_profile: strict_safe_plus_lora_v2
+    real_threshold: 0.2
+    gray_threshold: 0.35
+    ai_threshold: 0.95
+    ai_risk_level: medium
+    ai_review_required: true
+    review_band_risk_level: medium
+  strict_safe_plus_mirage_low_fp:
+    threshold_profile: strict_safe_plus_mirage_low_fp
+    real_threshold: 0.2
+    gray_threshold: 0.35
+    ai_threshold: 0.95
+    ai_risk_level: medium
+    ai_review_required: true
+    review_band_risk_level: medium
+    primary_conflict_review: true
+
+rules:
+  provenance_ai_declared:
+    enabled: true
+    priority: 1
+  provenance_human_verified:
+    enabled: true
+    priority: 2
+  smogy_high_plus_supporting_evidence:
+    enabled: true
+    smogy_high_without_support_label: uncertain
+    smogy_high_without_support_risk: medium
+    priority: 3
+  smogy_medium_plus_agreement:
+    enabled: true
+    priority: 4
+  ateeqq_alone_never_ai:
+    enabled: true
+    priority: 5
+  missing_metadata_never_ai:
+    enabled: true
+    priority: 6
+  detector_conflict_to_uncertain:
+    enabled: true
+    priority: 7
+  adapter_error_to_review:
+    enabled: true
+    priority: 8
+
+output_labels:
+  likely_ai: likely_ai
+  likely_real: likely_real
+  uncertain: uncertain
+  needs_review: needs_review
+
+risk_levels:
+  high: high
+  medium: medium
+  low: low
+  unknown: unknown
+
+review_recommendations:
+  manual_review:
+    action: manual_review
+    message: Manual review is recommended before using this result as a product decision.
+  inspect_metadata:
+    action: inspect_metadata
+    message: Inspect metadata and provenance fields, but do not treat missing metadata as AI evidence.
+  compare_original_source:
+    action: compare_original_source
+    message: Compare with the original source or acquisition chain when available.
+  request_source_file:
+    action: request_source_file
+    message: Request the original source file or camera-exported file for stronger provenance.
+  no_action_needed:
+    action: no_action_needed
+    message: No immediate action is needed based on the current policy output.

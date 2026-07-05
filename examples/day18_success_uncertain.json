@@ -1,0 +1,51 @@
+{
+  "schema_version": "1.0.0",
+  "status": "success",
+  "request_id": "example-uncertain",
+  "data": {
+    "image": {
+      "filename": "example_uncertain.webp",
+      "width": 900,
+      "height": 900,
+      "format": "webp",
+      "size_bytes": 188000
+    },
+    "result": {
+      "final_label": "uncertain",
+      "risk_level": "medium",
+      "confidence": 0.52,
+      "decision_reason": [
+        {
+          "code": "near_threshold_band_v21",
+          "message": "The score is near the decision boundary, so the adapter keeps the result uncertain.",
+          "severity": "warning"
+        }
+      ],
+      "recommendation": {
+        "action": "review",
+        "message": "Review the image manually or request the original file and additional provenance."
+      },
+      "user_facing_summary": "This image is in the uncertain band and should not be forced into an AI or real label.",
+      "technical_explanation": {
+        "score": 0.151,
+        "threshold_used": 0.15,
+        "decision_layer": "day17_product_output_schema",
+        "main_signals": ["near_threshold_band_v21", "uncertain_decision"]
+      },
+      "debug_evidence": {
+        "enabled": false,
+        "raw_score": null,
+        "feature_summary": {},
+        "consistency_checks": {},
+        "format_evidence": {},
+        "resolution_evidence": {}
+      }
+    }
+  },
+  "meta": {
+    "processed_at": "2026-05-02T00:00:00+00:00",
+    "adapter_version": "day18_api_adapter_v1",
+    "model_family": "handcrafted_detector",
+    "notes": []
+  }
+}

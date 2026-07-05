@@ -1,0 +1,6 @@
+transformers
+torch
+torchvision
+pillow
+safetensors
+peft  # optional: required only when SMOGY_PEFT_ADAPTER or a local peft_adapter_path is configured

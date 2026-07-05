@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 80" role="img" aria-label="Minerva mark">
+  <defs>
+    <linearGradient id="minervaLeftOuter" x1="12" y1="16" x2="48" y2="65" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#dfe6ec"/>
+      <stop offset="0.22" stop-color="#a5b1bd"/>
+      <stop offset="0.48" stop-color="#506577"/>
+      <stop offset="0.78" stop-color="#142c44"/>
+      <stop offset="1" stop-color="#061522"/>
+    </linearGradient>
+    <linearGradient id="minervaRightOuter" x1="116" y1="16" x2="80" y2="65" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#edf1f4"/>
+      <stop offset="0.24" stop-color="#aeb8c2"/>
+      <stop offset="0.5" stop-color="#5b6f80"/>
+      <stop offset="0.78" stop-color="#19334b"/>
+      <stop offset="1" stop-color="#071827"/>
+    </linearGradient>
+    <linearGradient id="minervaLeftFacet" x1="22" y1="23" x2="64" y2="49" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f6f7f7" stop-opacity="0.78"/>
+      <stop offset="0.52" stop-color="#c1cad2" stop-opacity="0.62"/>
+      <stop offset="1" stop-color="#152f47" stop-opacity="0.32"/>
+    </linearGradient>
+    <linearGradient id="minervaRightFacet" x1="106" y1="23" x2="64" y2="49" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f7f8f8" stop-opacity="0.8"/>
+      <stop offset="0.52" stop-color="#c8d0d7" stop-opacity="0.6"/>
+      <stop offset="1" stop-color="#102a43" stop-opacity="0.34"/>
+    </linearGradient>
+    <linearGradient id="minervaAnchor" x1="64" y1="47" x2="64" y2="75" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#18324a"/>
+      <stop offset="0.56" stop-color="#0b1f33"/>
+      <stop offset="1" stop-color="#061522"/>
+    </linearGradient>
+    <radialGradient id="minervaSun" cx="64" cy="25" r="22" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#f7d58e"/>
+      <stop offset="0.28" stop-color="#e8bb65" stop-opacity="0.94"/>
+      <stop offset="0.64" stop-color="#d8a24a" stop-opacity="0.24"/>
+      <stop offset="1" stop-color="#d8a24a" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="minervaSunCore" cx="64" cy="27" r="7" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#fff0c8"/>
+      <stop offset="0.45" stop-color="#e9bd65"/>
+      <stop offset="1" stop-color="#d8a24a"/>
+    </radialGradient>
+  </defs>
+
+  <g fill="none" stroke="#d8a24a" stroke-linecap="round" opacity="0.64">
+    <path d="M64 28V8" stroke-width="1.05"/>
+    <path d="M59.4 28 50.2 10.8" stroke-width="0.9"/>
+    <path d="M68.6 28 77.8 10.8" stroke-width="0.9"/>
+    <path d="M55.5 30.3 38.6 15.6" stroke-width="0.82"/>
+    <path d="M72.5 30.3 89.4 15.6" stroke-width="0.82"/>
+    <path d="M52.7 34.2 29.8 24.6" stroke-width="0.72"/>
+    <path d="M75.3 34.2 98.2 24.6" stroke-width="0.72"/>
+  </g>
+
+  <circle cx="64" cy="28" r="23" fill="url(#minervaSun)" opacity="0.92"/>
+  <circle cx="64" cy="28" r="5.2" fill="url(#minervaSunCore)" opacity="0.98"/>
+
+  <path d="M12 62.5V21.5l44.2 35.7-16.8 14.2L24.8 52.5Z" fill="url(#minervaLeftOuter)"/>
+  <path d="M116 62.5V21.5L71.8 57.2l16.8 14.2 14.6-18.9Z" fill="url(#minervaRightOuter)"/>
+  <path d="M16 24.5 56.2 57.2 43.7 42.8Z" fill="url(#minervaLeftFacet)"/>
+  <path d="M112 24.5 71.8 57.2 84.3 42.8Z" fill="url(#minervaRightFacet)"/>
+  <path d="M25.3 52.5 56.2 57.2 40.5 65.7Z" fill="#061522" opacity="0.32"/>
+  <path d="M102.7 52.5 71.8 57.2 87.5 65.7Z" fill="#061522" opacity="0.3"/>
+
+  <path d="M44.8 55.8h38.4L64 78Z" fill="url(#minervaAnchor)"/>
+  <path d="M48.4 53.2 64 58.7l15.6-5.5" fill="none" stroke="#d8a24a" stroke-linecap="round" stroke-width="1.3" opacity="0.52"/>
+  <path d="M35.6 43.6 64 55.8l28.4-12.2" fill="none" stroke="#d8a24a" stroke-linecap="round" stroke-width="1.15" opacity="0.4"/>
+  <path d="M52 50.2h24L64 57.5Z" fill="#edf1f4" opacity="0.86"/>
+</svg>

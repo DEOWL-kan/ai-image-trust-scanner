@@ -1,0 +1,39 @@
+name: Feature request
+description: Suggest an improvement to the local scanner, API, or dashboard.
+title: "[Feature]: "
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or workflow
+      description: What review workflow would this improve?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed solution
+      description: Describe the change you want.
+    validations:
+      required: true
+  - type: dropdown
+    id: area
+    attributes:
+      label: Area
+      options:
+        - Local dashboard
+        - FastAPI API
+        - Evidence policy
+        - Provenance / C2PA
+        - Metadata / forensic heuristics
+        - Optional model runtime
+        - Documentation
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: risks
+    attributes:
+      label: Accuracy, privacy, or safety considerations
+      description: Note any risk of misleading detector claims, private data exposure, or unsafe automation.

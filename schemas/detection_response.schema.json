@@ -1,0 +1,190 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Day18 Detection Success Response",
+  "type": "object",
+  "required": ["schema_version", "status", "request_id", "data", "meta"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["success"]
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "data": {
+      "type": "object",
+      "required": ["image", "result"],
+      "additionalProperties": false,
+      "properties": {
+        "image": {
+          "type": "object",
+          "required": ["filename", "width", "height", "format", "size_bytes"],
+          "additionalProperties": false,
+          "properties": {
+            "filename": {
+              "type": ["string", "null"]
+            },
+            "width": {
+              "type": ["number", "null"]
+            },
+            "height": {
+              "type": ["number", "null"]
+            },
+            "format": {
+              "type": ["string", "null"]
+            },
+            "size_bytes": {
+              "type": ["number", "null"]
+            }
+          }
+        },
+        "result": {
+          "type": "object",
+          "required": [
+            "final_label",
+            "risk_level",
+            "confidence",
+            "decision_reason",
+            "recommendation",
+            "user_facing_summary",
+            "technical_explanation",
+            "debug_evidence"
+          ],
+          "additionalProperties": false,
+          "properties": {
+            "final_label": {
+              "type": "string",
+              "enum": ["ai_generated", "real_photo", "uncertain"]
+            },
+            "risk_level": {
+              "type": "string",
+              "enum": ["low", "medium", "high"]
+            },
+            "confidence": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "decision_reason": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": ["code", "message", "severity"],
+                "additionalProperties": false,
+                "properties": {
+                  "code": {
+                    "type": "string"
+                  },
+                  "message": {
+                    "type": "string"
+                  },
+                  "severity": {
+                    "type": "string",
+                    "enum": ["info", "warning", "critical"]
+                  }
+                }
+              }
+            },
+            "recommendation": {
+              "type": "object",
+              "required": ["action", "message"],
+              "additionalProperties": false,
+              "properties": {
+                "action": {
+                  "type": "string",
+                  "enum": ["allow", "review", "warn"]
+                },
+                "message": {
+                  "type": "string"
+                }
+              }
+            },
+            "user_facing_summary": {
+              "type": "string"
+            },
+            "technical_explanation": {
+              "type": "object",
+              "required": ["score", "threshold_used", "decision_layer", "main_signals"],
+              "additionalProperties": false,
+              "properties": {
+                "score": {
+                  "type": ["number", "null"]
+                },
+                "threshold_used": {
+                  "type": ["number", "null"]
+                },
+                "decision_layer": {
+                  "type": "string"
+                },
+                "main_signals": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            },
+            "debug_evidence": {
+              "type": "object",
+              "required": [
+                "enabled",
+                "raw_score",
+                "feature_summary",
+                "consistency_checks",
+                "format_evidence",
+                "resolution_evidence"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "enabled": {
+                  "type": "boolean"
+                },
+                "raw_score": {
+                  "type": ["number", "null"]
+                },
+                "feature_summary": {
+                  "type": "object"
+                },
+                "consistency_checks": {
+                  "type": "object"
+                },
+                "format_evidence": {
+                  "type": "object"
+                },
+                "resolution_evidence": {
+                  "type": "object"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "meta": {
+      "type": "object",
+      "required": ["processed_at", "adapter_version", "model_family", "notes"],
+      "additionalProperties": false,
+      "properties": {
+        "processed_at": {
+          "type": "string"
+        },
+        "adapter_version": {
+          "type": "string",
+          "const": "day18_api_adapter_v1"
+        },
+        "model_family": {
+          "type": "string",
+          "const": "handcrafted_detector"
+        },
+        "notes": {
+          "type": "array"
+        }
+      }
+    }
+  }
+}

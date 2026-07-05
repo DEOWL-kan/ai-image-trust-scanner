@@ -1,0 +1,48 @@
+[
+  {
+    "id": "example_fp_png",
+    "image_path": "examples/error_gallery/media/samples/example_real_fp.png",
+    "filename": "example_real_fp.png",
+    "true_label": "real",
+    "final_label": "ai",
+    "risk_level": "medium",
+    "confidence": 0.72,
+    "ai_score": 0.72,
+    "scenario": "public_fixture",
+    "source_folder": "samples",
+    "difficulty": "tiny_fixture",
+    "format": "png",
+    "width": 1,
+    "height": 1,
+    "decision_reason": "Tiny public fixture; not benchmark evidence.",
+    "recommendation": "Review manually.",
+    "technical_explanation": "Synthetic fixture used only for clone-safe tests.",
+    "debug_evidence": {
+      "fixture": true
+    },
+    "status": "example"
+  },
+  {
+    "id": "example_fn_png",
+    "image_path": "examples/error_gallery/media/samples/example_real_fp.png",
+    "filename": "example_real_fp.png",
+    "true_label": "ai",
+    "final_label": "real",
+    "risk_level": "low",
+    "confidence": 0.61,
+    "ai_score": 0.39,
+    "scenario": "public_fixture",
+    "source_folder": "samples",
+    "difficulty": "tiny_fixture",
+    "format": "png",
+    "width": 1,
+    "height": 1,
+    "decision_reason": "Tiny public fixture; not benchmark evidence.",
+    "recommendation": "Review manually.",
+    "technical_explanation": "Synthetic fixture used only for clone-safe tests.",
+    "debug_evidence": {
+      "fixture": true
+    },
+    "status": "example"
+  }
+]

@@ -1,0 +1,54 @@
+{
+  "$schema": "https://json-schema.org/draft-07/schema#",
+  "title": "Day18 Detection Error Response",
+  "type": "object",
+  "required": ["schema_version", "status", "request_id", "error", "data", "meta"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0.0"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["error"]
+    },
+    "request_id": {
+      "type": "string"
+    },
+    "error": {
+      "type": "object",
+      "required": ["code", "message", "details"],
+      "additionalProperties": false,
+      "properties": {
+        "code": {
+          "type": "string",
+          "enum": ["INVALID_IMAGE", "DETECTION_FAILED", "UNSUPPORTED_FORMAT", "INTERNAL_ERROR"]
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "object"
+        }
+      }
+    },
+    "data": {
+      "type": "null"
+    },
+    "meta": {
+      "type": "object",
+      "required": ["processed_at", "adapter_version"],
+      "additionalProperties": false,
+      "properties": {
+        "processed_at": {
+          "type": "string"
+        },
+        "adapter_version": {
+          "type": "string",
+          "const": "day18_api_adapter_v1"
+        }
+      }
+    }
+  }
+}
