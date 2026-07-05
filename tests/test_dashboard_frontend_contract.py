@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from html.parser import HTMLParser
 import re
 import subprocess
 import textwrap
@@ -7,6 +8,34 @@ from pathlib import Path
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+
+class _UnkeyedTextParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self._stack: list[tuple[str, bool]] = []
+        self.text_nodes: list[str] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        attr_names = {name for name, _ in attrs}
+        parent_keyed = self._stack[-1][1] if self._stack else False
+        text_keyed = parent_keyed or "data-i18n" in attr_names
+        self._stack.append((tag, text_keyed))
+
+    def handle_endtag(self, tag: str) -> None:
+        for index in range(len(self._stack) - 1, -1, -1):
+            if self._stack[index][0] == tag:
+                del self._stack[index:]
+                break
+
+    def handle_data(self, data: str) -> None:
+        if self._stack and self._stack[-1][0] in {"script", "style"}:
+            return
+        if self._stack and self._stack[-1][1]:
+            return
+        text = " ".join(data.split())
+        if text:
+            self.text_nodes.append(text)
 
 
 def _extract_js_function(source: str, name: str) -> str:
@@ -113,6 +142,126 @@ def test_dashboard_exposes_p2_readiness_panel_and_small_summary_endpoints() -> N
     assert "renderCalibrationReadiness" in app_js
     assert "renderTrainingLabelQueue" in app_js
     assert "training-label-quick-review" in app_js
+
+
+def test_dashboard_is_minimal_local_workbench_with_demo_evidence() -> None:
+    html = (PROJECT_ROOT / "frontend" / "dashboard" / "index.html").read_text(encoding="utf-8")
+    errors_html = (PROJECT_ROOT / "frontend" / "dashboard" / "errors.html").read_text(encoding="utf-8")
+    dashboard_readme = (PROJECT_ROOT / "frontend" / "dashboard" / "README.md").read_text(encoding="utf-8")
+    styles = (PROJECT_ROOT / "frontend" / "dashboard" / "styles.css").read_text(encoding="utf-8")
+    app_js = (PROJECT_ROOT / "frontend" / "dashboard" / "app.js").read_text(encoding="utf-8")
+
+    stylesheet_links = re.findall(r'<link[^>]+rel="stylesheet"[^>]+href="([^"]+)"', html)
+    assert stylesheet_links == ["./styles.css"]
+    assert "console-theme.css" not in html
+    assert "brand-motion.js" not in html
+    assert "console-theme.css" not in errors_html
+    assert "console-theme.css" not in dashboard_readme
+    assert "global-particles" not in html
+    assert "website-hero" not in html
+    assert "validated-performance" not in html
+    assert len(styles.splitlines()) < 1200
+    assert not (PROJECT_ROOT / "frontend" / "dashboard" / "console-theme.css").exists()
+    assert not (PROJECT_ROOT / "frontend" / "dashboard" / "brand-motion.js").exists()
+
+    assert "Local image review workbench" in html
+    assert "demo-result-fixture" in html
+    assert "Demo data, not your scan" in html
+    assert "uncertain" in html
+    assert "Routed to review" in html
+    assert "DEMO_RESULT_PAYLOAD" in app_js
+    assert "renderDemoResult" in app_js
+    assert "HF models skipped in CPU-safe mode" in app_js
+
+
+def test_minimal_dashboard_static_copy_is_i18n_keyed() -> None:
+    html = (PROJECT_ROOT / "frontend" / "dashboard" / "index.html").read_text(encoding="utf-8")
+    app_js = (PROJECT_ROOT / "frontend" / "dashboard" / "app.js").read_text(encoding="utf-8")
+
+    required_static_keys = {
+        "minimal.nav.workbench": "工作台",
+        "minimal.nav.reports": "报告",
+        "minimal.nav.apiDocs": "API 文档",
+        "minimal.nav.benchmarks": "基准结果",
+        "minimal.left.runLocally": "本地运行",
+        "minimal.left.reviewOneImage": "复核单张图片",
+        "minimal.left.cpuSafeBody": "默认模式仅使用 CPU 安全路径",
+        "minimal.left.policy": "策略",
+        "minimal.left.single": "单张",
+        "minimal.left.singleImage": "单张图片",
+        "minimal.left.filesStayLocal": "文件只留在本机",
+        "minimal.left.chooseImage": "选择图片",
+        "minimal.left.runtime": "运行环境",
+        "minimal.left.localStatus": "本地状态",
+        "minimal.left.backend": "后端",
+        "minimal.left.reportsApi": "报告 API",
+        "minimal.left.reportDatabase": "报告数据库",
+        "minimal.left.modelWarmup": "模型预热",
+        "minimal.left.runtimeMode": "运行模式",
+        "minimal.main.currentResult": "当前结果",
+        "minimal.main.evidenceFirst": "证据链优先",
+        "minimal.main.demoUntilUpload": "上传图片前显示演示数据",
+        "minimal.main.provenance": "来源",
+        "minimal.main.metadata": "元数据",
+        "minimal.main.detectors": "检测器",
+        "minimal.main.forensics": "取证",
+        "minimal.main.policy": "策略",
+    }
+
+    for key, zh_text in required_static_keys.items():
+        assert f'data-i18n="{key}"' in html, f"{key} is not wired in index.html"
+        assert zh_text in app_js, f"{key} has no Chinese translation"
+
+    required_dynamic_keys = {
+        "minimal.demo.badge": "演示数据，不是你的扫描",
+        "minimal.demo.routedToReview": "已转人工复核",
+        "minimal.demo.summary": "由于缺少来源证明且轻量信号不一致，结果被转入复核。",
+        "minimal.result.verdict": "结论",
+        "minimal.result.risk": "风险",
+        "minimal.result.confidence": "置信度",
+        "minimal.result.runtime": "运行模式",
+        "minimal.result.evidenceChain": "证据链",
+        "minimal.evidence.c2pa.title": "C2PA 来源证明",
+        "minimal.evidence.metadata.title": "元数据",
+        "minimal.evidence.hf.title": "可选 HF 检测器",
+        "minimal.evidence.policy.title": "策略",
+        "minimal.result.detectorSignals": "检测器信号",
+    }
+
+    for key, zh_text in required_dynamic_keys.items():
+        assert key in app_js, f"{key} is not used by app.js"
+        assert zh_text in app_js, f"{key} has no Chinese translation"
+
+    parser = _UnkeyedTextParser()
+    parser.feed(html)
+    unkeyed_text = "\n".join(parser.text_nodes)
+    critical_unkeyed_phrases = [
+        "Workbench",
+        "Reports",
+        "API docs",
+        "Benchmarks",
+        "Run locally",
+        "Review one image",
+        "Default mode is CPU-safe",
+        "Single image",
+        "Files stay on this machine",
+        "Choose an image",
+        "Runtime",
+        "Local status",
+        "Current result",
+        "Evidence chain first",
+        "Demo data is shown until",
+        "Demo data, not your scan",
+        "Routed to review",
+        "Evidence chain",
+        "Detector signals",
+    ]
+    for phrase in critical_unkeyed_phrases:
+        assert phrase not in unkeyed_text
+
+    resolve_initial_language = _extract_js_function(app_js, "resolveInitialLanguage")
+    assert "URLSearchParams" in resolve_initial_language
+    assert 'get("lang")' in resolve_initial_language
 
 
 def test_dashboard_single_detection_waits_for_warmup_and_retries_once() -> None:

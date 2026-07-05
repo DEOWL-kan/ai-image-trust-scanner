@@ -31,7 +31,7 @@ thresholds:
   conflict_margin: 0.35
   uncertainty_band: 0.08
 
-default_policy_profile: balanced
+default_policy_profile: strict_safe_plus
 
 policy_profiles:
   strict_safe_plus:

@@ -112,11 +112,11 @@ def test_offline_readiness_checks_local_config_and_frontend_hooks(tmp_path: Path
         encoding="utf-8",
     )
     (root / "frontend" / "dashboard" / "index.html").write_text(
-        "console-theme.css policy-profile-switch global-particles",
+        "styles.css policy-profile-switch demo-result-fixture",
         encoding="utf-8",
     )
-    (root / "frontend" / "dashboard" / "console-theme.css").write_text(
-        "product-console-section.detection-demo policy-profile-switch",
+    (root / "frontend" / "dashboard" / "styles.css").write_text(
+        "workbench-shell policy-profile-switch",
         encoding="utf-8",
     )
     (root / "frontend" / "dashboard" / "app.js").write_text(

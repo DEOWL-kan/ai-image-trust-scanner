@@ -32,6 +32,17 @@ pip install -r requirements-open-source.txt
 python scripts/run_local_dashboard.py --with-models
 ```
 
+By default, `--with-models` allows the first run to download the configured
+Smogy and Ateeqq base models from Hugging Face into your local HF cache. Use
+cached-only mode when you are offline or want to prevent network access:
+
+```bash
+python scripts/run_local_dashboard.py --with-models --offline
+```
+
+See [Download Sizes, Memory, and Hardware](#download-sizes-memory-and-hardware)
+before opting into model mode.
+
 Optional dependencies:
 
 - `torch`
@@ -59,6 +70,41 @@ The public configuration currently names these detector sources in
 | `legacy` | baseline | `lightweight-baseline.no-pretrained` | active |
 | `dima806` | diagnostic | `dima806/ai_vs_real_image_detection` | disabled unless explicitly enabled |
 | `capcheck` | disabled duplicate | `capcheck/ai-image-detection` | disabled |
+
+## Download Sizes, Memory, and Hardware
+
+Nothing below is bundled in the repository. The clone is ~5 MB of code; model
+weights are downloaded from Hugging Face only if you opt into model mode.
+
+### Per-model download size (inference weights)
+
+| Model | Role | Download | Architecture |
+| --- | --- | --- | --- |
+| `Smogy/SMOGY-Ai-images-detector` | primary | **~348 MB** | Swin |
+| `Ateeqq/ai-vs-human-image-detector` | secondary | **~372 MB** | SigLIP |
+| `dima806/ai_vs_real_image_detection` | diagnostic (off by default, not recommended) | **~343 MB** | ViT |
+| `ft_smogy_lora_v2` adapter | optional fine-tune (**not shipped in v1**) | ~1.5 MB | LoRA on Smogy |
+
+> The `dima806` Hugging Face repo *appears* to be ~4.8 GB because it stores four
+> training checkpoints with optimizer state. Inference only downloads the single
+> `model.safetensors` (~343 MB) — you do not need the checkpoints.
+
+### Total footprint by scenario
+
+| Scenario | What you install | Disk total | Runtime RAM |
+| --- | --- | --- | --- |
+| **CPU-safe default** (no models) | repo + `requirements.txt` (numpy/opencv/fastapi…) | **~200 MB** | ~200–400 MB |
+| **Smogy only** | + Smogy weights + Torch stack | **~0.8–1 GB** | ~1–1.5 GB |
+| **Recommended** (Smogy + Ateeqq) | + both weights (~720 MB) + Torch stack (~300–500 MB) | **~1.2–1.4 GB** | **~1.5–2.5 GB** |
+
+### Hardware
+
+- **No GPU required.** Everything runs on CPU. Model mode is slower — expect p50
+  ≈ 1.1 s and p95 up to 8–10 s per image on large inputs.
+- Default CPU-safe mode has no Torch/Hugging Face dependency at all.
+
+*Code/model file sizes are exact (measured from Hugging Face); Python package and
+RAM figures are approximate and vary by platform.*
 
 ## Revisions
 

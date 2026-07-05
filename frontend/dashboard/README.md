@@ -1,131 +1,77 @@
 # Dashboard Frontend
 
-Minimal native HTML/CSS/JS dashboard for the Day21 dashboard APIs.
+Minimal native HTML/CSS/JS dashboard for the local FastAPI app.
 
-## Current Design Layer
+## Design Direction
 
-The dashboard now uses a bright Minerva Trust Console skin:
+The open-source dashboard is a local workbench, not a marketing page:
 
-- `console-theme.css` is the final Antigravity-inspired visual override layer.
-- The first visible screen is the operational scanner workspace: upload, policy profile, batch/sample tabs, result view toggle, and verdict panel.
-- The visual direction is light, high-tech, gold/cyan on a pale surface. The existing Minerva logo image assets are not recolored.
-- Motion is decorative only and respects `prefers-reduced-motion`.
-- Mobile rules are tuned to avoid page-level horizontal scrolling and long-label overflow.
+- one stylesheet: `styles.css`
+- no external fonts, hero page, decorative particles, or motion layer
+- first screen shows scan controls and a demo evidence-chain result
+- real upload, batch scan, policy selection, report center, and JSON/detail views
+  remain wired to the backend
+- default copy is honest about CPU-safe `stub` mode and optional HF models
 
 ## Files
 
 ```text
 frontend/dashboard/
   index.html
+  errors.html
   styles.css
-  console-theme.css
   app.js
   api-client.js
+  detection-detail-drawer.js
+  error-gallery.js
   README.md
 ```
 
 ## Run
 
-Start the FastAPI service from the project root:
+Start the local service from the project root:
 
 ```bash
-uvicorn app.main:app --reload
+python scripts/run_local_dashboard.py
 ```
 
-If port `8000` is already occupied, use:
-
-```bash
-uvicorn app.main:app --reload --port 8001
-```
-
-Open:
+Open the URL printed by the launcher, usually:
 
 ```text
-http://127.0.0.1:8000/dashboard-ui
+http://127.0.0.1:8000/dashboard-ui/index.html
 ```
 
-When using the alternate port:
+If you run the static files separately, pass the backend URL:
 
 ```text
-http://127.0.0.1:8001/dashboard-ui
-```
-
-If you open the frontend from a local static server or directly from disk, the
-dashboard probes `http://127.0.0.1:8000`, `http://localhost:8000`, and the same
-`8001` variants before making API calls. To point it at another backend port,
-add a query parameter:
-
-```text
-http://127.0.0.1:5500/index.html?apiBase=http://127.0.0.1:8001
-```
-
-If `MINERVA_API_KEY` or `MINERVA_API_KEYS` is set on the backend, pass the local key once and the dashboard stores it in localStorage:
-
-```text
-http://127.0.0.1:8000/dashboard-ui/index.html?apiKey=replace-with-a-local-secret
+http://127.0.0.1:5500/index.html?apiBase=http://127.0.0.1:8000
 ```
 
 ## APIs Used
 
-- `GET /dashboard/summary`
-- `GET /api/v1/reports?limit=100`
-- `GET /api/v1/reports/queue?limit=20`
-- `PATCH /api/v1/reports/{report_id}/review`
-- `GET /api/v1/reports/export`
-- `GET /api/v1/reports/review-manifest`
-- `GET /api/v1/reports/review-calibration`
-- `GET /api/v1/reports/policy-replay` (summary by default; pass `include_rows=true` for capped rows)
-- `GET /api/v1/reports/scenario-stress-pack`
-- `GET /api/v1/reports/training-readiness`
-- `POST /api/v1/reports/training-readiness/rebuild`
-- `GET /api/v1/reports/training-label-queue`
-- `GET /dashboard/chart-data`
 - `GET /api/health`
 - `GET /api/model-status`
 - `GET /api/v1/policy/profiles`
-- `POST /api/v1/detect`
 - `POST /api/detect/single?policy_profile=strict_safe_plus`
 - `POST /api/v1/detect/batch/jobs`
 - `GET /api/v1/detect/batch/jobs/{job_id}`
 - `GET /api/v1/detect/batch/jobs/{job_id}/result`
+- `GET /dashboard/summary`
+- `GET /dashboard/chart-data`
+- `GET /api/v1/reports?limit=100`
+- `GET /api/v1/reports/queue?limit=20`
+- `PATCH /api/v1/reports/{report_id}/review`
+- `GET /api/v1/reports/export`
+- `GET /api/v1/reports/review-calibration`
+- `GET /api/v1/reports/policy-replay`
+- `GET /api/v1/reports/scenario-stress-pack`
+- `GET /api/v1/reports/training-readiness`
+- `POST /api/v1/reports/training-readiness/rebuild`
+- `GET /api/v1/reports/training-label-queue`
 
 ## Notes
 
-- No frontend framework is required.
-- Charts are rendered with lightweight CSS bars.
-- Empty API data and failed API requests have separate UI states.
-- Single upload uses `POST /api/detect/single` with FormData field `file` and the active `policy_profile`.
-- Batch upload uses the async job API first, then falls back to `POST /detect/batch` and `POST /api/v1/detect/batch`, with FormData field `files` and the active `policy_profile`.
-- In-memory batch job records are retained by `BATCH_JOB_TTL_SECONDS` and `BATCH_JOB_MAX_RECORDS`; persist them later if job recovery across backend restarts becomes a product requirement.
-- Current API/runtime reference: `docs/API_RUNTIME_REFERENCE.md`.
-- Pre-demo readiness check:
-
-```bash
-python scripts/product_readiness_check.py --allow-warnings
-```
-- Review-driven calibration uses existing SQLite report evidence:
-
-```bash
-python scripts/p2_review_manifest_and_replay.py
-```
-
-This writes local review manifests under `data/eval/review_manifests/`, detector threshold diagnostics under `data/eval/review_calibration/`, and policy replay reports under `reports/p2_evidence_replay/`.
-- Scenario stress packs can be generated without training or rented GPU:
-
-```bash
-python scripts/p2_build_scenario_stress_pack.py --max-sources 50
-```
-
-This writes social compression, screenshot, crop, low-light, indoor, close-up, and modern-generator audit variants under `data/eval/scenario_stress_packs/`.
-- Training readiness manifests can be generated without copying images:
-
-```bash
-python scripts/p2_build_training_readiness.py
-```
-
-This writes path-based local manifests under `data/ft/training_readiness/`; API responses hide private file paths by default.
-- The dashboard Report Center surfaces P2 readiness from cached summaries: reviewed label coverage, replayable policy rows, scenario stress pack readiness, local training-set readiness, and whether a policy profile recommendation is available.
-- The Training Label Queue uses `GET /api/v1/reports/training-label-queue` to prioritize file-ready reports that can fill the current AI/real supervised-label gap.
-- Day29 Report Center data and review status are persisted in `data/app/reports.sqlite3`.
-- HTML report files generated by the backend are stored under `outputs/html_reports/`.
-- The frontend does not change detector algorithms or API response schemas.
+- The demo result in the first screen is front-end fixture data only and is
+  labeled `Demo data, not your scan`.
+- The dashboard does not change detector algorithms or API response schemas.
+- Empty API data and failed API requests have explicit UI states.

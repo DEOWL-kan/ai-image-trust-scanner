@@ -380,11 +380,11 @@ const translations = {
         accLabel: "准确率（已定案）",
         accHint: "对比优化前 90.4%",
         fpLabel: "真图误判率",
-        fpHint: "从 14.5% 降到 6.4%（−8.1pt）",
+        fpHint: "详见 docs/BENCHMARKS.md",
         recallLabel: "AI 召回",
         recallHint: "起点 12.8%，数量级跃升",
-        loraLabel: "LoRA 微调召回提升",
-        loraHint: "SDXL +31pt，Flux 真图 FP 减半",
+        loraLabel: "可选 adapter（v1 未发布）",
+        loraHint: "仅在私有复现实验中记录",
       },
       scenarioTitle: "诚实的场景天花板",
       scenario: {
@@ -443,8 +443,8 @@ const translations = {
       title: "为什么选择 Minerva",
       evidenceTitle: "Evidence-first detection",
       evidenceBody: "不只判断真假，而是形成证据链。",
-      apiTitle: "SaaS & API path",
-      apiBody: "支持网页检测、批量检测和开发者接口。",
+      apiTitle: "Local API path",
+      apiBody: "支持本地检测、批量检测和开发者接口。",
       complianceTitle: "Compliance-aware",
       complianceBody: "面向生成合成内容标识、来源凭证和企业审计场景。",
       reviewTitle: "Human review friendly",
@@ -470,12 +470,12 @@ const translations = {
       reviewBody: "面向误判反馈、复核备注和样本闭环，避免模型结果成为唯一依据。",
     },
     apiPreview: {
-      eyebrow: "SaaS / API 基础设施",
-      title: "From Local MVP to SaaS / API Infrastructure",
-      description: "当前本地 Demo 保持真实检测链路，同时为 API、报告和企业私有化部署打基础。",
-      webTitle: "Web SaaS",
+      eyebrow: "本地 API 工作台",
+      title: "Local API workbench",
+      description: "当前本地界面保持真实检测链路，同时提供 API、报告和本机复核工作流。",
+      webTitle: "Local dashboard",
       webBody: "上传、批量检测、历史记录、Dashboard 和审计日志工作流。",
-      webAction: "SaaS Preview Soon",
+      webAction: "Local preview",
       apiTitle: "Developer API",
       apiBody: "/api/detect/single、/api/v1/detect/batch/jobs 和结构化 JSON 可信输出。",
       apiAction: "View API Docs Soon",
@@ -635,18 +635,18 @@ const translations = {
     },
     validated: {
       eyebrow: "Verified Capability · Isolated Test Set",
-      title: "Validated Performance",
+      title: "Benchmarks",
       description: "Every number below comes from a held-out test split that was never used to tune any threshold or train any model. Reproducible from the `reports/` directory.",
       zeroLeakage: "Leakage-controlled split",
       tile: {
         accLabel: "Accuracy (decided)",
         accHint: "vs 90.4% pre-tuning",
         fpLabel: "Real-image false positive",
-        fpHint: "down from 14.5% (−8.1pt)",
+        fpHint: "see docs/BENCHMARKS.md",
         recallLabel: "AI recall",
         recallHint: "up from 12.8% at project start",
-        loraLabel: "LoRA fine-tune lift",
-        loraHint: "SDXL recall +31pt, Flux FP halved",
+        loraLabel: "Optional adapter (not shipped)",
+        loraHint: "recorded only in private reproducibility work",
       },
       scenarioTitle: "Honest Scenario Ceilings",
       scenario: {
@@ -801,8 +801,8 @@ const translations = {
       title: "Why Minerva",
       evidenceTitle: "Evidence-first detection",
       evidenceBody: "Not just a binary truth label, but an evidence chain.",
-      apiTitle: "SaaS & API path",
-      apiBody: "Supports web detection, batch detection and developer APIs.",
+      apiTitle: "Local API path",
+      apiBody: "Supports local detection, batch detection, and developer APIs.",
       complianceTitle: "Compliance-aware",
       complianceBody: "Designed for synthetic content labeling, provenance credentials and enterprise audit scenarios.",
       reviewTitle: "Human review friendly",
@@ -828,12 +828,12 @@ const translations = {
       reviewBody: "Misclassification feedback, reviewer notes, and sample-level improvement loops.",
     },
     apiPreview: {
-      eyebrow: "SaaS / API Infrastructure",
-      title: "From Local MVP to SaaS / API Infrastructure",
-      description: "The current demo keeps the local workflow real while making room for API, reporting, and enterprise deployment paths.",
-      webTitle: "Web SaaS",
+      eyebrow: "Local API workbench",
+      title: "Local API workbench",
+      description: "The current interface keeps the local workflow real while exposing API, reporting, and review paths.",
+      webTitle: "Local dashboard",
       webBody: "Upload, batch detection, history, dashboard, and audit log workflow.",
-      webAction: "SaaS Preview Soon",
+      webAction: "Local preview",
       apiTitle: "Developer API",
       apiBody: "/api/detect/single, /api/v1/detect/batch/jobs, and structured JSON trust output.",
       apiAction: "View API Docs Soon",
@@ -1137,8 +1137,8 @@ mergeTranslations(translations.zh, {
     title: "Why Minerva",
     evidenceTitle: "Evidence-first detection",
     evidenceBody: "不只判断真假，而是形成可复核的证据链。",
-    apiTitle: "SaaS & API path",
-    apiBody: "支持网页检测、批量检测和开发者接口。",
+    apiTitle: "Local API path",
+    apiBody: "支持本地检测、批量检测和开发者接口。",
     complianceTitle: "Compliance-aware",
     complianceBody: "面向生成合成内容标识、来源凭证和企业审计场景。",
     reviewTitle: "Human review friendly",
@@ -1164,12 +1164,12 @@ mergeTranslations(translations.zh, {
     output: "输出",
   },
   apiPreview: {
-    eyebrow: "SaaS / API 基础设施",
-    title: "From Local MVP to SaaS / API Infrastructure",
-    description: "当前本地 Demo 保持真实检测链路，同时为 API、报告和企业私有化部署打基础。",
-    webTitle: "Web SaaS",
+    eyebrow: "本地 API 工作台",
+    title: "Local API workbench",
+    description: "当前本地界面保持真实检测链路，同时提供 API、报告和本机复核工作流。",
+    webTitle: "Local dashboard",
     webBody: "上传、批量检测、历史记录、Dashboard 和审计日志工作流。",
-    webAction: "SaaS Preview Soon",
+    webAction: "Local preview",
     apiTitle: "Developer API",
     apiBody: "/api/detect/single、/api/v1/detect/batch/jobs 和结构化 JSON 可信输出。",
     apiAction: "View API Docs Soon",
@@ -1902,8 +1902,8 @@ mergeTranslations(translations.zh, {
     title: "为什么选择 Minerva",
     evidenceTitle: "Evidence-first detection",
     evidenceBody: "不只判断真假，而是形成可复核的证据链。",
-    apiTitle: "SaaS & API path",
-    apiBody: "支持网页检测、批量检测和开发者接口。",
+    apiTitle: "Local API path",
+    apiBody: "支持本地检测、批量检测和开发者接口。",
     complianceTitle: "Compliance-aware",
     complianceBody: "面向生成式内容标识、来源凭证和企业审计场景。",
     reviewTitle: "Human review friendly",
@@ -2003,8 +2003,8 @@ mergeTranslations(translations.en, {
     title: "Why Minerva",
     evidenceTitle: "Evidence-first detection",
     evidenceBody: "Not just a binary truth label, but a reviewable evidence chain.",
-    apiTitle: "SaaS & API path",
-    apiBody: "Supports web detection, batch detection, and developer APIs.",
+    apiTitle: "Local API path",
+    apiBody: "Supports local detection, batch detection, and developer APIs.",
     complianceTitle: "Compliance-aware",
     complianceBody: "Built for synthetic content labeling, provenance credentials, and enterprise audit workflows.",
     reviewTitle: "Human review friendly",
@@ -2189,6 +2189,411 @@ mergeTranslations(translations.en, {
   },
 });
 
+mergeTranslations(translations.zh, {
+  systemStatus: {
+    backend: "后端",
+    reportsApi: "报告 API",
+    database: "报告数据库",
+    warmupReady: "模型预热",
+    runtimeMode: "运行模式",
+  },
+  minimal: {
+    skip: "跳到扫描器",
+    brandHome: "AI Image Trust Scanner 首页",
+    brandSubtitle: "本地图像复核工作台",
+    nav: {
+      label: "仪表盘链接",
+      workbench: "工作台",
+      reports: "报告",
+      apiDocs: "API 文档",
+      benchmarks: "基准结果",
+      language: "语言",
+    },
+    status: {
+      checking: "检查中",
+    },
+    actions: {
+      refresh: "刷新",
+      startScan: "开始扫描",
+      reset: "重置",
+      exportJson: "导出 JSON",
+      exportCsv: "导出 CSV",
+      rebuild: "重建",
+    },
+    left: {
+      scanControls: "扫描控制",
+      runLocally: "本地运行",
+      reviewOneImage: "复核单张图片",
+      cpuSafeBody: "默认模式仅使用 CPU 安全路径：不加载 Torch、不下载模型，也不捆绑权重。",
+      policyProfile: "策略配置",
+      policy: "策略",
+      strictSafe: "严格安全",
+      highRecall: "高召回复核",
+      detectionModeTabs: "检测模式标签",
+      single: "单张",
+      batch: "批量",
+      singleImage: "单张图片",
+      filesStayLocal: "JPG、PNG 或 WEBP。文件只留在本机。",
+      uploadOneImage: "上传一张图片",
+      chooseImage: "选择图片",
+      imageFormats: "JPG、JPEG、PNG 或 WEBP",
+      startDetection: "开始检测",
+      batchScan: "批量扫描",
+      batchBody: "将多张图片排入同一个本地 API。",
+      uploadMultipleImages: "上传多张图片",
+      chooseMultipleImages: "选择多张图片",
+      noImagesSelected: "未选择图片",
+      runtime: "运行环境",
+      localStatus: "本地状态",
+      backend: "后端",
+      reportsApi: "报告 API",
+      reportDatabase: "报告数据库",
+      modelWarmup: "模型预热",
+      runtimeMode: "运行模式",
+      scanProgress: "扫描进度",
+      file: "文件",
+      ready: "就绪",
+      scan: "扫描",
+      review: "复核",
+    },
+    main: {
+      currentResult: "当前结果",
+      evidenceFirst: "证据链优先",
+      demoUntilUpload: "上传图片前显示演示数据。真实扫描结果会替换这个面板。",
+      resultView: "结果视图",
+      summary: "摘要",
+      evidencePipeline: "证据流水线",
+      provenance: "来源",
+      metadata: "元数据",
+      detectors: "检测器",
+      forensics: "取证",
+      policy: "策略",
+      optionalHf: "可选 HF",
+      review: "复核",
+    },
+    demo: {
+      badge: "演示数据，不是你的扫描",
+      routedToReview: "已转人工复核",
+      mediumRisk: "中等风险",
+      summary: "由于缺少来源证明且轻量信号不一致，结果被转入复核。",
+      reason: "未找到可读取的 C2PA 清单。EXIF 元数据缺失。CPU 安全的轻量信号不足以支持明确的 AI 或真实结论。",
+      recommendation: "请复核来源上下文，或在高风险决策前运行可选的本地 HF 模型。",
+      smogyNote: "CPU 安全模式下跳过 HF 模型",
+      ateeqqNote: "需要可选的 local_hf 模式",
+      legacyLabel: "不确定",
+    },
+    result: {
+      verdict: "结论",
+      risk: "风险",
+      confidence: "置信度",
+      runtime: "运行模式",
+      evidenceChain: "证据链",
+      detectorSignals: "检测器信号",
+      recommendation: "建议",
+    },
+    evidence: {
+      c2pa: {
+        title: "C2PA 来源证明",
+        summary: "未找到可读取的清单。这本身并不能证明图片由 AI 生成。",
+        summaryShort: "未找到可读取的清单。",
+      },
+      metadata: {
+        title: "元数据",
+        summary: "EXIF 元数据缺失；上下文不完整。",
+        summaryShort: "EXIF 缺失；这不是 AI 生成的证明。",
+      },
+      hf: {
+        title: "可选 HF 检测器",
+        shortTitle: "HF 检测器",
+        summary: "CPU 安全模式下跳过 HF 模型。",
+        summaryShort: "CPU 安全模式下已跳过。",
+      },
+      policy: {
+        title: "策略",
+        summary: "不确定证据会把这张图片转入人工复核。",
+        summaryShort: "不确定结果会转入人工复核。",
+      },
+    },
+    detectorStatus: {
+      ok: "正常",
+      skipped: "已跳过",
+      disabled: "未启用",
+    },
+    metrics: {
+      summaryStats: "摘要统计",
+      totalScans: "总扫描数",
+      aiDetected: "检测为 AI",
+      realDetected: "检测为真实",
+      uncertain: "不确定",
+      highRisk: "高风险",
+      averageConfidence: "平均置信度",
+    },
+    signals: {
+      eyebrow: "信号",
+      title: "本地分布",
+      labels: "标签",
+      risk: "风险",
+      confidence: "置信度",
+    },
+    reports: {
+      eyebrow: "报告",
+      title: "报告中心",
+      body: "搜索、复核并导出本地检测记录。",
+      summary: "报告摘要",
+      total: "总数",
+      filtered: "筛选后",
+      pendingReview: "待复核",
+      filters: "报告筛选",
+      search: "搜索",
+      searchPlaceholder: "文件名、记录 ID、标签、原因...",
+      label: "标签",
+      review: "复核",
+      date: "日期",
+      sort: "排序",
+      time: "时间",
+      fileRecord: "文件 / 记录",
+      action: "操作",
+      empty: "未找到报告记录。",
+      reviewQueues: "复核队列",
+      riskQueue: "风险复核队列",
+      trainingQueue: "训练标签队列",
+      trainingGap: "可用于本地训练的文件就绪报告",
+    },
+    calibration: {
+      eyebrow: "校准",
+      title: "复核准备度",
+      waiting: "等待缓存的本地报告。",
+      reviewedLabels: "已复核标签",
+      policyReplay: "策略回放",
+      stressPack: "压力包",
+      trainingSet: "训练集",
+    },
+    filters: {
+      all: "全部",
+      high: "高",
+      medium: "中",
+      low: "低",
+      unknown: "未知",
+      aiGenerated: "AI 生成",
+      real: "真实",
+      reviewed: "已复核",
+      confirmedAi: "确认 AI",
+      confirmedReal: "确认真实",
+      falsePositive: "误报",
+      falseNegative: "漏报",
+      needsFollowUp: "需要跟进",
+      ignored: "已忽略",
+      today: "今天",
+      last7: "最近 7 天",
+      last30: "最近 30 天",
+      newest: "最新优先",
+      oldest: "最早优先",
+      riskPriority: "风险优先",
+      confidenceDesc: "置信度从高到低",
+      confidenceAsc: "置信度从低到高",
+    },
+  },
+});
+
+mergeTranslations(translations.en, {
+  minimal: {
+    skip: "Skip to scanner",
+    brandHome: "AI Image Trust Scanner home",
+    brandSubtitle: "Local image review workbench",
+    nav: {
+      label: "Dashboard links",
+      workbench: "Workbench",
+      reports: "Reports",
+      apiDocs: "API docs",
+      benchmarks: "Benchmarks",
+      language: "Language",
+    },
+    status: {
+      checking: "Checking",
+    },
+    actions: {
+      refresh: "Refresh",
+      startScan: "Start scan",
+      reset: "Reset",
+      exportJson: "Export JSON",
+      exportCsv: "Export CSV",
+      rebuild: "Rebuild",
+    },
+    left: {
+      scanControls: "Scan controls",
+      runLocally: "Run locally",
+      reviewOneImage: "Review one image",
+      cpuSafeBody: "Default mode is CPU-safe: no Torch, no model downloads, and no bundled weights.",
+      policyProfile: "Policy profile",
+      policy: "Policy",
+      strictSafe: "Strict safe",
+      highRecall: "High recall",
+      detectionModeTabs: "Detection mode tabs",
+      single: "Single",
+      batch: "Batch",
+      singleImage: "Single image",
+      filesStayLocal: "JPG, PNG, or WEBP. Files stay on this machine.",
+      uploadOneImage: "Upload one image",
+      chooseImage: "Choose an image",
+      imageFormats: "JPG, JPEG, PNG, or WEBP",
+      startDetection: "Start detection",
+      batchScan: "Batch scan",
+      batchBody: "Queue several images through the same local API.",
+      uploadMultipleImages: "Upload multiple images",
+      chooseMultipleImages: "Choose multiple images",
+      noImagesSelected: "No images selected",
+      runtime: "Runtime",
+      localStatus: "Local status",
+      backend: "Backend",
+      reportsApi: "Reports API",
+      reportDatabase: "Report database",
+      modelWarmup: "Model warmup",
+      runtimeMode: "Runtime mode",
+      scanProgress: "Scan progress",
+      file: "File",
+      ready: "Ready",
+      scan: "Scan",
+      review: "Review",
+    },
+    main: {
+      currentResult: "Current result",
+      evidenceFirst: "Evidence chain first",
+      demoUntilUpload: "Demo data is shown until you upload an image. Real scan results replace it in this panel.",
+      resultView: "Result view",
+      summary: "Summary",
+      evidencePipeline: "Evidence pipeline",
+      provenance: "Provenance",
+      metadata: "Metadata",
+      detectors: "Detectors",
+      forensics: "Forensics",
+      policy: "Policy",
+      optionalHf: "optional HF",
+      review: "review",
+    },
+    demo: {
+      badge: "Demo data, not your scan",
+      routedToReview: "Routed to review",
+      mediumRisk: "Medium risk",
+      summary: "Routed to review because provenance is missing and lightweight signals are mixed.",
+      reason: "No readable C2PA manifest was found. EXIF metadata is absent. CPU-safe lightweight signals do not support a confident AI or real conclusion.",
+      recommendation: "Review source context or run optional local HF models before making a high-stakes decision.",
+      smogyNote: "HF models skipped in CPU-safe mode",
+      ateeqqNote: "Optional local_hf mode required",
+      legacyLabel: "uncertain",
+    },
+    result: {
+      verdict: "Verdict",
+      risk: "Risk",
+      confidence: "Confidence",
+      runtime: "Runtime",
+      evidenceChain: "Evidence chain",
+      detectorSignals: "Detector signals",
+      recommendation: "Recommendation",
+    },
+    evidence: {
+      c2pa: {
+        title: "C2PA provenance",
+        summary: "No readable manifest found. This is not proof of AI generation.",
+        summaryShort: "No readable manifest found.",
+      },
+      metadata: {
+        title: "Metadata",
+        summary: "EXIF metadata is absent; context is incomplete.",
+        summaryShort: "EXIF absent; not proof of AI generation.",
+      },
+      hf: {
+        title: "Optional HF detectors",
+        shortTitle: "HF detectors",
+        summary: "HF models skipped in CPU-safe mode.",
+        summaryShort: "Skipped in CPU-safe mode.",
+      },
+      policy: {
+        title: "Policy",
+        summary: "Uncertain evidence routes this item to manual review.",
+        summaryShort: "Uncertain result routes to manual review.",
+      },
+    },
+    detectorStatus: {
+      ok: "ok",
+      skipped: "skipped",
+      disabled: "disabled",
+    },
+    metrics: {
+      summaryStats: "Summary statistics",
+      totalScans: "Total scans",
+      aiDetected: "AI detected",
+      realDetected: "Real detected",
+      uncertain: "Uncertain",
+      highRisk: "High risk",
+      averageConfidence: "Average confidence",
+    },
+    signals: {
+      eyebrow: "Signals",
+      title: "Local distribution",
+      labels: "Labels",
+      risk: "Risk",
+      confidence: "Confidence",
+    },
+    reports: {
+      eyebrow: "Reports",
+      title: "Report center",
+      body: "Search, review, and export local detection records.",
+      summary: "Report summary",
+      total: "Total",
+      filtered: "Filtered",
+      pendingReview: "Pending review",
+      filters: "Report filters",
+      search: "Search",
+      searchPlaceholder: "Filename, record ID, label, reason...",
+      label: "Label",
+      review: "Review",
+      date: "Date",
+      sort: "Sort",
+      time: "Time",
+      fileRecord: "File / record",
+      action: "Action",
+      empty: "No report records found.",
+      reviewQueues: "Review queues",
+      riskQueue: "Risk review queue",
+      trainingQueue: "Training label queue",
+      trainingGap: "File-ready reports that can unlock local training",
+    },
+    calibration: {
+      eyebrow: "Calibration",
+      title: "Review readiness",
+      waiting: "Waiting for cached local reports.",
+      reviewedLabels: "Reviewed labels",
+      policyReplay: "Policy replay",
+      stressPack: "Stress pack",
+      trainingSet: "Training set",
+    },
+    filters: {
+      all: "All",
+      high: "High",
+      medium: "Medium",
+      low: "Low",
+      unknown: "Unknown",
+      aiGenerated: "AI-generated",
+      real: "Real",
+      reviewed: "Reviewed",
+      confirmedAi: "Confirmed AI",
+      confirmedReal: "Confirmed real",
+      falsePositive: "False positive",
+      falseNegative: "False negative",
+      needsFollowUp: "Needs follow-up",
+      ignored: "Ignored",
+      today: "Today",
+      last7: "Last 7 days",
+      last30: "Last 30 days",
+      newest: "Newest first",
+      oldest: "Oldest first",
+      riskPriority: "Risk priority",
+      confidenceDesc: "Confidence high to low",
+      confidenceAsc: "Confidence low to high",
+    },
+  },
+});
+
 function resolveInitialPolicyProfile() {
   try {
     const saved = String(localStorage.getItem("minerva.policyProfile") || "").trim();
@@ -2291,12 +2696,156 @@ const elements = {
   demoTabs: document.querySelector("#demo-tabs"),
   resultViewToggle: document.querySelector("#result-view-toggle"),
   policyProfileSwitch: document.querySelector("#policy-profile-switch"),
-  trustParticles: document.querySelector("#trust-particles"),
   trustWorkbench: document.querySelector("[data-trust-workbench]"),
   scanStateRail: document.querySelector("#scan-state-rail"),
 };
 
+const DEMO_RESULT_PAYLOAD = {
+  success: true,
+  mode: "demo",
+  schema_version: "product_single_response_v1",
+  data: {
+    input: {
+      filename: "demo_uncertain_review.png",
+      source: "demo_fixture",
+      content_type: "image/png",
+    },
+    result: {
+      final_label: "uncertain",
+      risk_level: "medium",
+      confidence: 0.47,
+      review_status: "pending_review",
+      user_facing_summary: "Routed to review because provenance is missing and lightweight signals are mixed.",
+      decision_reason: "No readable C2PA manifest was found. EXIF metadata is absent. CPU-safe lightweight signals do not support a confident AI or real conclusion.",
+      recommendation: {
+        action: "manual_review",
+        message: "Review source context or run optional local HF models before making a high-stakes decision.",
+      },
+    },
+    detector_summary: {
+      detector_runtime_mode: "stub",
+      active_primary_valid: false,
+      ok_count: 1,
+      skipped_count: 2,
+      disabled_count: 1,
+    },
+    detector_results: [
+      {
+        detector_id: "smogy",
+        detector_name: "SMOGY AI Images Detector",
+        role: "primary",
+        status: "skipped",
+        reason_skipped: "DETECTOR_RUNTIME_MODE=stub",
+        notes: ["HF models skipped in CPU-safe mode"],
+      },
+      {
+        detector_id: "ateeqq",
+        detector_name: "Ateeqq AI vs Human Image Detector",
+        role: "secondary",
+        status: "skipped",
+        reason_skipped: "DETECTOR_RUNTIME_MODE=stub",
+        notes: ["Optional local_hf mode required"],
+      },
+      {
+        detector_id: "legacy",
+        detector_name: "Lightweight baseline",
+        role: "baseline",
+        status: "ok",
+        ai_score: 0.51,
+        confidence: 0.47,
+        label: "uncertain",
+      },
+    ],
+    evidence_cards: [
+      {
+        id: "demo_c2pa_missing",
+        layer: "provenance",
+        title: "C2PA provenance",
+        status: "neutral",
+        summary: "No readable manifest found. This is not proof of AI generation.",
+      },
+      {
+        id: "demo_metadata_absent",
+        layer: "metadata",
+        title: "Metadata",
+        status: "neutral",
+        summary: "EXIF metadata is absent; context is incomplete.",
+      },
+      {
+        id: "demo_hf_skipped",
+        layer: "detector",
+        title: "Optional HF detectors",
+        status: "warning",
+        summary: "HF models skipped in CPU-safe mode.",
+      },
+      {
+        id: "demo_policy_review",
+        layer: "policy",
+        title: "Policy",
+        status: "warning",
+        summary: "Uncertain evidence routes this item to manual review.",
+      },
+    ],
+  },
+};
+
+function localizedDemoResultPayload() {
+  return {
+    ...DEMO_RESULT_PAYLOAD,
+    data: {
+      ...DEMO_RESULT_PAYLOAD.data,
+      result: {
+        ...DEMO_RESULT_PAYLOAD.data.result,
+        user_facing_summary: t("minimal.demo.summary"),
+        decision_reason: t("minimal.demo.reason"),
+        recommendation: {
+          ...DEMO_RESULT_PAYLOAD.data.result.recommendation,
+          message: t("minimal.demo.recommendation"),
+        },
+      },
+      detector_results: DEMO_RESULT_PAYLOAD.data.detector_results.map((item) => {
+        if (item.detector_id === "smogy") {
+          return { ...item, notes: [t("minimal.demo.smogyNote")] };
+        }
+        if (item.detector_id === "ateeqq") {
+          return { ...item, notes: [t("minimal.demo.ateeqqNote")] };
+        }
+        if (item.detector_id === "legacy") {
+          return { ...item, label: t("minimal.demo.legacyLabel") };
+        }
+        return item;
+      }),
+      evidence_cards: [
+        {
+          ...DEMO_RESULT_PAYLOAD.data.evidence_cards[0],
+          title: t("minimal.evidence.c2pa.title"),
+          summary: t("minimal.evidence.c2pa.summary"),
+        },
+        {
+          ...DEMO_RESULT_PAYLOAD.data.evidence_cards[1],
+          title: t("minimal.evidence.metadata.title"),
+          summary: t("minimal.evidence.metadata.summary"),
+        },
+        {
+          ...DEMO_RESULT_PAYLOAD.data.evidence_cards[2],
+          title: t("minimal.evidence.hf.title"),
+          summary: t("minimal.evidence.hf.summary"),
+        },
+        {
+          ...DEMO_RESULT_PAYLOAD.data.evidence_cards[3],
+          title: t("minimal.evidence.policy.title"),
+          summary: t("minimal.evidence.policy.summary"),
+        },
+      ],
+    },
+  };
+}
+
 function resolveInitialLanguage() {
+  const param = new URLSearchParams(location.search).get("lang");
+  if (param === "zh" || param === "en") {
+    return param;
+  }
   const saved = localStorage.getItem("minerva.lang");
   if (saved === "zh" || saved === "en") {
     return saved;
@@ -3636,9 +4185,89 @@ function applyResultRevealClasses(confidencePercent = null) {
   applyResultView();
 }
 
+function renderDemoResult() {
+  updateConsoleScanState("review");
+  const payload = localizedDemoResultPayload();
+  const data = payload.data.result;
+  const input = payload.data.input;
+  const confidencePercent = Math.round(toNumber(data.confidence) * 100);
+  const evidenceItems = payload.data.evidence_cards
+    .map(
+      (card) => `
+        <li>
+          <strong>${escapeHtml(card.title)}</strong>
+          <span>${escapeHtml(card.summary)}</span>
+        </li>
+      `,
+    )
+    .join("");
+  const detectorItems = payload.data.detector_results
+    .map((item) => {
+      const status = item.status === "ok" ? "ok" : item.status === "skipped" ? "warning" : "muted";
+      const detail = item.notes?.[0] || item.reason_skipped || item.label || item.status;
+      const statusText = t(`minimal.detectorStatus.${item.status}`) || item.status;
+      return `
+        <div class="day41-detector-row">
+          <span>${escapeHtml(item.detector_id)}</span>
+          <strong>${escapeHtml(statusText)}</strong>
+          <em>${escapeHtml(detail)}</em>
+        </div>
+      `.replace('class="day41-detector-row"', `class="day41-detector-row" data-status-tone="${escapeHtml(status)}"`);
+    })
+    .join("");
+
+  elements.uploadResult.innerHTML = `
+    <article class="trust-result demo-result medium demo-result-fixture">
+      <div data-result-panel="simple" ${state.resultView === "simple" ? "" : "hidden"}>
+        <div class="result-topline">
+          <div>
+            <p class="eyebrow">${escapeHtml(t("minimal.demo.badge"))}</p>
+            <h3 class="result-verdict">${escapeHtml(displayProductLabel(data.final_label))}</h3>
+            <span>${escapeHtml(input.filename)}</span>
+          </div>
+          <div class="verdict-aside">
+            <span class="badge medium">${escapeHtml(t("minimal.demo.routedToReview"))}</span>
+            <span class="badge uncertain">${escapeHtml(displayLabel(data.risk_level))}</span>
+            <div class="verdict-score"><span>${confidencePercent}%</span></div>
+          </div>
+        </div>
+        <div class="trust-meter" aria-hidden="true"><span style="width: ${confidencePercent}%"></span></div>
+        <p class="demo-summary">${escapeHtml(data.user_facing_summary)}</p>
+        <div class="result-metrics">
+          <div><span>${escapeHtml(t("minimal.result.verdict"))}</span><strong>${escapeHtml(displayProductLabel(data.final_label))}</strong></div>
+          <div><span>${escapeHtml(t("minimal.result.risk"))}</span><strong>${escapeHtml(displayLabel(data.risk_level))}</strong></div>
+          <div><span>${escapeHtml(t("minimal.result.confidence"))}</span><strong>${escapeHtml(formatConfidence(data.confidence))}</strong></div>
+          <div><span>${escapeHtml(t("minimal.result.runtime"))}</span><strong>${escapeHtml(payload.data.detector_summary.detector_runtime_mode)}</strong></div>
+        </div>
+        <div class="result-section">
+          <h4>${escapeHtml(t("minimal.result.evidenceChain"))}</h4>
+          <ul class="evidence-list">${evidenceItems}</ul>
+        </div>
+        <div class="result-section day41-detectors-section">
+          <h4>${escapeHtml(t("minimal.result.detectorSignals"))}</h4>
+          <div class="day41-detector-grid">${detectorItems}</div>
+        </div>
+        <div class="result-section recommendation-block">
+          <h4>${escapeHtml(t("minimal.result.recommendation"))}</h4>
+          <p>${escapeHtml(data.recommendation.message)}</p>
+        </div>
+        <div class="result-actions">
+          <button class="button button-ghost" type="button" data-action="switch-result-json">${escapeHtml(t("recent.viewJson"))}</button>
+        </div>
+      </div>
+      ${resultJsonPanel(payload)}
+    </article>
+  `;
+  applyResultRevealClasses(confidencePercent);
+}
+
 function renderEmptyResult() {
   const hasSelectedFile = Boolean(state.selectedSingleFile);
   const backendStatus = String(elements.serviceStatus?.dataset.status || "").toLowerCase();
+  if (!hasSelectedFile) {
+    renderDemoResult();
+    return;
+  }
   updateConsoleScanState(hasSelectedFile ? "ready" : ["offline", "error"].includes(backendStatus) ? "offline" : "idle");
   const title = hasSelectedFile ? statusCopy("readyTitle") : t("result.emptyTitle");
   const body = hasSelectedFile ? statusCopy("readyBody") : t("result.emptyBody");
@@ -4018,7 +4647,7 @@ function detectorSignalsPanel(detectors) {
           const label = normalizeProductLabel(detector.label === "error" ? "uncertain" : detector.label);
           const role = String(firstDefined(detector.role, "auxiliary")).toLowerCase();
           const fineTunedBadge = detector.fine_tuned
-            ? `<span class="detector-finetune-badge" title="${escapeHtml(state.lang === "zh" ? "本检测器已加载本地微调适配器（LoRA），在生产策略下经隔离 test 集验证" : "This detector loaded a locally fine-tuned LoRA adapter, validated on the isolated test set under the production policy")}">${escapeHtml(state.lang === "zh" ? "LoRA 微调" : "LoRA Fine-Tuned")}</span>`
+            ? `<span class="detector-finetune-badge" title="${escapeHtml(state.lang === "zh" ? "本检测器已加载用户本地提供的 LoRA adapter；public v1 不随仓库发布 adapter 权重" : "This detector loaded a user-provided local LoRA adapter; public v1 does not ship adapter weights")}">${escapeHtml("Local LoRA")}</span>`
             : "";
           // P4: present the detector by its IN-HOUSE ROLE (per design: never expose Smogy/Ateeqq/dima806/etc.
           // brand names in the public-facing UI). The underlying detector id is preserved in a `title`
@@ -5289,7 +5918,7 @@ mergeTranslations(translations.zh, {
     zeroLeakage: "泄漏受控测试划分",
   },
   story: {
-    apiTitle: "SaaS 与 API 路径",
+    apiTitle: "本地 API 路径",
   },
   workbench: {
     eyebrow: "本地可信工作台",
@@ -5330,7 +5959,7 @@ mergeTranslations(translations.en, {
     zeroLeakage: "Leakage-controlled split",
   },
   story: {
-    apiTitle: "SaaS & API path",
+    apiTitle: "Local API path",
   },
   workbench: {
     eyebrow: "Local Trust Workbench",
@@ -5360,92 +5989,8 @@ mergeTranslations(translations.en, {
   },
 });
 
-function initTrustParticles() {
-  const canvas = elements.trustParticles;
-  if (!canvas) {
-    return;
-  }
-  const context = canvas.getContext("2d");
-  if (!context) {
-    return;
-  }
-
-  const colors = ["rgba(216,162,74,0.62)", "rgba(190,207,225,0.42)", "rgba(114,162,245,0.38)"];
-  let width = 0;
-  let height = 0;
-  let dpr = 1;
-  let particles = [];
-  let animationFrame = 0;
-
-  const resize = () => {
-    const bounds = canvas.getBoundingClientRect();
-    width = Math.max(1, bounds.width);
-    height = Math.max(1, bounds.height);
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    canvas.width = Math.floor(width * dpr);
-    canvas.height = Math.floor(height * dpr);
-    context.setTransform(dpr, 0, 0, dpr, 0, 0);
-    const count = Math.min(64, Math.max(34, Math.round(width / 24)));
-    particles = Array.from({ length: count }, (_, index) => ({
-      x: Math.random() * width,
-      y: Math.random() * height,
-      radius: 0.8 + Math.random() * 1.8,
-      vx: (Math.random() - 0.5) * 0.08,
-      vy: (Math.random() - 0.5) * 0.06,
-      color: colors[index % colors.length],
-      phase: Math.random() * Math.PI * 2,
-    }));
-  };
-
-  const drawStatic = () => {
-    context.clearRect(0, 0, width, height);
-    for (const particle of particles) {
-      context.beginPath();
-      context.fillStyle = particle.color;
-      context.arc(particle.x, particle.y, particle.radius, 0, Math.PI * 2);
-      context.fill();
-    }
-  };
-
-  const draw = (time = 0) => {
-    context.clearRect(0, 0, width, height);
-    const pulse = document.body.classList.contains("is-scanning") ? 1.7 : 1;
-    for (const particle of particles) {
-      particle.x += particle.vx * pulse;
-      particle.y += particle.vy * pulse;
-      if (particle.x < -8) particle.x = width + 8;
-      if (particle.x > width + 8) particle.x = -8;
-      if (particle.y < -8) particle.y = height + 8;
-      if (particle.y > height + 8) particle.y = -8;
-      const glow = 0.45 + Math.sin(time * 0.0008 + particle.phase) * 0.25;
-      context.beginPath();
-      context.fillStyle = particle.color.replace(/[\d.]+\)$/, `${Math.max(0.2, glow)})`);
-      context.arc(particle.x, particle.y, particle.radius * (document.body.classList.contains("is-scanning") ? 1.35 : 1), 0, Math.PI * 2);
-      context.fill();
-    }
-    animationFrame = window.requestAnimationFrame(draw);
-  };
-
-  resize();
-  if (state.prefersReducedMotion) {
-    drawStatic();
-  } else {
-    animationFrame = window.requestAnimationFrame(draw);
-  }
-  window.addEventListener("resize", () => {
-    window.cancelAnimationFrame(animationFrame);
-    resize();
-    if (state.prefersReducedMotion) {
-      drawStatic();
-    } else {
-      animationFrame = window.requestAnimationFrame(draw);
-    }
-  });
-}
-
 setUploadButtons();
 setDemoTab(state.demoTab);
 applyResultView();
 applyI18n();
-initTrustParticles();
 window.addEventListener("DOMContentLoaded", () => loadDashboardData());

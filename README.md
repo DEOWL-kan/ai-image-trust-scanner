@@ -11,8 +11,9 @@
 
 > ⚠️ **Detection results are risk signals, not legal or forensic conclusions.** Absence of AI evidence does not prove authenticity. Presence of suspicious evidence should trigger review, not automatic enforcement.
 
-<!-- TODO(Phase 3): add docs/screenshots/dashboard.png and a short GIF of a scan -->
-<!-- ![Dashboard](docs/screenshots/dashboard.png) -->
+![AI Image Trust Scanner dashboard](docs/screenshots/dashboard.png)
+
+*Local dashboard with an auditable evidence chain per image. Default CPU-safe mode runs without Torch or model downloads; the shot above uses labeled demo data.*
 
 ---
 
@@ -97,6 +98,22 @@ The default CPU-safe path does **not** load the deep models below — it uses th
 An optional Smogy PEFT/LoRA adapter (`ft_smogy_lora_v2`) is **not shipped in v1** pending license review of the base model and training data. See [docs/MODEL_REPRODUCIBILITY.md](docs/MODEL_REPRODUCIBILITY.md) and [models/ft_smogy_lora_v2/MODEL_CARD.md](models/ft_smogy_lora_v2/MODEL_CARD.md).
 
 > UI copy may refer to the "Minerva visual engine" as product branding, but the underlying detector models and sources are disclosed here and in the docs.
+
+## Accuracy
+
+This is an evidence-chain scanner, not a single-score detector. It emits `real`, `ai`, or `uncertain` (routed to review), so two figures matter: **strict accuracy** (counts every `uncertain` as wrong, ~69–76% on hard sets) and **decided accuracy** (only confidently-labeled images, ~93–95% because ambiguous cases go to review).
+
+> In clear decisions, roughly **94–95% accuracy** on current local API sample tests, with low real-image false positives; ambiguous cases are routed to review. This is **not** a claim of 95% universal AI-image-detection accuracy.
+
+The honest catch: **the strong numbers require the optional models, which are not all bundled.**
+
+| Tier | Ships in v1 | Representative result |
+| --- | --- | --- |
+| **Default CPU-safe** (lightweight baseline) | ✅ | Near-chance as a standalone classifier — value is provenance/metadata/forensic evidence + review, not accuracy |
+| **Optional base HF model** (`Smogy`, you download it) | ⚙️ opt-in | Mirage-Test n=500: **88.4% acc, 0.921 AUROC** |
+| **Optional LoRA adapter** (`ft_smogy_lora_v2`) | ❌ not shipped | Defactify n=400: 76% strict / ~95% decided, 1.0% real FP — *not reproducible from this repo* |
+
+Numbers are on modest samples against unpinned model revisions. Full methodology, per-dataset tables, and limitations: **[docs/BENCHMARKS.md](docs/BENCHMARKS.md)**.
 
 ## Architecture
 

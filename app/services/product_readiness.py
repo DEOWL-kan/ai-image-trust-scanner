@@ -148,7 +148,7 @@ def evaluate_readiness(
     checks.extend(
         [
             _ok_check("frontend_index", bool(frontend.get("index_ok")), "Dashboard index contains required product hooks.", details=frontend.get("index") or {}),
-            _ok_check("frontend_theme", bool(frontend.get("theme_ok")), "Console theme layer is served.", details=frontend.get("theme") or {}),
+            _ok_check("frontend_theme", bool(frontend.get("theme_ok")), "Dashboard stylesheet is served.", details=frontend.get("theme") or {}),
             _ok_check("frontend_app", bool(frontend.get("app_ok")), "Dashboard app contains policy/auth wiring.", details=frontend.get("app") or {}),
         ]
     )
@@ -168,7 +168,7 @@ def evaluate_offline_readiness(*, project_root: str | Path, deployment_profile: 
     policy_path = root / "configs" / "policy_config.yaml"
     detector_path = root / "configs" / "detectors.yaml"
     index_path = root / "frontend" / "dashboard" / "index.html"
-    theme_path = root / "frontend" / "dashboard" / "console-theme.css"
+    theme_path = root / "frontend" / "dashboard" / "styles.css"
     app_path = root / "frontend" / "dashboard" / "app.js"
 
     try:
@@ -222,14 +222,22 @@ def evaluate_offline_readiness(*, project_root: str | Path, deployment_profile: 
         [
             _ok_check(
                 "offline_frontend_index",
-                index_path.exists() and "console-theme.css" in index and "policy-profile-switch" in index and "global-particles" in index,
-                "Dashboard index contains product console hooks.",
+                index_path.exists()
+                and "styles.css" in index
+                and "policy-profile-switch" in index
+                and "demo-result-fixture" in index
+                and "console-theme.css" not in index
+                and "global-particles" not in index,
+                "Dashboard index contains minimal local workbench hooks.",
                 details={"path": str(index_path)},
             ),
             _ok_check(
                 "offline_frontend_theme",
-                theme_path.exists() and "product-console-section.detection-demo" in theme and "policy-profile-switch" in theme,
-                "Console theme layer contains product polish hooks.",
+                theme_path.exists()
+                and "workbench-shell" in theme
+                and "policy-profile-switch" in theme
+                and "global-particles" not in theme,
+                "Dashboard stylesheet contains minimal workbench hooks.",
                 details={"path": str(theme_path)},
             ),
             _ok_check(
